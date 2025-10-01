@@ -1,0 +1,2194 @@
+﻿ingredient_id,dish_id,quantity,is_main,ingredient_name
+1,1,500g,Yes,Sườn non
+2,1,1 trái,No,Ớt chuông đỏ
+3,1,1 trái,No,Ớt chuông xanh
+4,1,1 trái,No,Ớt chuông vàng
+5,1,1M,No,Gừng băm
+6,1,1 nhánh,No,Gừng nhỏ
+7,1,1M,No,Hành tím băm
+8,1,1M,No,Tỏi băm
+9,1,3M,No,Xốt mận
+10,2,300g,Yes,Sườn non
+11,2,100g,No,Hạt sen tươi
+12,2,50g,No,Bắp non
+13,2,100g,No,Bông cải xanh
+14,2,50g,No,Cà rốt
+15,3,600g,Yes,Sườn non
+16,3,20g,No,Tiêu xanh đập dập
+17,3,20g,No,Tiêu đen bể
+18,3,20g,No,Tiêu trắng bể
+19,4,150g,Yes,Thịt ba chỉ bò cắt lát sẵn
+20,4,150g,No,Thịt ba chỉ heo cắt lát sẵn
+21,4,50g,No,Phô mai mozzarella
+22,4,200g,No,Cải thảo
+23,4,150g,No,Nấm kim châm
+24,4,100g,No,Viên thả lẩu (bánh bao hải sản nhiều màu)
+25,4,1 trái,No,Ớt sừng
+26,5,2 trái,Yes,Cà tím
+27,5,150g,No,Thịt xay
+28,5,30g,No,Giò sống
+29,6,500g,Yes,Bí đỏ
+30,6,100g,No,Đậu phộng
+31,6,1m,No,Hành tím băm
+32,7,500g,Yes,Thịt heo
+33,7,1 quả,No,Nước dừa xiêm
+34,7,1 quả,No,Ớt sừng
+35,7,4 quả,No,Trứng gà
+36,8,250g,Yes,Sườn non
+37,8,150g,No,Khoai tây
+38,8,50g,No,Nấm rơm
+39,8,1 trái,No,Ớt hiểm
+40,8,1 nhánh,No,Hành lá
+41,8,1 nhánh,No,Tiêu xanh
+42,8,25g,No,Củ nén
+43,8,1 trái,No,Ớt sừng
+44,9,300g,Yes,Dồi trường
+45,9,100g,No,Hành tây
+46,9,50g,No,Hành lá
+47,9,1 trái,No,Ớt sừng
+48,9,1 trái,No,Chanh
+49,10,300g,Yes,Ba rọi heo
+50,10,1 trái,No,Bắp mỹ
+51,10,5 trái,No,Cà chua bi
+52,10,1m,No,Mè đen
+53,10,1m,No,Mè trắng
+54,10,1m,No,Hành băm
+55,10,1.5M,No,Tỏi băm
+56,11,400g,Yes,Sườn non heo
+57,11,1M,No,Tỏi băm
+58,11,1M,No,Hành tím băm
+59,11,1m,No,Gừng
+60,11,200g,No,Khoai môn cao
+61,11,500ml,No,Nước dừa tươi
+62,11,1M,No,Sa tế
+63,12,300g,Yes,Sườn non heo
+64,12,50g,No,Đậu phộng sống
+65,12,1m,No,Bột năng
+66,13,200g,Yes,Bún gạo khô
+67,13,200g,No,Thịt bò filet
+68,13,50g,No,Cà rốt cắt sợi
+69,13,50g,No,Bông hẹ
+70,13,30g,No,Cần tàu
+71,13,1 trái,No,Ớt sừng cắt sợi
+72,14,500g,Yes,Bắp bò
+73,14,1 trái,No,Ớt sừng cắt sợi
+74,14,10 trái,No,Tắc
+75,14,100g,No,Rau thơm các loại
+76,15,500g,Yes,Bắp bò
+77,15,1 trái,No,Dừa xiêm tươi
+78,15,1m,No,Gừng băm
+79,15,1M,No,Ớt hiểm băm
+80,16,250g,Yes,Thịt thăn bò
+81,16,100g,No,Măng tây
+82,16,200g,No,Khoai tây tươi (trước khi chiên)
+83,16,20g,No,Xốt Mayonnaise Aji-mayo® Vị Nguyên Bản
+84,17,200g,Yes,Thịt bò fillet mềm
+85,17,4 quả,No,Trứng gà
+86,17,2 nhánh,No,Hành lá
+87,17,1M,No,Mè trắng rang
+88,17,1M,No,Tương ớt Hàn Quốc - Gochujang
+89,17,2M,No,Tỏi băm
+90,17,1M,No,Rong biển khô Hàn Quốc cắt sợi
+91,17,1m,No,Gừng băm
+92,18,80g,Yes,Cải mầm 3 màu
+93,18,1 quả,No,Chanh vàng
+94,18,1/3m,No,Tiêu
+95,18,2m,No,Mè rang
+96,18,1M,No,Tỏi băm
+97,19,300g,Yes,Mì Ý
+98,19,200g,No,Thịt bò bằm
+99,19,100g,No,Đậu Hà Lan
+100,19,50g,No,Cà rốt
+101,20,100g,Yes,Đậu Hà Lan hạt
+102,20,50g,No,Hành tây bi
+103,20,1 trái,No,Nước dừa tươi
+104,20,50g,No,Rau gia vị
+105,20,10g,No,Dầu ăn
+106,21,200g,Yes,Bò xay
+107,21,200g,No,Thanh cua
+108,21,2M,No,Gói bột chiên giòn
+109,21,1m,No,Tiêu
+110,21,1m,No,Tỏi băm
+111,21,1 nhánh,No,Hành lá
+112,21,20g,No,Xốt Mayonnaise Aji-mayo® Vị Nguyên Bản
+113,22,200g,Yes,Thịt bò xay
+114,22,30g,No,Hành tây
+115,22,1 trái,No,Cà chua
+116,22,1m,No,Tỏi băm nhuyễn
+117,22,1M,No,Xốt Mayonnaise Aji-mayo® Vị Nguyên Bản
+118,23,2 trái,Yes,Nước dừa tươi
+119,23,300g,No,Măng chua
+120,23,100g,No,Nấm rơm
+121,23,1M,No,Gừng băm
+122,23,2M,No,Tỏi băm
+123,23,2M,No,Sả băm
+124,23,1m,No,Màu dầu điều
+125,24,600g,Yes,Vịt
+126,24,50g,No,Riềng
+127,24,10g,No,Ớt trái khô
+128,24,2M,No,Tỏi băm
+129,24,1M,No,Hành tím băm
+130,24,3M,No,Nước me cô đặc
+131,24,1 trái,No,Dừa
+132,24,2M,No,Hành lá
+133,25,2M,Yes,Hành tím băm nhuyễn
+134,25,200g,No,Rau cải con
+135,25,500ml,No,Nước dừa tươi
+136,25,1m,No,Bột nghệ
+137,25,1m,No,Bột ngọt AJI-NO-MOTO®
+138,25,1m,No,Nước mắm
+139,25,1m,No,Muối
+140,25,1m,No,Hạt nêm Aji-ngon® GÀ
+141,26,500g,Yes,Đùi vịt góc tư
+142,26,1M,No,Gừng giã nhỏ
+143,26,100g,No,Đậu que
+144,26,100g,No,Bắp non
+145,27,4 trái,Yes,Hột vịt lộn
+146,27,50g,No,Rau răm
+147,27,1M,No,Tỏi băm
+148,27,1M,No,Ớt sừng băm
+149,27,2M,No,Tương ớt
+150,27,1M,No,Hành phi
+151,27,2M,No,Đậu phộng rang
+152,28,500g,Yes,Đùi vịt góc tư
+153,28,3M,No,Hành tỏi băm
+154,28,1m,No,Ớt bột
+155,28,2 trái,No,Ớt hiểm
+156,29,800g,Yes,Vịt xiêm
+157,29,1 trái,No,Dừa tươi
+158,29,1M,No,Nghệ băm nhỏ
+159,30,400g,Yes,Khoai cao
+160,30,2M,No,Chao đỏ
+161,30,3M,No,Chao trắng
+162,30,300g,No,Rau muống cọng
+163,30,3 trái,No,Ớt hiểm
+164,31,200g,Yes,Ức vịt quay
+165,31,1 trái,No,Thơm
+166,31,1 trái,No,Cà chua
+167,31,1 trái,No,Dưa leo
+168,31,2 nhánh,No,Cần tây
+169,32,10 quả,Yes,Trứng cút
+170,32,2M,No,Hành tím băm
+171,32,1 trái,No,Dừa
+172,33,700g,Yes,Vịt
+173,33,100g,No,Măng tre tàu khô
+174,33,200g,No,Bún tàu
+175,34,300g,Yes,Thịt ức vịt
+176,34,300g,No,Măng luộc
+177,34,50g,No,Cà rốt
+178,35,200g,Yes,Thịt ốc bươu
+179,35,2 trái,No,Khế chua
+180,35,5 lá,No,Tía tô
+181,36,150g,Yes,Thịt ốc bươu
+182,36,100g,No,Giò sống
+183,36,30g,No,Nạc dăm xay
+184,36,2M,No,Nấm mèo băm nhỏ
+185,36,1 quả,No,Lòng trắng trứng
+186,36,1m,No,Gừng
+187,36,1m,No,Tỏi
+188,36,1 nhánh,No,Tiêu xanh đập dập
+189,36,1m,No,Ớt băm
+190,36,1m,No,Hành tím băm
+191,36,1M,No,Nước cốt chanh
+192,36,1m,No,Lá chanh băm nhỏ
+193,37,100g,Yes,- Thịt ba chỉ
+194,37,15g,No,- Lá lốt
+195,37,15g,No,- Lá tía tô
+196,37,3 trái,No,- Chuối xanh
+197,37,1 trái,No,- Ớt sừng
+198,38,300g,Yes,Thịt ốc bươu
+199,38,50g,No,Củ gừng nhỏ gọt vỏ
+200,38,1M,No,Hành tím băm
+201,38,1M,No,Tỏi băm
+202,38,3 trái,No,Ớt hiểm
+203,39,400g,Yes,Ốc lác
+204,39,30g,No,Tiêu xanh
+205,39,35g,No,Nghệ tươi
+206,39,1M,No,Tỏi băm
+207,40,150g,Yes,Thịt ốc bươu
+208,40,100g,No,Giò sống
+209,40,30g,No,Nạc dăm xay
+210,40,3M,No,Nấm mèo băm nhỏ
+211,41,100g,Yes,Ốc bươu đã tách vỏ
+212,41,250g,No,Giò sống
+213,41,30g,No,Mỡ heo
+214,41,50 lá,No,Lá lốt
+215,41,1M,No,Nấm mèo
+216,41,1M,No,Nấm hương
+217,41,2M,No,Tiêu xanh đập giập
+218,41,4M,No,Mỡ hành
+219,41,6 trái,No,Cà chua bi đỏ và vàng
+220,42,100g,Yes,Ốc bươu đã tách vỏ
+221,42,100g,No,Gừng non
+222,42,10 lá,No,Lá chanh
+223,43,300g,Yes,Thịt ốc giác
+224,43,200g,No,Bông hành
+225,43,1 trái,No,Cà chua
+226,44,150g,Yes,Mỡ phần
+227,44,20g,No,Rau răm
+228,44,60g,No,Me vắt
+229,44,20g,No,Tỏi băm
+230,44,30g,No,Đậu phộng rang
+231,44,2 quả,No,Tắc
+232,44,2 trái,No,Ớt hiểm đập dập
+233,45,500g,Yes,Đùi ếch
+234,45,30g,No,Ngò gai
+235,45,1M,No,Mè đen
+236,46,500g,Yes,Đùi ếch to
+237,46,150g,No,Rau mầm 3 màu
+238,46,1/3m,No,Ớt xay
+239,47,500g,Yes,Thịt ếch
+240,47,50g,No,Hành lá
+241,47,5 trái,No,Ớt trái khô
+242,48,300g,Yes,Đùi ếch
+243,48,50g,No,Tỏi tép
+244,48,2 trái,No,Ớt sừng
+245,48,2 trái,No,Ớt hiểm
+246,49,600g,Yes,Thịt ếch
+247,49,50g,No,Tiêu xanh
+248,49,50g,No,Húng quế
+249,49,1 trái,No,Ớt sừng
+250,49,1M,No,Hành tím băm
+251,50,20g,Yes,Hành tím
+252,50,2M,No,Tỏi băm
+253,50,10 trái,No,Ớt xiêm xanh
+254,50,1 trái,No,Ớt sừng
+255,50,1m,No,Dầu màu điều
+256,50,60g,No,Tỏi tím/tỏi bắc
+257,51,400g,Yes,Đùi ếch
+258,51,15g,No,Gừng cắt nhuyễn
+259,51,1M,No,Tỏi băm
+260,51,20g,No,Củ kiệu chua cắt sợi
+261,51,2M,No,Nước củ kiệu
+262,52,500g,Yes,Thit ếch
+263,52,2 trái,No,Cà chua
+264,52,150g,No,Nấm rơm
+265,52,50g,No,Riềng
+266,52,3 trái,No,Ớt hiểm
+267,52,3M,No,Sa tế
+268,53,1 trái,Yes,Ớt sừng
+269,53,5 nhánh,No,Tiêu xanh
+270,53,1M,No,Tỏi xay / nước tỏi
+271,54,10 lá,Yes,Lá chanh
+272,54,1 quả,No,Ớt sừng
+273,54,50g,No,Bột mì
+274,55,300g,Yes,Đùi ếch to
+275,55,100g,No,Thịt ba rọi
+276,55,2 trái,No,Ớt sừng cắt sợi
+277,55,100g,No,Bắp chuối bào
+278,55,2 trái,No,Khế chua
+279,55,2 trái,No,Chuối chát
+280,56,1 con,Yes,Cá
+281,56,12 quả,No,Sấu quả to
+282,56,5 trái,No,bắp non
+283,57,100g,Yes,Cá hồi
+284,57,100g,No,Bắp cải trắng
+285,57,50g,No,Bắp cải tím
+286,57,20g,No,Ớt sừng cắt sợi
+287,57,50g,No,Cải mầm
+288,57,1/4 quả,No,Bắp mỹ
+289,57,1m,No,Nước gừng
+290,57,2M,No,Nước cốt tắc
+291,57,20g,No,Rau húng lũi
+292,57,1M,No,Tỏi ớt băm
+293,58,300g,Yes,Cá lòng tong
+294,58,2 nhánh,No,Hành lá
+295,58,1 trái,No,Ớt sừng
+296,58,1M,No,Tỏi băm
+297,59,400g,Yes,Cá basa fillet đông lạnh
+298,59,1m,No,Nước cốt chanh
+299,59,1M,No,Xốt Mayonnaise Aji-mayo® Vị Nguyên Bản
+300,59,2M,No,Bột mì đa dụng
+301,59,1m,No,Tiêu
+302,59,2m,No,Hạt nêm Aji-ngon® HEO
+303,60,100g,Yes,Cá hồi phi lê
+304,60,100g,No,Thanh cua Nhật
+305,60,10g,No,Húng lũi
+306,60,1 trái,No,Bơ sáp chín vừa
+307,61,100g,Yes,Bông so đũa
+308,61,200g,No,Cá thác lác
+309,61,50g,No,Giò sống
+310,61,2 nhánh,No,Hành tỏi băm Hành lá
+311,62,250g,Yes,Cá bống trứng
+312,62,3 trái,No,Ớt hiểm
+313,62,1M,No,Tương ớt
+314,62,1M,No,Tỏi băm
+315,62,1m,No,Muối
+316,63,300g,Yes,Phi lê cá điêu hồng
+317,63,100g,No,Lá cải xanh
+318,63,100g,No,Bột mì
+319,63,100g,No,Bột chiên xù
+320,63,1 quả,No,Trứng gà
+321,64,4 trái,Yes,Khổ qua
+322,64,100g,No,Thịt heo xay
+323,64,50g,No,Cá thác lác
+324,64,1 trái,No,ớt hiểm
+325,65,200g,Yes,Khô cá Minh Thái ( pollock )
+326,65,100g,No,Giá sạch
+327,65,2M,No,Dầu mè HQ ( Hàn quốc )
+328,65,1M,No,Tỏi xay
+329,65,1 quả,No,Trứng gà
+330,65,1m,No,Rượu trắng
+331,66,200g,Yes,Bắp cải tím
+332,66,50g,No,Đậu trắng Đà Lạt tươi
+333,66,10 lá,No,Lá quế
+334,66,200g,No,Tôm bạc thẻ tươi
+335,66,1m,No,Dầu mè
+336,67,300g,Yes,Bánh ướt
+337,67,100g,No,"Tôm sú bóc vỏ, chừa đuôi"
+338,67,100g,No,Mực lá
+339,67,1/4 trái,No,Ớt chuông xanh
+340,67,1/4 trái,No,Ớt chuông đỏ
+341,67,1/4 trái,No,Ớt chuông vàng
+342,67,1/4 trái,No,Hành tây
+343,67,2M,No,Tỏi băm
+344,67,2M,No,Gừng băm
+345,68,400g,Yes,"Nấm bào ngư (chọn nấm to, nâu)"
+346,68,100g,No,Tôm sú (bỏ vỏ đầu đuôi )
+347,68,15g,No,Hành lá
+348,68,1 trái,No,Ớt sừng cắt hạt lựu
+349,68,1M,No,Gừng băm
+350,68,1M,No,Rượu nếp
+351,68,2 quả,No,Trứng gà
+352,68,1M,No,Bột năng
+353,68,1M,No,Mè đen rang
+354,69,200g,Yes,Tôm
+355,69,100g,No,Giò sống
+356,69,350g,No,Khoai mì
+357,69,1 nhánh,No,Hành lá
+358,69,1 nhánh,No,Ngò rí
+359,69,1m,No,Hành tím băm
+360,70,200g,Yes,Giò sống
+361,70,100g,No,Tôm thẻ
+362,70,1 trái,No,Bắp mĩ
+363,70,1m,No,Tiêu
+364,70,1M,No,Ớt sừng băm
+365,71,300g,Yes,Tôm sú tươi
+366,71,400g,No,Bí đỏ
+367,71,1M,No,Bơ phe
+368,71,250ml,No,Sữa tươi không đường
+369,71,2M,No,Hành tây băm
+370,71,300ml,No,Nước dùng gà
+371,72,200g,Yes,Bún
+372,72,96g,No,Bánh tráng
+373,72,100g,No,Xà lách
+374,72,50g,No,Giá
+375,72,50g,No,Hẹ
+376,72,80g,No,Dưa leo
+377,72,100g,No,"Rau sống (diếp cá, kinh giới, húng quế)"
+378,73,1 nhánh,Yes,Riềng cạo vỏ
+379,73,4 quả,No,Ớt hiểm
+380,73,6 lá,No,Lá chúc
+381,73,120g,No,Nấm rơm luộc
+382,73,1 quả,No,Nước dừa Xiêm
+383,73,2 quả,No,Cà chua
+384,74,80g,Yes,Xá xíu
+385,74,50g,No,Đậu Hà Lan
+386,74,80g,No,Cà rốt
+387,74,2 quả,No,Trứng gà
+388,74,20g,No,Tôm khô
+389,75,500g,Yes,Củ mài ( khoai mài hay củ hoài sơn)
+390,75,150g,No,Tôm băm
+391,75,2M,No,Hành tím băm
+392,75,1m,No,Gừng băm
+393,75,20g,No,Rau om
+394,76,300g,Yes,Tôm sú (size 50 con/kg )
+395,76,200g,No,Bắp chuối bào
+396,76,20g,No,Lá rau quế
+397,76,2M,No,Tỏi băm
+398,77,250g,Yes,Mực sữa
+399,77,200g,No,Đậu Hà Lan
+400,77,1 trái,No,Ớt sừng cắt quả trám
+401,77,1M,No,Tỏi băm
+402,77,1M,No,Tương ớt
+403,77,20g,No,Rau răm
+404,78,200g,Yes,Mực lá làm sạch
+405,78,1m,No,Hành tím băm
+406,78,7 quả,No,Quả tắc
+407,78,1 quả,No,Ớt hiểm
+408,78,100g,No,Rau xà lách xoong nhỏ
+409,79,400g,Yes,Măng tây
+410,79,300g,No,Mực ống
+411,79,100g,No,Cà chua bi nhiều màu
+412,79,30g,No,Ngò rí
+413,79,2M,No,Tỏi băm
+414,79,1M,No,Hành tím băm
+415,79,30g,No,Hành tây tím
+416,79,50g,No,Hạt điều rang
+417,80,100g,Yes,Thịt xay
+418,80,50g,No,Giò sống
+419,80,3 trái,No,Cà chua
+420,81,150g,Yes,Bông cải xanh
+421,81,150g,No,Cải thìa
+422,81,2M + 1m,No,Tỏi băm
+423,81,2 quả,No,Trứng gà
+424,82,350g,Yes,Mực ống
+425,82,300g,No,Bắp non
+426,82,2 nhánh,No,Hành lá
+427,82,1 trái,No,Ớt sừng cắt quả trám
+428,82,2 trái,No,Ớt hiểm
+429,82,1M,No,Ớt sừng băm
+430,82,1M,No,Gừng băm
+431,82,1M,No,Sa tế
+432,82,1M,No,Tương ớt
+433,83,100g,Yes,Tôm sú
+434,83,100g,No,Mực ống
+435,83,50g,No,Thịt bò phi lê
+436,83,60g,No,Nấm rơm
+437,83,100g,No,Rau muống cọng
+438,83,100g,No,Cải thảo
+439,83,100g,No,Cà chua
+440,83,100g,No,Thơm
+441,83,700g,No,Bún
+442,84,200g,Yes,Bạch tuột
+443,84,200g,No,Bánh gạo
+444,84,70g,No,Nấm đông cô tươi
+445,84,70g,No,Bắp cải
+446,84,70g,No,Hành tây
+447,84,1m,No,Mè rang
+448,84,1m,No,Tỏi băm
+449,85,300g,Yes,Đầu mực
+450,85,100g,No,Nấm kim châm
+451,85,3 trái,No,Cà chua
+452,85,30g,No,Cần tàu
+453,85,2 trái,No,Ớt hiểm
+454,86,500g,Yes,Mực lá nguyên con
+455,86,100g,No,Tương hột băm nhỏ
+456,86,1M,No,Sả băm
+457,86,2M,No,Ớt băm
+458,86,2M,No,Nước hành tím băm
+459,86,2M,No,Gừng băm
+460,87,200g,Yes,Tim heo
+461,87,100g,No,Hủ tiếu
+462,87,100g,No,Mì tươi
+463,87,50g,No,Cà rốt
+464,87,50g,No,Hành tây
+465,87,50g,No,Bắp non
+466,87,30g,No,Hẹ lá
+467,88,150g,Yes,Nấm rơm
+468,88,150g,No,Nấm đông cô tươi
+469,88,100g,No,Cải bó xôi
+470,89,600g,Yes,Cá lăng (thật tươi)
+471,89,500g,No,Bún tươi
+472,89,100g,No,Nấm rơm
+473,89,2 quả,No,Cà chua
+474,90,300g,Yes,Bắp bò hoa
+475,90,600g,No,Bún
+476,90,100g,No,Chả bò
+477,90,50g,No,Rau muống
+478,90,50g,No,Bắp chuối
+479,90,50g,No,Giá
+480,90,50g,No,Rau thơm
+481,91,100g,Yes,Bò phi lê
+482,91,100g,No,Gầu bò
+483,91,600g,No,Phở
+484,91,1M,No,Gừng
+485,91,1M,No,Tỏi băm
+486,91,"1,5m",No,Đường
+487,91,100g,No,Cải ngọt
+488,91,1M,No,Dầu
+489,92,200g,Yes,Thịt bò xay
+490,92,100g,No,Nấm linh chi trắng
+491,92,25g,No,Nấm đông cô khô
+492,92,2m,No,Tỏi băm
+493,92,2g,No,Wakame
+494,92,150g,No,Miến dẹt sợi lớn
+495,93,300g,Yes,Sợi phở
+496,93,50g,No,Nấm đông cô tươi
+497,93,200g,No,Tôm bạc đất
+498,93,80g,No,"Ớt chuông xanh, đỏ"
+499,93,1m,No,Mè trắng rang
+500,94,10 quả,Yes,Trứng cút
+501,94,1/4 trái,No,Ớt chuông đỏ
+502,94,100g,No,Bắp non
+503,94,1 trái,No,Cà chua
+504,95,50g,Yes,Đậu hủ non
+505,95,30g,No,Cà rốt
+506,95,100g,No,Trứng gà
+507,95,20g,No,Thịt nạc xay
+508,95,2m,No,Bột bắp
+509,95,1m,No,Rượu sake/rượu trắng
+510,96,4 quả,Yes,Trứng muối
+511,96,50g,No,Chà bông
+512,96,4 quả,No,Trứng gà
+513,96,40g,No,Phô mai
+514,96,40g,No,Sữa tươi
+515,96,1m,No,Nước cốt chanh
+516,97,200g,Yes,Thịt cua
+517,97,2 quả,No,Trứng gà
+518,97,1 quả,No,Trứng gà luộc băm
+519,97,2 trái,No,Dưa chuột ngâm chua
+520,97,1M,No,Nụ bạch hoa ngâm chua
+521,98,50g,Yes,Mộc nhĩ
+522,98,150g,No,Nấm hải sản trắng
+523,98,1 quả,No,Trứng gà
+524,98,200g,No,Thịt cua
+525,98,1m,No,Đường phèn
+526,99,220ml,Yes,Sữa tươi không đường
+527,99,80g,No,Bacon xông khói
+528,99,40g,No,Xúc xích xông khói
+529,99,2 nhánh,No,Hành lá
+530,100,200g,Yes,Khoai mì
+531,100,100g,No,Đậu phộng
+532,100,200g,No,Bí đỏ
+533,101,100g,Yes,Củ hũ dừa
+534,101,100g,No,Rau rừng
+535,101,1 trái,No,Ớt hiểm
+536,101,1M,No,Boarô cắt lát
+537,102,1M,Yes,Cọng ngò rí
+538,102,1M,No,Nước cốt chanh
+539,102,2M,No,Tàu hũ ky chiên
+540,103,200g,Yes,Chả lụa chay
+541,103,1 trái,No,Bắp mỹ
+542,103,200g,No,Nấm rơm
+543,103,500g,No,Bánh canh bột lọc
+544,104,30g,Yes,Nấm đông cô khô
+545,104,30g,No,Đậu hạt Hà Lan
+546,104,100g,No,Tàu hũ ki cọng mềm
+547,104,100g,No,Cà rốt
+548,104,200g,No,Khoai tây
+549,104,700ml,No,Nước dừa tươi
+550,104,1m,No,Ớt hiểm băm
+551,104,2M,No,Cà paste
+552,105,300g,Yes,Tôm sú
+553,105,150g,No,Đậu hũ non
+554,105,150g,No,Cà chua
+555,105,1M,No,Hành lá cắt nhỏ
+556,105,1M,No,Hành tím băm
+557,105,150g,No,Giò sống
+558,106,150g,Yes,Nấm đùi gà
+559,106,30g,No,Hạt sen
+560,106,30g,No,Cà rốt
+561,106,30g,No,Hành tây
+562,106,1 nhánh,No,Tiêu xanh
+563,106,20g,No,Hành boa rô
+564,106,10g,No,Bột năng
+565,107,100g,Yes,Gạo lứt
+566,107,50g,No,Gạo thường
+567,107,50g,No,Cà rốt
+568,107,1/3 trái,No,Bắp Mỹ
+569,107,50g,No,Đậu Pháp (cove Nhật)
+570,107,20g,No,Nấm đông cô tươi
+571,108,200g,Yes,Tôm thẻ
+572,108,400g,No,Cơm trắng
+573,108,100g,No,Đậu bắp
+574,108,100g,No,Bầu
+575,108,100g,No,Cà rốt
+576,108,100g,No,Bông cải trắng
+577,108,60g,No,Kho quẹt
+578,108,7.5g,No,Dầu ăn
+579,109,50g,Yes,Nấm rơm búp
+580,109,50g,No,Hạt sen tươi
+581,109,50g,No,Bạch quả đã luộc
+582,109,50g,No,Cà rốt cắt hạt lựu
+583,110,500g,Yes,Dừa nạo
+584,110,150g,No,Gạo thơm
+585,110,100g,No,Giá
+586,110,50g,No,Gạo neeso
+587,111,500g,Yes,Sườn non
+588,111,1 trái,No,Ớt sừng
+589,111,2M,No,Chao trắng
+590,111,1M,No,Nước chao
+591,111,2M,No,Hành tỏi băm
+592,112,500g,Yes,Thịt giò heo
+593,112,200g,No,Củ cải trắng
+594,112,100g,No,Bắp non
+595,112,3M,No,Hành tỏi băm
+596,112,1 trái,No,Ớt sừng
+597,112,1M,No,Gừng cắt sợi
+598,113,200g,Yes,Sườn non
+599,113,300g,No,Bí đỏ
+600,113,10g,No,Rong biển Nhật (wakame)
+601,113,1 quả,No,Lê
+602,113,1m,No,Bột năng
+603,114,150g,Yes,Thịt thăn heo
+604,114,70g,No,Gạo tẻ
+605,114,30g,No,Gạo nếp
+606,114,4 quả,No,Trứng gà
+607,114,2m,No,Hành tím băm
+608,115,1/4M,Yes,Bột nghệ
+609,115,300g,No,Gạo ngon
+610,115,50g,No,Mỡ gà
+611,115,30g,No,Rau răm
+612,115,1M,No,Tỏi băm
+613,115,1M,No,Đầu hành băm
+614,116,100g,Yes,Thịt thăn bò
+615,116,50g,No,Phô mai bào sợi
+616,116,50g,No,Bắp hạt mỹ luộc chín
+617,116,50g,No,Đậu Hà Lan luộc chín
+618,116,50g,No,Cà rốt cắt hạt lựu luộc chín
+619,116,1M,No,Tỏi phi
+620,116,1M,No,Nước tỏi
+621,117,1M,Yes,Tỏi băm
+622,117,10g,No,Bơ lạt
+623,117,1M,No,Gừng băm
+624,117,1M,No,Rượu nếp
+625,118,200g,Yes,Đậu hũ non
+626,118,100g,No,Thịt heo xay
+627,118,10g,No,Hành lá
+628,118,5g,No,Gừng cắt sợi
+629,118,5g,No,Hành tím băm
+630,118,2 trái,No,Ớt hiểm khô
+631,119,120g,Yes,Cá hồi phi lê
+632,119,80g,No,Bơ quả
+633,119,20g,No,Mè rang
+634,119,40g,No,Bắp Mỹ
+635,119,12g,No,Đường
+636,119,2g,No,Dầu hào
+637,119,2g,No,Dầu mè
+638,119,24g,No,Xốt Mayonnaise Aji-mayo® Vị Nguyên Bản
+639,120,150g,Yes,Gạo
+640,120,100g,No,Rau củ đông lạnh các loại
+641,120,100g,No,Thịt bò xay
+642,120,50g,No,Bacon
+643,120,50g,No,Nấm đùi gà
+644,121,80g,Yes,Bánh tráng
+645,121,30g,No,Thanh cua
+646,121,15g,No,Rong biển giòn
+647,121,1 quả,No,Trứng gà
+648,122,150g,Yes,Bánh tráng
+649,122,70g,No,Nấm đùi gà
+650,122,2 quả,No,Trứng gà
+651,123,200g,Yes,Thịt bò thái lát
+652,123,120g,No,Đậu rồng non
+653,123,100g,No,Xà lách carol
+654,123,100g - 1 trái,No,Cà chua
+655,123,80g,No,Ớt chuông vàng
+656,123,20g,No,Tỏi củ/ tỏi tím bắp
+657,123,20g,No,Ngò rí
+658,123,30g,No,Hạt điều
+659,123,20g,No,Bắp mỹ
+660,124,100g,Yes,Thịt bò xay
+661,124,80g,No,Bánh tráng
+662,124,30g,No,Hỗn hợp rau củ đông lạnh
+663,124,10g,No,Hành tím băm
+664,124,5g,No,Hành lá cắt nhỏ
+665,125,100g,Yes,Cải thìa
+666,125,70g,No,Mỡ heo
+667,125,10g,No,Tỏi băm
+668,125,10g,No,Hành tím băm
+669,125,10g,No,Hành phi
+670,126,200g,Yes,Thịt bò xay
+671,126,200g,No,Trái lê
+672,126,30g,No,Gừng
+673,126,15g,No,Kỷ tử
+674,126,1 quả,No,Trứng gà ta
+675,126,2M,No,Hành tím
+676,126,700ml,No,Nước dùng heo
+677,127,150g,Yes,Tôm sú bóc vỏ chừa đuôi
+678,127,100g,No,Bông cải xanh không lấy cuống
+679,127,30g,No,Đậu hà lan
+680,127,50g,No,Bắp mỹ vàng
+681,127,45g - 3M,No,Aji-Quick® Bột Tẩm Khô Chiên Giòn
+682,127,4g - 1m,No,Đường
+683,127,20g - 3M,No,Dầu ăn
+684,127,1/4m,No,Tiêu
+685,127,1M,No,Tỏi băm
+686,127,1/3m,No,Nước mắm
+687,127,2M,No,Hành ngò
+688,127,1m,No,Muối
+689,128,150g,Yes,Mì vàng
+690,128,150g,No,Thịt bò
+691,128,50g,No,Cà rốt
+692,128,100g,No,Cải ngọt / cải thìa
+693,128,2M,No,Tỏi băm
+694,129,300g,Yes,Ức gà có da
+695,129,50g,No,Salad carol
+696,129,70g,No,Xà lách mỡ
+697,129,60g,No,Cà chua bi
+698,129,60g,No,Dưa leo baby
+699,130,300g,Yes,Cơm trắng
+700,130,2 lá,No,Lá rong biển
+701,130,30g,No,Bột chiên xù
+702,131,200g,Yes,Nạc dăm
+703,131,150g,No,Cà rốt
+704,131,50g,No,Xà lách
+705,131,3 quả,No,Trứng gà
+706,131,70g,No,Ớt chuông đỏ
+707,131,1m,No,Ngò rí băm
+708,131,1/3m,No,Tiêu trắng
+709,131,1m,No,Bột bắp
+710,132,1m,Yes,Nước cốt chanh
+711,132,1M,No,Hạt nêm Aji-ngon® Heo
+712,132,1M,No,Sa tế
+713,133,100g,Yes,Gạo
+714,133,30g,No,Cà rốt băm
+715,133,500g,No,Thịt hào sữa
+716,133,10 lá,No,Lá tía tô
+717,133,2 nhánh,No,Hành lá
+718,133,1 nhánh,No,Tiêu xanh
+719,133,1M,No,Dầu màu điều
+720,134,30g,Yes,Tôm băm
+721,134,140g,No,Mồng tơi
+722,134,80g,No,Mướp hương
+723,135,100g,Yes,Giò sống
+724,135,1M,No,Ngò rí
+725,135,1.5m,No,Ajingon nấm
+726,135,1m,No,Nước mắm
+727,136,75g,Yes,Thịt ốc bươu (đã bỏ đuôi)
+728,136,75g,No,Giò sống
+729,136,200g,No,Mồng tơi
+730,136,200g,No,Mướp khía
+731,136,50g,No,Nấm rơm
+732,136,1m,No,Hành tím băm
+733,137,100g,Yes,Cần tây
+734,137,100g,No,Đậu rồng non
+735,137,20g,No,Xốt Mayonnaise Aji-mayo® Vị Nguyên Bản
+736,137,2g,No,Hành phi
+737,138,300g,Yes,Thịt má đùi gà rút xương
+738,138,50g,No,Nấm đông cô khô ngâm mềm
+739,138,5g,No,Lá rong biển
+740,138,2m,No,Hành tỏi băm
+741,138,1/4m,No,Tiêu
+742,139,600g,Yes,Gà ta
+743,139,100g,No,Đậu ngự
+744,139,50g,No,Đậu phộng
+745,139,50g,No,Đậu đỏ
+746,139,50g,No,Đậu trắng
+747,139,200g,No,Cà rốt
+748,139,100g,No,Nấm đông cô tươi
+749,139,1 trái,No,Dừa
+750,140,170g,Yes,Ức gà file
+751,140,1m,No,Bột ớt Paprika
+752,140,1/4m,No,Bột tỏi
+753,141,2 nhánh,Yes,Hành lá
+754,141,10g,No,Tỏi
+755,141,10g,No,Hành tím
+756,141,1 trái,No,Ớt sừng
+757,141,2M,No,Tương ớt
+758,141,2M,No,Đường
+759,141,3M,No,Nước cốt chanh
+760,141,1M,No,Sữa đặc
+761,142,70g,Yes,Nấm đông cô tươi
+762,142,70g,No,Nấm đùi gà
+763,142,100g,No,Cải thảo
+764,142,100g,No,Cải thìa
+765,142,30g,No,Tàu hũ ky chiên
+766,142,100g,No,Đậu hũ non
+767,142,4 quả,No,Táo đỏ
+768,143,80g,Yes,Bacon xông khói
+769,143,70g,No,Xà lách romain
+770,143,70g,No,Xà lách thủy tinh
+771,143,80g,No,Dưa leo
+772,143,150g,No,Táo đỏ
+773,143,1M,No,Phô mai parmesan bột
+774,144,300g,Yes,Cá hú
+775,144,130g,No,Thơm chín
+776,144,50g,No,Cà chua
+777,144,300g,No,Bồn bồn tươi
+778,144,30g,No,Hành tím
+779,145,50g,Yes,Xà lách Mỹ
+780,145,50g,No,Xà lách lolo
+781,145,100g,No,Cà chua bi
+782,145,100g,No,Dưa leo
+783,145,3g,No,Rong biển wakame
+784,145,10g,No,Hạnh nhân lát
+785,146,200g,Yes,Má đùi gà rút xương
+786,146,1/4 trái,No,Thơm
+787,146,100g,No,Xà lách mỡ
+788,146,50g,No,Cà chua bi
+789,146,20g,No,Bắp Mỹ hạt
+790,146,50g,No,Dưa leo
+791,147,40g,Yes,Bóng bì lợn
+792,147,200g,No,Giò sống
+793,147,100g,No,Cà rốt
+794,147,80g,No,Bông cải trắng
+795,147,80g,No,Bông cải xanh
+796,147,10g,No,Nấm hương rừng Sapa (loại có xiên)
+797,148,150g,Yes,Nấm rơm búp
+798,148,1 trái,No,Ớt sừng
+799,148,2.5g 1m,No,Bột năng
+800,149,300g,Yes,Miến dong Thái (đã ngâm)
+801,149,300g,No,Tôm sú
+802,149,200g,No,Mực ống
+803,149,50g,No,Hành tây tím
+804,149,1 trái,No,Ớt sừng
+805,149,2 nhánh,No,Lá quế
+806,149,2 nhánh,No,Ngò gai
+807,150,100g,Yes,Lá hoành thánh
+808,150,100g,No,Tôm thẻ bóc vỏ
+809,150,20g,No,Ngò rí
+810,150,80g,No,Hành tây băm
+811,150,10g,No,Hành tím băm
+812,150,10g,No,Tỏi băm
+813,150,5g,No,Gừng băm
+814,150,50g,No,Cà chua băm
+815,150,300g,No,Dầu ăn để chiên
+816,151,200g,Yes,Bắp hạt
+817,151,120g,No,Đu đủ bào
+818,151,4 quả,No,Trứng gà
+819,151,2 nhánh,No,Hành lá
+820,151,1m,No,Ớt xay
+821,151,40g,No,Dầu ăn để chiên
+822,152,4 quả,Yes,Trứng vịt lộn
+823,152,400g,No,Bầu quả
+824,152,200g,No,Rau mồng tơi
+825,152,20g,No,Hành lá
+826,152,10g,No,Rau răm
+827,152,10g,No,Gừng tươi
+828,152,20g,No,Hành tím
+829,153,400g,Yes,Cá lóc phi lê
+830,153,40g,No,Hành tím
+831,153,40g,No,Nghệ củ
+832,153,1 quả,No,Ớt sừng đỏ
+833,153,4g,No,Tiêu đen xay
+834,153,20g,No,Dầu ăn
+835,153,3 quả,No,Ớt hiểm
+836,154,300g,Yes,Thịt ba rọi
+837,154,0.5g,No,Lá thyme
+838,154,12g,No,Dầu ăn
+839,154,320g,No,Bông cải xanh (luộc)
+840,154,80g,No,Cà rốt (luộc)
+841,155,200g,Yes,Bắp mỹ
+842,155,50g,No,Dầu ăn
+843,155,20g,No,Tương ớt
+844,156,200g,Yes,Củ năng
+845,156,200g,No,Củ cải trắng
+846,156,60g,No,Đậu phộng luộc nguyên vỏ
+847,156,1M,No,Bột cà ri
+848,156,2 nhánh,No,Tiêu xanh
+849,157,250g,Yes,"Tôm sú (bỏ đầu, vỏ,đuôi)"
+850,157,30g,No,Lá quế cắt sợi
+851,157,3 trái,No,Ớt hiểm
+852,157,1M,No,Đậu phộng rang
+853,158,100g,Yes,Tôm đất
+854,158,100g,No,Rau bồ ngót
+855,158,1m,No,Hành tím băm
+856,159,1M,Yes,Hành tím xay
+857,159,1m,No,Tỏi xay
+858,159,1m,No,Bột năng
+859,159,8 quả,No,Đậu bắp
+860,159,1 trái,No,Bắp Mỹ
+861,159,1m,No,Ngũ vị hương
+862,159,1M,No,Sữa đặc có đường
+863,160,500g,Yes,Thịt nghêu đông lạnh
+864,160,1m,No,Gừng băm
+865,160,1M,No,Hành tím băm
+866,160,1m,No,Tỏi băm
+867,160,1 nhánh,No,Hành lá
+868,160,1 trái,No,Ớt sừng
+869,161,70g,Yes,Xà lách romain
+870,161,70g,No,Xà lách lolo
+871,161,50g,No,Rong nho tách nước
+872,161,3 quả,No,Trứng gà
+873,161,50g,No,Cà chua bi
+874,161,50g,No,Dưa leo
+875,161,30g,No,Bắp cải tím
+876,162,40ml,Yes,Nước
+877,162,100g,No,Bơ lạt
+878,162,50g,No,Trái cây khô (có vị chua)
+879,163,200g,Yes,Thịt lõi vai bò Mỹ
+880,163,10g,No,Tôm khô
+881,163,100g,No,Xà lách
+882,163,100g,No,Dưa leo
+883,163,50g,No,Hành tây
+884,163,100g,No,Cà chua
+885,163,1m,No,Ngò rí băm
+886,163,5g 1M,No,Dầu ăn
+887,163,1g,No,Muối
+888,164,50g,Yes,Me vắt
+889,164,100g,No,Thịt bò chay lát
+890,164,200g,No,Cá viên chay
+891,164,150g,No,Nấm kim châm
+892,165,100g,Yes,Thịt bò bắp hoa
+893,165,100g,No,"Tim bò, gan bò, lá sách"
+894,165,100g,No,Bò viên
+895,165,100g,No,Hành tây
+896,165,70g,No,Đậu hũ trắng
+897,165,400g,No,Khoai môn cao
+898,165,600g,No,Bánh phở
+899,165,200g,No,Rau ăn kèm
+900,166,250g,Yes,Mỳ Ý (chưa luộc)
+901,166,50g,No,Bơ lạt
+902,166,50g,No,Sốt cà chua đậm đặc (tomato paste)
+903,166,10g,No,Hành tỏi băm
+904,166,20g,No,Phô mai parmesan
+905,166,8g 2m,No,Hạt nêm
+906,166,1/3m,No,"Tiêu, muối"
+907,167,120g,Yes,Sữa đặc
+908,167,300g,No,Sữa tươi không đường
+909,167,50g,No,Whipping cream
+910,167,20g,No,Hạt chia
+911,167,80g,No,Cơm dừa dẻo
+912,168,2 lá,Yes,Cải thảo
+913,168,150g,No,Miến đậu xanh
+914,168,1 trái,No,Cà chua
+915,168,2 nhánh,No,Đầu hành lá
+916,168,2M,No,Ớt sừng cắt sợi
+917,168,1m,No,Hành tím băm
+918,168,1m,No,Tỏi băm
+919,169,200g,Yes,Miến dong khô
+920,169,200g,No,Măng khô xé sợi (ngâm thật mềm)
+921,169,2 nhánh,No,Hành lá
+922,169,20g,No,Tỏi băm
+923,170,70g,Yes,Thịt heo xay nhuyễn
+924,170,200g,No,Tôm làm sạch
+925,170,200g,No,Bánh tráng 3 màu
+926,170,10g,No,Hành lá
+927,170,10g,No,Hành tím
+928,170,10g,No,Tỏi củ
+929,170,10g,No,Ngò ri
+930,170,2M,No,Hành phi
+931,170,1 quả,No,Lòng trắng trứng gà
+932,171,300g,Yes,Thịt ba chỉ
+933,171,2m,No,Hành tím băm
+934,171,1m,No,Tỏi băm
+935,171,1 nhánh,No,Hành lá
+936,171,7g,No,Dầu ăn
+937,172,2 lá,Yes,Lá dứa
+938,172,5g,No,Gừng
+939,172,200ml,No,Sữa đậu nành không đường
+940,172,50g,No,Đường
+941,172,1m,No,Nước cốt chanh
+942,172,500ml,No,Nước lọc
+943,173,1m,Yes,Sả băm
+944,173,20g,No,Riềng
+945,173,3 lá,No,Lá chanh
+946,173,2M,No,Hành tím băm
+947,173,1M,No,Tỏi băm
+948,173,1 trái,No,Ớt sừng
+949,173,10g,No,Tôm khô
+950,174,300g,Yes,Gà phi lê
+951,174,20g,No,Sả cây
+952,174,20g,No,Tương ớt
+953,174,200g,No,Xà lách
+954,174,100g,No,Bơ
+955,174,50g,No,Rau thơm
+956,175,80g,Yes,Bánh tráng
+957,175,150g,No,Trứng gà
+958,175,10g,No,Rau răm
+959,175,10g,No,Hành phi
+960,175,10g,No,Sa tế
+961,176,200g,Yes,Mì tươi
+962,176,100g,No,Xá xíu
+963,176,100g,No,Lạp xưởng
+964,176,50g,No,Cà rốt
+965,176,100g,No,Cải thảo
+966,176,100g,No,Đậu Hà Lan trái
+967,176,50g,No,Nấm rơm
+968,176,30g,No,Cần tàu
+969,177,4 quả,Yes,Trứng gà
+970,177,80g,No,Sữa tươi
+971,177,20g,No,Nước cốt chanh vàng
+972,177,1.5m,No,Bột socola đen
+973,177,200g,No,Chuối chín
+974,177,30g,No,Đường
+975,177,2g,No,Muối
+976,177,20g,No,Dầu ăn
+977,177,1m,No,Vỏ chanh vàng
+978,178,150g,Yes,Thịt thăn bò
+979,178,2 quả,No,Trứng gà
+980,178,100g,No,Cải thìa
+981,178,100g,No,Giá đỗ
+982,179,150g,Yes,Bắp cải
+983,179,5g,No,Dầu ăn
+984,179,22g,No,Nước tương
+985,179,1m,No,Dầu ớt
+986,180,1quả,Yes,Táo
+987,180,1 quả,No,Kiwi
+988,180,1 quả,No,Dâu
+989,180,1m,No,Rượu Rum
+990,180,10g,No,Bơ lạt
+991,180,15ml,No,Whipping cream
+992,180,20g,No,Đường
+993,181,200g,Yes,Bông cải trắng
+994,181,200g,No,Măng tây
+995,181,150g,No,Nấm đùi gà
+996,182,300g,Yes,Mề gà (trưởng thành)
+997,182,20g,No,Hành lá
+998,182,10g,No,Ớt sừng
+999,182,25g,No,Tỏi băm
+1000,182,1m,No,Ớt bột
+1001,182,1/3m,No,Tiêu
+1002,183,600g,Yes,Thịt gà
+1003,183,300g,No,Xương heo
+1004,183,50g,No,"Gừng, hành tím"
+1005,183,25g,No,Sá sùng
+1006,183,20g,No,Đường phèn
+1007,183,6 lá,No,Lá chanh Bắc
+1008,184,2m,Yes,Syrup đào
+1009,184,20g,No,Đào ngâm
+1010,184,20g,No,Dâu tây
+1011,184,20g,No,Bơ chín
+1012,184,1m,No,Nước cốt chanh
+1013,185,150g,Yes,Đậu trắng lon
+1014,185,150g,No,Đậu gà lon
+1015,185,250g,No,Bắp hạt lon
+1016,185,1 quả,No,Ớt sừng
+1017,185,2M,No,Xốt mè rang
+1018,185,400g,No,Ức gà
+1019,185,20g,No,Salad Iceberg
+1020,186,400g,Yes,Cá nục con nhỏ
+1021,186,50g,No,Hành tím
+1022,186,20g,No,Hành lá
+1023,186,3 trái,No,Ớt trái
+1024,186,30g,No,Tỏi băm
+1025,186,1M,No,Tương ớt
+1026,186,1M,No,Nước màu
+1027,187,500g,Yes,Da heo
+1028,187,1 trái,No,Ớt sừng
+1029,187,1M,No,Tỏi băm
+1030,187,1M,No,Bột năng
+1031,188,1M / 2 quả,Yes,Cốt tắc và quả tắc
+1032,188,1M,No,Tỏi băm
+1033,188,1M,No,Ớt sừng băm
+1034,188,2 quả,No,Ớt hiểm
+1035,188,2 nhánh,No,Hành lá cắt nhỏ
+1036,188,500ml,No,Nước lọc
+1037,188,2M,No,Đậu phông rang bỏ vỏ tách đôi
+1038,188,160g,No,Xoài keo
+1039,189,300g,Yes,Cá ngừ phi-lê
+1040,189,100g,No,Ớt ngọt đà lạt (tái dài)
+1041,189,100g,No,Cà chua bi nâu
+1042,189,150g,No,Rau thơm các loại
+1043,189,30g,No,Thính gạo rang
+1044,189,150g,No,Xà lách iceberg
+1045,189,2M,No,Gia vị nêm sẵn Aji-Quick® Bột Tẩm Khô Chiên Giòn
+1046,190,600g,Yes,Giò nạc
+1047,190,70g,No,Thơm
+1048,190,10g,No,Tôm khô
+1049,190,700g,No,Sợi bún to (bún bò )
+1050,191,250g,Yes,Cá lóc/cá hú/cá basa
+1051,191,100g,No,Cà chua
+1052,191,100g,No,Thơm
+1053,191,70g,No,Bạc hà
+1054,191,70g,No,Giá
+1055,191,70g,No,Đậu bắp
+1056,192,10g,Yes,Tàu hủ ky lá chiên
+1057,192,1M,No,Bột cà ri
+1058,192,20g,No,Lá húng quế
+1059,192,3M,No,Đậu phộng rang
+1060,193,300g,Yes,Thịt giò heo
+1061,193,200g,No,Tôm sú tươi
+1062,193,50g,No,Gạch cua
+1063,193,100g,No,Nấm rơm
+1064,193,600g,No,Bánh canh bột lọc
+1065,194,150g,Yes,Thịt nạc dăm xay
+1066,194,30g,No,Giò sống
+1067,194,150g,No,Củ sắn
+1068,194,1 quả,No,Trứng gà
+1069,194,2 trái,No,Cà chua chín đỏ
+1070,194,2 nhánh,No,Hành lá
+1071,194,3M,No,Hành tây băm
+1072,194,1M,No,Hành tím phi
+1073,194,1M + 1m,No,Bột năng
+1074,195,100g,Yes,Hạt sen tươi
+1075,195,150g,No,Đậu que
+1076,195,100g,No,Khoai môn cau
+1077,195,50g,No,Nấm hương khô ngâm nở
+1078,195,30g,No,Hành boaro
+1079,195,5 nhánh,No,Lá dứa (loại nhỏ)
+1080,196,160g - 1 trái,Yes,Thơm
+1081,196,2 trái,No,Cà chua
+1082,196,2M,No,Tỏi băm
+1083,196,16g - 2.5M,No,Nước mắm
+1084,196,6g -1.5m,No,Bột ngọt
+1085,196,6g - 1M,No,Đường
+1086,196,3M,No,Tương hột
+1087,196,7 trái,No,Ớt hiểm xanh đỏ
+1088,196,1M,No,Sả băm
+1089,197,50g,Yes,Cà rốt băm
+1090,197,100g,No,Bắp hạt
+1091,197,70g,No,Cải thìa
+1092,197,1 quả,No,Trứng gà
+1093,197,1 nhánh,No,Ngò rí
+1094,197,1m,No,Bột ngọt
+1095,197,1.5M,No,Hạt nêm
+1096,197,0.5M,No,Nước mắm
+1097,197,1M,No,Đường
+1098,197,20g,No,Bột năng
+1099,198,200g,Yes,Cua đồng xay
+1100,198,200g,No,Rau đay
+1101,198,100g,No,Mướp
+1102,198,50g,No,Nấm rơm
+1103,198,20g,No,Hành tím
+1104,198,1M,No,Gạch cua
+1105,199,200g,Yes,Tôm thẻ
+1106,199,400g,No,Bí đao
+1107,199,5g,No,Rong biển wakame
+1108,200,300g,Yes,Bắp bò hoa
+1109,200,300g,No,Mồng tơi
+1110,200,100g,No,Nấm linh chi
+1111,200,600g,No,Bún tươi
+1112,200,5g,No,Mắm ruốc
+1113,200,5g,No,Dầu ăn
+1114,200,5g,No,Dầu màu điều
+1115,200,8g,No,Đường cát
+1116,200,2g,No,Tiêu đen xay
+1117,201,500g,Yes,Sườn bò
+1118,201,200g,No,Củ cải trắng
+1119,201,50g,No,Boa rô
+1120,201,100g,No,Nấm linh chi trắng
+1121,201,100g,No,Nấm linh chi nâu
+1122,202,300g,Yes,Lươn
+1123,202,250g,No,Bồn bồn ngâm chua
+1124,202,40g,No,Me vắt
+1125,202,1 trái,No,Ớt sừng
+1126,202,2 trái,No,Ớt hiểm
+1127,202,2M,No,Tỏi phi
+1128,202,3M,No,Đường
+1129,202,1m,No,Hạt nêm Aji-ngon® HEO
+1130,203,150g,Yes,Cá thác lác
+1131,203,300g,No,"Cua đồng xay, gạch để riêng"
+1132,203,2 trái,No,Khổ qua
+1133,204,500g,Yes,Sườn heo non
+1134,204,160g,No,Đậu ngự tươi
+1135,204,100g,No,Cà rốt bào vỏ
+1136,204,1M,No,Tỏi băm
+1137,204,1M,No,Hành tím băm
+1138,204,1 quả,No,Dừa tươi
+1139,204,1M,No,Bột mì
+1140,205,1 trái,Yes,Bắp Mỹ
+1141,205,30g,No,Cà rốt
+1142,205,100g,No,Bông cải xanh
+1143,206,50g,Yes,Hạt sen
+1144,206,50g,No,Nấm đông cô tươi
+1145,206,50g,No,Nấm linh chi
+1146,206,100g,No,Đậu hũ non
+1147,206,50g,No,Đậu hà lan
+1148,206,10g,No,Gừng cắt sợi
+1149,207,200g,Yes,Sườn non
+1150,207,2 quả,No,Cà chua
+1151,207,200g,No,Rau muống cọng
+1152,207,100g,No,Bắp cải trắng
+1153,207,2M,No,Hành tỏi băm
+1154,207,1M,No,Tỏi phi dầu
+1155,208,80g,Yes,Nấm kim châm
+1156,208,1 quả,No,Trứng gà
+1157,208,1 quả,No,Trứng bắc thảo
+1158,208,2M,No,Cà rốt cắt sợi
+1159,209,200g,Yes,Khoai môn
+1160,209,100g,No,Đậu đỏ tươi
+1161,209,100g,No,Đậu trắng tươi
+1162,210,250g,Yes,Cá liệt/ cá diêu hồng/ cá lóc
+1163,210,100g,No,Cà chua
+1164,210,100g,No,Thơm
+1165,210,100g,No,Bạc hà (Dọc mùng)
+1166,210,1m,No,Hành tím băm
+1167,211,250g,Yes,Tôm thẻ
+1168,211,150g,No,Cà chua
+1169,211,100g,No,Rau muống
+1170,212,100g,Yes,Thịt băm
+1171,212,150g,No,Cà chua
+1172,212,50g,No,Giá đỗ
+1173,213,250g,Yes,Cá lóc
+1174,213,150g,No,Rau muống
+1175,213,150g,No,Rau cần nước
+1176,213,50g,No,Cọng súng
+1177,213,50g,No,Me vắt
+1178,213,50g,No,Tương hột
+1179,213,1 trái,No,Ớt hiểm băm
+1180,213,1M,No,Tỏi băm
+1181,214,150g,Yes,Giò sống
+1182,214,100g,No,Cà rốt
+1183,214,100g,No,Bí ngòi
+1184,214,1 nhánh,No,Tiêu xanh
+1185,215,250g,Yes,Sườn non
+1186,215,80g,No,Cà chua
+1187,215,80g,No,Dưa cải chua
+1188,216,800g,Yes,Cá Diêu hồng
+1189,216,100g,No,Dọc mùng
+1190,216,100g,No,Cà chua
+1191,216,50g,No,Dứa
+1192,217,300g,Yes,Sườn non
+1193,217,50g,No,Táo đỏ (táo tàu)
+1194,217,1/3 trái,No,Bắp Mỹ
+1195,218,100g,Yes,Thịt ức gà
+1196,218,100g,No,Măng tươi
+1197,218,1M,No,Ớt sa tế
+1198,219,800ml,Yes,Nước dùng gà
+1199,219,150g,No,Củ năng
+1200,219,20g,No,Cà rốt
+1201,219,2 quả,No,Trứng gà
+1202,220,250g,Yes,Cá bớp/ cá đuối
+1203,220,100g,No,Cà chua
+1204,220,200g,No,Măng chua
+1205,220,1m,No,Hành tím băm
+1206,220,1m,No,Tỏi phi
+1207,221,500g,Yes,Đầu cá hồi
+1208,221,200g,No,Măng chua
+1209,221,2 trái,No,Cà chua
+1210,221,1 trái,No,Ớt hiểm
+1211,222,250g,Yes,Sườn non
+1212,222,400g,No,Khoai sọ
+1213,222,50g,No,Cà rốt
+1214,222,1M,No,Đầu hành băm
+1215,222,1M,No,Tỏi băm
+1216,223,50g,Yes,Thịt nạc dăm xay
+1217,223,100g,No,Thịt bò xay
+1218,223,3 trái,No,Cà chua
+1219,223,2 nhánh,No,Ngò gai băm
+1220,224,350g,Yes,Gân bò lạng (gân lạng từ phần thăn bò)
+1221,224,250g,No,Măng chua
+1222,224,1 trái,No,Cà chua
+1223,224,2M,No,Tỏi bằm
+1224,224,3 trái,No,Ớt hiểm
+1225,224,1/4 trái,No,Khóm
+1226,225,500g,Yes,Mướp hương (2 trái)
+1227,225,150g,No,Thịt băm
+1228,225,100g,No,Giò sống
+1229,225,50g,No,Miến dong
+1230,226,1/4 trái,Yes,Thơm
+1231,226,100g,No,Giá
+1232,226,50g,No,Me vắt
+1233,227,2 trái,Yes,Bí đao
+1234,227,150g,No,Giò sống
+1235,227,50g,No,Thịt xay
+1236,227,120g,No,Tôm sú
+1237,227,20g,No,Cà rốt
+1238,228,150g,Yes,Gan gà
+1239,228,1 trái,No,Ớt sừng
+1240,228,2 trái,No,Dưa leo
+1241,228,50g,No,Cà rốt
+1242,228,3 nhánh,No,Hành lá
+1243,228,1M,No,Tỏi băm
+1244,228,1M,No,Hành tím băm
+1245,228,1M,No,Bột năng
+1246,229,50g,Yes,Nui nơ
+1247,229,100g,No,Thịt bằm
+1248,229,50g,No,Cà rốt
+1249,229,50g,No,Nấm rơm
+1250,230,2 trái,Yes,Bắp Mỹ
+1251,230,50g,No,Tôm khô
+1252,230,100g,No,Đậu cô ve Nhật
+1253,230,20g,No,Bơ lạt
+1254,231,300g,Yes,Mì Quảng
+1255,231,150g,No,Đậu hũ chiên cắt sợi
+1256,231,200g,No,Nấm kim châm
+1257,231,50g,No,Cần tàu
+1258,231,1 trái,No,Ớt sừng cắt sợi
+1259,231,1 trái,No,Ớt hiểm
+1260,231,50g,No,Cà rốt cắt sợi
+1261,232,150g,Yes,Thịt nạc bò mềm
+1262,232,200g,No,Mì udon
+1263,232,4g,No,Bột bắp
+1264,233,400g,Yes,Thịt má đùi gà
+1265,233,50g,No,Hạt điều rang
+1266,233,50g,No,Ớt chuông đỏ
+1267,233,50g,No,Hành tây
+1268,233,50g,No,Đậu Hà Lan trái
+1269,233,50g,No,Bắp non
+1270,234,400g,Yes,Nui ống luộc chín
+1271,234,300g,No,Đùi gà lóc bỏ xương
+1272,234,2M,No,Xốt cà hộp
+1273,235,200g,Yes,Nui ống
+1274,235,200g,No,Thịt bò phi lê
+1275,235,4 quả,No,Trứng gà
+1276,236,1/4 trái,Yes,Thơm
+1277,236,100g,No,Nấm rơm búp
+1278,236,1 trái,No,Ớt sừng
+1279,236,200g,No,"Lá boaro, sả băm"
+1280,237,200g,Yes,Má đùi gà
+1281,237,200g,No,Nấm bào ngư
+1282,237,2M,No,Hành tỏi băm
+1283,237,50g,No,Bắp cải trắng
+1284,237,2 nhánh,No,Tiêu xanh
+1285,237,1 trái,No,Ớt sừng
+1286,237,50g,No,Lá boaro
+1287,238,300g,Yes,Thịt nạc dăm
+1288,238,50g,No,Đậu phụng rang giã
+1289,238,800g,No,Bún tươi
+1290,238,100g,No,Giá
+1291,238,100g,No,Rau thơm
+1292,238,1 trái,No,Dưa leo
+1293,239,100g,Yes,Nấm rơm búp
+1294,239,6 trái,No,Chuối sáp luộc chín
+1295,239,40g,No,Lá nhàu (loại bánh tẻ)
+1296,239,50g,No,Tàu hũ ky lá chiên giòn
+1297,239,20g,No,Miến khô
+1298,240,300g,Yes,Đậu đũa
+1299,240,3 nhánh,No,Hành lá
+1300,240,100g,No,Thịt nạc dăm xay
+1301,240,20g,No,Tôm khô ngâm mềm giã nhỏ
+1302,240,2M,No,Ớt sừng băm nhỏ
+1303,240,1M,No,Ngò rí Tỏi băm
+1304,240,1M,No,Hành tím băm
+1305,241,200g,Yes,Bún gạo khô
+1306,241,50g,No,Cà rốt
+1307,241,50g,No,Nấm linh chi
+1308,241,1 lá,No,Tàu hũ ki
+1309,242,100g,Yes,Bông cải xanh
+1310,242,50g,No,Bắp non
+1311,242,50g,No,Thịt mực chay
+1312,242,20g,No,Nấm đông cô
+1313,242,10g,No,Nấm mèo ngâm nở
+1314,243,250g,Yes,Tôm sú tươi
+1315,243,100g,No,Tôm viên
+1316,243,100g,No,Bông cải trắng
+1317,243,100g,No,Bông cải xanh
+1318,243,100g,No,Cà rốt
+1319,243,50g,No,Hạt điều rang
+1320,244,150g,Yes,Thịt bò
+1321,244,50g,No,Nấm linh chi
+1322,244,30g,No,Cà rốt
+1323,244,60g,No,Cải ngọt
+1324,245,300g,Yes,Tôm sú
+1325,245,3 trái,No,Ớt hiểm
+1326,245,1 trái,No,Ớt sừng
+1327,246,300g,Yes,Mực ống
+1328,246,1 trái,No,Cà chua
+1329,246,1 trái,No,Ớt chuông vàng
+1330,246,1 trái,No,Ớt sừng
+1331,246,1 quả,No,Trứng gà
+1332,247,150g,Yes,Thịt bò phi lê
+1333,247,200g,No,Đậu cove
+1334,247,30g,No,Cần ta
+1335,247,1 trái,No,Ớt sừng
+1336,248,30g,Yes,Kiệu chua
+1337,248,20g,No,Xá bấu
+1338,248,1 quả,No,Nước dừa xiêm
+1339,248,4M,No,Bột năng
+1340,248,100g,No,Cải thảo
+1341,248,100g,No,Bắp non
+1342,248,150g,No,Bông cải xanh
+1343,248,300g,No,Bông cải trắng
+1344,248,100g,No,Nấm rơm
+1345,248,100g,No,Cà rốt
+1346,249,100g,Yes,Tôm đất
+1347,249,50g,No,Mực ống
+1348,249,200g,No,Su hào
+1349,249,30g,No,Cà rốt
+1350,249,1 quả,No,Trứng gà
+1351,249,2M,No,Muối
+1352,250,150g,Yes,Bún gạo khô
+1353,250,100g,No,Jambon
+1354,250,100g,No,Chả lụa
+1355,250,1 quả,No,Trứng vịt
+1356,251,2g,Yes,Hạt mắc khén
+1357,251,2g,No,Hạt dổi
+1358,251,1 quả,No,Dừa xiêm
+1359,252,2 lá,Yes,Cải thảo
+1360,252,100g,No,Miến dong
+1361,252,2 nhánh,No,Lá quế
+1362,253,300g,Yes,Bạch tuộc
+1363,253,200g,No,Rau muống cọng
+1364,253,2 trái,No,Ớt hiểm
+1365,253,1M,No,Gừng băm
+1366,254,150g,Yes,Thịt nạc dăm
+1367,254,70g,No,Đậu Hà Lan
+1368,254,70g,No,Nấm rơm
+1369,254,70g,No,Bông cải xanh
+1370,254,70g,No,Bông cải trắng
+1371,255,250g,Yes,Bạch tuộc
+1372,255,1/4 trái,No,Thơm
+1373,255,50g,No,Ớt chuông đỏ
+1374,255,30g,No,Cần tây
+1375,256,100g,Yes,Nấm bào ngư
+1376,256,20g,No,Nấm đông cô
+1377,256,50g,No,Đậu Hà lan trái
+1378,256,50g,No,Bắp non trái
+1379,256,50g,No,Cà rốt
+1380,256,2M,No,Hạt điều rang
+1381,256,50g,No,Cải xoong nhỏ
+1382,257,200g,Yes,Rau cải ngồng
+1383,257,50g,No,Bắp non
+1384,257,50g,No,Nấm đông cô tươi
+1385,257,30g,No,Nấm rơm
+1386,257,50g,No,Cà rốt
+1387,257,2M,No,Boaro cắt sợi
+1388,258,200g,Yes,Nấm bào ngư
+1389,258,1M,No,Ớt sừng băm
+1390,258,50g,No,Thịt nạc dăm
+1391,258,50g,No,Cà rốt
+1392,258,3 nhánh,No,Hành lá
+1393,258,1M,No,Hành tím băm
+1394,258,100g,No,Bông cải xanh
+1395,258,30g,No,Mè rang
+1396,258,1M,No,Tỏi băm
+1397,259,200g,Yes,Dồi trường
+1398,259,300g,No,Cải chua
+1399,259,1 trái,No,Ớt sừng
+1400,259,1M,No,Sa tế
+1401,260,200g,Yes,Bánh phở khô
+1402,260,150g,No,Tôm sú
+1403,260,150g,No,Mực lá
+1404,260,50g,No,Hẹ lá
+1405,260,30g,No,Hành lá
+1406,260,2 trái,No,Ớt sừng cắt sợi
+1407,260,1M,No,Tỏi băm
+1408,260,100g,No,"Đậu phộng rang, giã nhỏ"
+1409,260,50g,No,Nước me
+1410,261,180g,Yes,Bò viên chay
+1411,261,1 trái,No,Cà chua
+1412,261,1 trái,No,Dưa leo
+1413,261,1/4 trái,No,Thơm
+1414,262,20g,Yes,Củ năng cắt hạt lựu nhỏ
+1415,262,60g,No,Chả chay cắt hạt lựu nhỏ
+1416,262,20g,No,Cà rốt cắt hạt lựu nhỏ
+1417,262,30g,No,Bắp cải cắt sợi nhỏ
+1418,262,1M,No,Poa-rô băm nhỏ
+1419,262,1M,No,Dầu hào chay
+1420,263,200g,Yes,Thịt gà má đùi
+1421,263,150g,No,Bông cải xanh
+1422,263,150g,No,Bông cải trắng
+1423,263,1/4 trái,No,Thơm (chín)
+1424,263,1 quả,No,Ớt chuông đỏ
+1425,263,1M,No,Tỏi băm
+1426,263,1M,No,Gừng băm
+1427,264,500g,Yes,Nghêu
+1428,264,5g,No,Ngò
+1429,264,1 trái,No,Ớt sừng
+1430,264,1M,No,Tỏi băm
+1431,264,1M,No,Tôm khô
+1432,264,100g,No,Thơm
+1433,265,400g,Yes,Mực lá
+1434,265,1 trái,No,Ớt chuông vàng
+1435,265,1 trái,No,Ớt chuông đỏ
+1436,265,5 trái,No,Ớt khô ngâm mềm
+1437,265,2M,No,Tỏi băm
+1438,266,250g,Yes,Gà má đùi rút xương
+1439,266,50g,No,Hành tím
+1440,266,1 trái,No,Ớt sừng
+1441,266,60g,No,"Ớt chuông xanh, đỏ"
+1442,266,50g,No,Nấm kim châm
+1443,267,300g,Yes,Thịt đùi gà không xương
+1444,267,20g,No,Bơ
+1445,267,50g,No,Phô mai Mozarella cắt nhỏ
+1446,267,50g,No,Củ Đậu Hà Lan
+1447,267,3 nhánh,No,Hành lá
+1448,267,1m,No,Bột nghệ
+1449,268,400g,Yes,Thịt dê
+1450,268,2M,No,Sa tế
+1451,268,1 trái,No,Cà tím
+1452,268,200g,No,Đậu bắp non
+1453,268,1 trái,No,Ớt hiểm
+1454,268,1m,No,Nước cốt chanh
+1455,269,300g,Yes,Heo quay
+1456,269,150g,No,Măng vàng
+1457,269,8 quả,No,Trứng cút
+1458,269,1 trái,No,Dừa xiêm
+1459,270,500g,Yes,Cá điêu hồng (1 con)
+1460,270,1 trái,No,Ớt sừng
+1461,270,2M,No,Ớt hiểm xanh
+1462,270,150g,No,Ớt chuông xanh
+1463,270,50g,No,Cà rốt ngâm chua
+1464,270,600g,No,Cải bẹ xanh
+1465,271,1 quả,Yes,Cà tím
+1466,271,1 trái,No,Ớt sừng
+1467,271,1 trái,No,Ớt chuông vàng
+1468,271,1m,No,Nước cốt chanh
+1469,272,400g,Yes,Thịt nạc dăm
+1470,272,100g,No,Hành lá
+1471,272,800g,No,Bún tươi
+1472,272,100g,No,Đậu phộng rang
+1473,272,200g,No,"Cà rốt, củ cải chua"
+1474,273,300g,Yes,Thịt bò phi lê
+1475,273,1 trái,No,Bắp Mỹ
+1476,273,8 trái,No,Đậu bắp
+1477,274,300g,Yes,Nạm bò Úc
+1478,274,200g,No,Ba rọi
+1479,274,100g,No,Lê
+1480,274,2 trái,No,Cà chua chín mọng
+1481,274,2 trái,No,Ớt hiểm
+1482,274,1M,No,Gừng
+1483,274,1M,No,Tỏi
+1484,274,2M,No,Mè rang
+1485,275,500g,Yes,Tôm sú
+1486,275,5g,No,Ớt bột
+1487,275,2M,No,Tỏi băm
+1488,275,2M,No,Hành tím băm
+1489,275,2M,No,Cọng ngò rí cắt nhỏ
+1490,275,2M,No,Ớt băm
+1491,275,2M,No,Sả băm
+1492,275,2M,No,Lá chanh Bắc
+1493,275,2M,No,Dầu điều
+1494,276,600g,Yes,Tôm sú
+1495,276,5 trái,No,Ớt sừng đỏ
+1496,276,3 trái,No,Ớt Ba Tri
+1497,276,50g,No,Cơm gấc
+1498,276,2M,No,Tỏi băm
+1499,277,500g,Yes,Sườn cây
+1500,277,50g,No,Đậu bắp
+1501,277,50g,No,Cà tím
+1502,277,50g,No,Khoai tây
+1503,277,2M,No,Nước hành tỏi băm
+1504,278,1/4 trái,Yes,Thơm
+1505,278,3M,No,Bắp hạt
+1506,278,2 trái,No,Cà chua
+1507,278,100g,No,Phô mai sợi
+1508,279,100g,Yes,Nấm rơm
+1509,279,100g,No,Phô mai sợi
+1510,279,200ml,No,Sữa tươi hộp không đường
+1511,280,200g,Yes,Thịt nạc lưng
+1512,280,100g,No,Giò sống
+1513,280,70g,No,Mỡ gáy cắt hạt lựu nhỏ 2 ly
+1514,280,50g,No,Xốt tương
+1515,280,2M,No,Tương hột vàng băm nhỏ
+1516,280,2M,No,Bơ đậu phộng
+1517,280,1M,No,Cà hộp
+1518,281,4 quả,Yes,Trứng gà
+1519,281,110g,No,Đường
+1520,281,30g,No,Sữa tươi
+1521,281,30g,No,Dầu ăn
+1522,281,130g,No,Bột mì
+1523,281,1m,No,Nước cốt chanh
+1524,281,20g,No,Chà bông heo
+1525,281,2m,No,Vỏ chanh vàng băm
+1526,282,200g,Yes,Tôm sú
+1527,282,50g,No,Giò sống
+1528,282,1 quả,No,Trứng gà
+1529,283,600g,Yes,Sườn non
+1530,283,200g,No,Mỡ thịt
+1531,283,2M,No,Nước tỏi
+1532,283,1M,No,Tỏi ớt băm
+1533,284,300g,Yes,Thịt ức gà
+1534,284,1M,No,Sả xay nhuyễn
+1535,284,2M,No,Bột nghệ
+1536,284,1M,No,Nước cốt chanh
+1537,284,20g,No,Đậu phộng giã rang nhuyễn
+1538,284,1M,No,Ớt bột
+1539,284,30g,No,Nước cốt me
+1540,285,600g,Yes,Thịt ba chỉ rút sườn
+1541,285,1M,No,Hạt mắc khén (rang xay thành bột)
+1542,285,2M,No,Hành tím giã nhuyễn
+1543,285,2M,No,Sả giã nhuyễn
+1544,285,2M,No,Ớt giã nhuyễn
+1545,285,1M,No,Nước cốt chanh
+1546,286,300g,Yes,Thịt ba chỉ rút sườn
+1547,286,100g,No,Mỡ heo cắt nhỏ
+1548,286,1M,No,Nước cốt chanh
+1549,286,3M,No,Hẹ tăm thái nhỏ
+1550,287,50g,Yes,Tôm vột vỏ
+1551,287,50g,No,Thịt cua
+1552,287,1M,No,Trứng cá
+1553,287,1/6 trái,No,Ớt chuông xanh
+1554,287,1/6 trái,No,Ớt chuông đỏ
+1555,288,300g,Yes,Thịt bò phi lê
+1556,288,100g,No,Mỡ chài
+1557,288,150g,No,Nấm kim châm
+1558,288,3M,No,Hành tây cắt hạt lựu
+1559,288,1M,No,Bột năng pha loãng
+1560,289,2M,Yes,Sa tế
+1561,289,2M,No,Hành tím xay nhuyễn
+1562,289,1M,No,Tỏi xay nhuyễn
+1563,289,1M,No,Mật ong
+1564,290,2 trái,Yes,Ớt sừng
+1565,290,6 trái,No,Ớt hiểm
+1566,290,2 lá,No,Lá sen
+1567,291,100g,Yes,Đậu xanh cà
+1568,291,200g,No,Mỡ gà
+1569,291,1m,No,Bột nghệ
+1570,291,100g,No,Hành tím
+1571,291,2M,No,Hành tỏi băm nhuyễn
+1572,292,,Yes,Sả bằm 2M
+1573,292,30g,No,Lá sả tươi
+1574,292,30g,No,Ớt trái khô
+1575,292,1M,No,Hành tím băm
+1576,292,1M,No,Riềng non băm
+1577,292,1M,No,Lá chanh cắt nhuyễn
+1578,293,1 quả,Yes,Táo xay
+1579,293,1M,No,Tỏi xay
+1580,293,4M,No,Sữa đặc
+1581,294,1M,Yes,Hành tím xay
+1582,294,1M,No,Tỏi xay
+1583,294,1M,No,Sả bào
+1584,294,100g,No,Hành lá
+1585,294,100g,No,Mỡ heo
+1586,294,1/3m,No,Bột ngũ vị hương
+1587,294,1/3m,No,Bột baking soda
+1588,295,300g,Yes,Phèo làm sạch
+1589,295,50g,No,Hẹ sẻ
+1590,295,8 quả,No,Cà chua bi
+1591,295,6 trái,No,Đậu bắp
+1592,296,200g,Yes,Ức gà
+1593,296,200g,No,Nấm linh chi
+1594,296,2M,No,Hành tây băm
+1595,297,600g,Yes,Sườn heo non
+1596,297,1 trái,No,Lê Hàn quốc
+1597,297,150g,No,Cà rốt
+1598,297,1 trái,No,Dưa leo
+1599,298,8 nhánh,Yes,Cỏ xạ hương tươi (thyme)
+1600,298,4M,No,Dầu olive
+1601,298,1M,No,Mật ong
+1602,298,2M lá,No,Húng lủi
+1603,299,300g,Yes,Phi lê cá lăng
+1604,299,1 trái,No,Ớt sừng cắt sợi
+1605,299,1M,No,Gừng cắt sợi
+1606,299,1M,No,Nước hành tỏi
+1607,299,1M,No,Nước cốt gừng
+1608,299,1m,No,Ớt bột parika
+1609,300,200g,Yes,Thịt ba chỉ xay
+1610,300,200g,No,Tôm đất nhỏ
+1611,300,1 quả,No,Xoài keo
+1612,300,1 quả,No,Dưa leo
+1613,300,300g,No,Cà chua chín
+1614,301,200g,Yes,Tôm sú (nhỏ)
+1615,301,100g,No,Mực lá
+1616,301,2M,No,Bột mì
+1617,301,1M,No,Bơ lạt
+1618,301,1 trái,No,Ớt chuông xanh (nhỏ)
+1619,301,1 trái,No,Ớt chuông đỏ (nhỏ)
+1620,301,1 trái,No,Ớt chuông vàng (nhỏ)
+1621,301,20g,No,Húng tây
+1622,301,50g,No,Phô mai sợi Mozarella
+1623,302,300g,Yes,Ba rọi nguyên miếng
+1624,302,1M,No,Hành tím băm
+1625,302,1M,No,Tỏi băm
+1626,302,1M,No,Sữa đặc có đường
+1627,303,200g,Yes,Mỡ chài
+1628,303,150g,No,Thịt nghêu
+1629,303,50g,No,Thịt nạc dăm
+1630,303,1M,No,Tôm khô
+1631,303,1 quả,No,Trứng vịt
+1632,304,4 cánh 600g,Yes,Cánh gà
+1633,304,1 trái,No,Dưa leo
+1634,304,2 quả,No,Cà chua
+1635,305,300g,Yes,Sụn gà
+1636,305,3 nhánh,No,Lá cà ri tươi
+1637,305,10g,No,Ớt xiêm xanh
+1638,306,20 lá,Yes,Lá quế
+1639,306,2M,No,Nước cốt hành tím
+1640,306,1M,No,Nước cốt tỏi
+1641,307,100g,Yes,Bông cải trắng
+1642,307,50g,No,Cải thìa
+1643,307,50g,No,Cà rốt
+1644,307,50g,No,Đậu bắp
+1645,307,150g,No,Cơm nguội
+1646,308,30ml,Yes,Mirin
+1647,308,150ml,No,Sake
+1648,308,1 quả,No,Dừa xiêm
+1649,308,1 quả,No,Ớt sừng
+1650,309,500g,Yes,Thịt heo nạc vai xay
+1651,309,30 lá,No,Lá xương sông
+1652,309,2M,No,Đầu hành lá băm
+1653,309,1M,No,Ớt sừng băm
+1654,309,1M,No,Gừng băm
+1655,310,80g,Yes,Thịt heo xay
+1656,310,150g,No,Khoai tây
+1657,310,60g,No,Hành tây
+1658,310,2 quả,No,Trứng gà
+1659,311,2 nhánh,Yes,Tiêu xanh
+1660,311,400g,No,Mồng tơi
+1661,311,1M,No,Tỏi xay
+1662,311,1M,No,Hành tím xay
+1663,311,2 nhánh,No,Hành lá
+1664,311,1 trái,No,Ớt hiểm băm
+1665,311,1m,No,Dầu hào
+1666,312,100g,Yes,Khoai mỡ
+1667,312,100g,No,Khoai môn
+1668,312,80g,No,Thịt xay
+1669,312,50g,No,Tôm sú
+1670,312,1 quả,No,Trứng gà
+1671,312,10g,No,Nấm mèo
+1672,313,100g,Yes,Đầu hành trắng
+1673,313,50g,No,Rau răm
+1674,313,2M,No,Nước hành tím
+1675,314,600g,Yes,Cá Chẽm
+1676,314,2M,No,Hạt tàu xì
+1677,314,50g,No,Hành tím bào
+1678,314,50g,No,Gừng cắt sợi
+1679,314,2M,No,Gừng băm
+1680,314,100g,No,"Hành lá, cần tàu"
+1681,314,15g,No,Ớt cắt sợi
+1682,315,100g,Yes,Tôm đông lạnh
+1683,315,50g,No,Giò sống
+1684,315,1m,No,Đầu hành băm
+1685,315,1m,No,Gừng cắt nhỏ
+1686,315,30g,No,Hành tây
+1687,315,1 trái,No,Ớt sừng
+1688,316,200g,Yes,Tôm sú sống
+1689,316,10g,No,Bóng bì
+1690,316,200g,No,Hành lá
+1691,316,1M,No,Bột năng
+1692,316,3 trái,No,Ớt xanh
+1693,317,2M,Yes,Nước mỡ gà
+1694,317,500g,No,Nếp Bắc/ Nếp cái hoa vàng
+1695,317,100g,No,Đậu xanh không vỏ
+1696,318,250g,Yes,Tôm bóc vỏ
+1697,318,100g,No,Bông cải xanh
+1698,318,100g,No,Bông cải trắng
+1699,318,100g,No,Bắp non
+1700,318,100g,No,Bí đỏ
+1701,318,50g,No,Cà rốt cắt nhỏ
+1702,319,300g,Yes,Mực làm sạch
+1703,319,100g,No,Cá thác lác nạo
+1704,319,3 nhánh,No,Tiêu xanh
+1705,319,1M,No,Củ năng cắt nhuyễn
+1706,319,1M,No,Cà rốt cắt nhỏ
+1707,319,1m,No,Thì là băm
+1708,319,2M,No,Nước nghệ tươi
+1709,320,4 quả,Yes,Trứng gà
+1710,320,100g,No,Tôm lột vỏ cắt hạt lựu
+1711,320,2M,No,Đậu petit poise luộc sẵn
+1712,320,2M,No,Cà rốt cắt hạt lựu
+1713,320,2M,No,Nấm rơm cắt hạt lựu
+1714,320,1M,No,Nấm mèo cắt sợi
+1715,321,100g,Yes,Hạt sen tươi
+1716,321,50g,No,Táo tàu
+1717,321,20g,No,Kỉ tử
+1718,321,20g,No,Bạch quả
+1719,321,1M,No,Gừng giã
+1720,321,1 trái,No,Dừa tươi
+1721,322,50g,Yes,Cà rốt
+1722,322,50g,No,Đậu xanh
+1723,322,20g,No,"Nấm hương, nấm mèo mỗi loại"
+1724,322,200g,No,Bột há cảo
+1725,322,50g,No,Củ sắn
+1726,322,30g,No,Hành boaro
+1727,323,4 trái,Yes,Bí đỏ non
+1728,323,100g,No,Hạt sen
+1729,323,30g,No,Đậu bi
+1730,323,50g,No,Đậu hũ chiên
+1731,323,40g,No,Cà rốt
+1732,323,40g,No,Nấm đông cô tươi
+1733,324,200g,Yes,Thịt gà phi lê
+1734,324,100g,No,Đậu hũ non
+1735,324,30g,No,Đậu Hà Lan
+1736,324,2 quả,No,Trứng gà
+1737,325,200g,Yes,Bơ trái
+1738,325,200g,No,Khoai tây
+1739,325,100g,No,Bacon xông khói
+1740,325,100g,No,Dưa leo giống Nhật
+1741,325,10g,No,Húng lủi
+1742,325,1 trái,No,Chanh vàng
+1743,326,500g,Yes,Má đùi gà
+1744,326,2M,No,Bột mì
+1745,326,1M,No,Bột gạo
+1746,327,4 quả,Yes,Trứng gà luộc 10 phút
+1747,327,1 quả,No,Bơ trái chín vừa ăn
+1748,327,50g,No,Hành tây
+1749,327,100g,No,Cà chua bi
+1750,327,1 quả,No,Dưa leo
+1751,327,50g,No,Cải nầm
+1752,327,50g,No,Cà rốt
+1753,328,1 quả,Yes,Táo Mỹ đỏ
+1754,328,1 quả,No,Táo Mỹ xanh
+1755,328,1 quả,No,Táo Mỹ vàng
+1756,328,150g,No,Hạt óc chó ( walnut )
+1757,328,200g,No,Nho Mỹ nâu
+1758,328,1 quả,No,Chanh
+1759,329,200g,Yes,Phi lê cá basa
+1760,329,12 lá,No,Tía tô
+1761,329,2 lá,No,Rong biển
+1762,329,1 quả,No,Trứng gà
+1763,330,300g,Yes,Xoài xanh
+1764,330,30g,No,Tôm khô
+1765,330,10g,No,Rau răm
+1766,330,20g,No,Đậu phộng
+1767,330,1 trái,No,Ớt sừng
+1768,330,2 trái,No,Ớt hiểm băm
+1769,331,30g,Yes,Cần tây
+1770,331,150g,No,Thịt cua (càng cúm)
+1771,331,1 trái,No,Dưa leo
+1772,331,50g,No,Củ thì là
+1773,331,1 trái,No,Táo xanh
+1774,331,10 trái,No,Ôliu đen
+1775,331,1M,No,Nước tắc
+1776,332,250g,Yes,Đu đủ bào sợi
+1777,332,200g,No,Thịt bò philê cắt lát
+1778,332,50g,No,Cà rốt bào sợi
+1779,332,2 trái,No,Ớt sừng cắt sợi
+1780,332,1 trái,No,Dưa leo
+1781,332,3M,No,Hành tím phi
+1782,332,3M,No,Đậu phộng rang
+1783,333,50g,Yes,Rau thơm
+1784,333,50g,No,Cà chua bi
+1785,333,1 trái,No,Dưa leo
+1786,333,1 trái,No,Cà chua
+1787,334,200g,Yes,Thịt ba chỉ
+1788,334,200g,No,Tôm sú
+1789,334,300g,No,Ngó sen non
+1790,334,50g,No,Cà rốt
+1791,334,5 nhánh,No,Cần tàu
+1792,334,20g,No,"Đậu phộng rang, giã dập"
+1793,335,3 quả,Yes,Trứng gà
+1794,335,2 trái,No,Cà chua
+1795,335,1 trái,No,Dưa leo
+1796,335,20g,No,Rau húng lủi
+1797,335,3 trái,No,Ớt hiểm
+1798,336,250g,Yes,Tôm đất
+1799,336,30g,No,Bắp hạt
+1800,336,30g,No,Đậu bi
+1801,336,2 nhánh,No,Ngò rí
+1802,336,3 trái,No,Chanh dây
+1803,336,100g,No,Xà lách Mỹ
+1804,337,200g,Yes,Thịt bò mềm
+1805,337,4 lá,No,Lá chanh
+1806,337,1/4 trái,No,Thơm
+1807,337,100g,No,Cà chua bi
+1808,337,100g,No,"Cà pháo tươi, non"
+1809,337,2 trái,No,Khế chua
+1810,338,30g,Yes,Cà rốt
+1811,338,10g,No,Húng lủi
+1812,338,1M,No,Boaro băm
+1813,338,1M,No,Mè rang
+1814,339,150g,Yes,Bắp cải trắng
+1815,339,20g,No,Bắp cải tím
+1816,339,50g,No,Thịt nguội
+1817,340,100g,Yes,Rong nho
+1818,340,80g,No,Cà chua bi
+1819,340,50g,No,Bắp cải tím
+1820,340,1 trái,No,Bơ
+1821,340,1m,No,Mù tạt xanh
+1822,340,1 nhánh,No,Ngò tây
+1823,341,1 trái,Yes,Dưa leo
+1824,341,5 trái,No,Dâu tây
+1825,341,1 trái,No,Lê
+1826,341,1 trái,No,Táo đỏ
+1827,341,10g,No,Nho khô
+1828,341,3 lá,No,Xà lách
+1829,342,100g,Yes,Rau má non
+1830,342,100g,No,Tôm sú
+1831,342,100g,No,Thịt ba chỉ
+1832,342,30g,No,Hành tây
+1833,342,1 trái,No,Ớt sừng
+1834,343,120g,Yes,Thịt nguội
+1835,343,100g,No,Phô mai cheddar
+1836,343,1 quả,No,Trứng gà
+1837,343,300g,No,Xà lách các loại
+1838,343,8 quả,No,Cà chua bi
+1839,343,1M,No,Hành tím băm
+1840,343,1m,No,Nước cốt chanh
+1841,343,1m,No,Mù tạt vàng
+1842,344,50g,Yes,Sườn chay
+1843,344,50g,No,Nấm đông cô ngâm mềm
+1844,344,50g,No,Nấm rơm
+1845,345,100g,Yes,Bắp chuối
+1846,345,15g,No,Rau răm
+1847,345,1 trái,No,Ớt sừng màu xanh
+1848,346,200g,Yes,Tôm sú tươi bóc vỏ
+1849,346,100g,No,Bông cải trắng
+1850,346,1 trái,No,Chanh
+1851,346,2M,No,Sả phi
+1852,347,200g,Yes,Mực lá
+1853,347,30g,No,Phổ tai khô
+1854,347,1 trái,No,Dưa leo
+1855,347,20g,No,Cần tây
+1856,347,40g,No,Cà rốt
+1857,348,200g,Yes,Tôm sú
+1858,348,100g,No,Thịt ba rọi xông khói
+1859,348,1 trái,No,Chanh vàng
+1860,348,4 trái,No,"Ớt xanh, ớt sừng"
+1861,348,1M,No,Muối hạt
+1862,349,200g,Yes,Bông thiên lý
+1863,349,20g,No,Húng lủi
+1864,349,30g,No,Mè trắng rang
+1865,349,2 trái,No,Ớt sừng cắt sợi
+1866,350,300g,Yes,Xoài tứ quý xanh
+1867,350,2M,No,Đậu phộng rang
+1868,350,1 trái,No,Ớt sừng cắt sợi
+1869,351,1 trái,Yes,Táo đỏ
+1870,351,1 trái,No,Bơ
+1871,351,1 trái,No,Chanh dây
+1872,351,100g,No,Bacon
+1873,352,1 trái,Yes,Dưa leo
+1874,352,100g,No,Nấm đùi gà
+1875,352,4M,No,Đậu phộng rang
+1876,352,200g,No,Bún tươi
+1877,353,100g,Yes,Cà chua bi
+1878,353,1 trái,No,Dưa leo
+1879,353,200g,No,Salad Romaine
+1880,353,1 trái,No,Bơ sáp (ruột vàng)
+1881,353,100g,No,Bắp Mỹ hạt
+1882,353,10 lá,No,Lá chanh Thái (lá chúc)
+1883,353,1M,No,Vỏ chanh vàng mài
+1884,354,200g,Yes,Nha đam
+1885,354,100g,No,Tôm đất
+1886,354,1 trái,No,Dưa leo
+1887,355,1 trái,Yes,Dừa xiêm
+1888,355,1 trái,No,Dưa leo
+1889,355,1 trái,No,Cà chua
+1890,355,1 trái,No,Ớt sừng
+1891,356,150g,Yes,Củ sen
+1892,356,150g,No,Khoai tây
+1893,356,50g,No,Rau mầm
+1894,356,50g,No,Cà rốt
+1895,356,5 quả,No,Trứng cút
+1896,357,100g,Yes,Đậu cô ve Nhật
+1897,357,2 quả,No,Cà chua
+1898,357,50g,No,Xà lách carol
+1899,357,1 quả,No,Trứng
+1900,358,20g,Yes,Dưa chuột ngâm chua
+1901,358,4 quả,No,Trứng gà luộc
+1902,358,2 lá,No,Xà lách dún
+1903,358,3M,No,Bắp hạt
+1904,359,300g,Yes,Miến luộc
+1905,359,100g,No,Thịt xay
+1906,359,50g,No,Cần tàu
+1907,359,7 quả,No,Cà chua bi
+1908,359,5 quả,No,Ớt hiểm
+1909,360,100g,Yes,Tôm sú
+1910,360,15g,No,Trứng cá hồi
+1911,360,50g,No,Rong nho
+1912,360,200g,No,"Xà lách (carol, romanie, Mỹ)"
+1913,360,30g,No,Rau mầm tím
+1914,360,20g,No,Dưa leo
+1915,360,10g,No,Củ cải đỏ
+1916,360,1 trái,No,Cam Mỹ
+1917,361,200g,Yes,Thịt nạc đầu vai
+1918,361,150g,No,Cọng Cải ngồng
+1919,361,2M,No,Hành tỏi băm
+1920,361,1M,No,Hành bắc phi
+1921,361,1 trái,No,Ớt sừng
+1922,361,50g,No,Bông hẹ
+1923,362,400g,Yes,Mỳ ý sợi tròn luộc
+1924,362,50g,No,Ba rọi xông khói
+1925,362,50g,No,Tôm sú
+1926,362,100ml,No,Kem tươi
+1927,362,50g,No,Nấm rơm
+1928,362,1M,No,Ngò tây băm nhuyễn
+1929,362,1M,No,Tỏi băm
+1930,363,1 trái,Yes,Thơm
+1931,363,150g,No,Thịt bò
+1932,363,50g,No,Cà chua bi
+1933,363,50g,No,Dưa leo trái nhỏ
+1934,363,50g,No,Xà lách lá giòn (ice berg)
+1935,363,30g,No,Xà lách Romaine
+1936,363,30g,No,Xà lách tím
+1937,363,30g,No,Hành tây
+1938,364,1 trái,Yes,Bắp Mỹ
+1939,364,150g,No,Tôm sú bóc vỏ bỏ đuôi
+1940,364,1 trái,No,Dưa leo
+1941,364,50g,No,Cần tây
+1942,364,1 trái,No,Cà chua
+1943,364,2M,No,Nước chanh
+1944,364,1M,No,Mù tạt hạt
+1945,365,10g,Yes,Rong biển khô wakame
+1946,365,15g,No,Nấm tuyết khô
+1947,365,200g,No,Tôm đất tươi
+1948,365,2 trái,No,Ớt hiểm
+1949,366,10g,Yes,Sườn chay
+1950,366,200g,No,Nấm bào ngư nhỏ
+1951,366,1 trái,No,Dưa leo
+1952,366,20g,No,Cà rốt cắt sợi
+1953,366,100g,No,"Củ hũ dừa cắt cọng, ngâm giấm, đường"
+1954,366,5g,No,Đậu phộng rang sẵn
+1955,366,1M,No,Poa-rô phi
+1956,366,2m,No,Hành poa-rô băm
+1957,366,2m,No,Sả băm
+1958,366,3 trái,No,Tắc
+1959,367,150g,Yes,Nạc dăm băm nhuyễn
+1960,367,150g,No,Tôm sú bóc vỏ
+1961,367,50g,No,Củ năng băm nhỏ
+1962,367,1 trái,No,Cà chua băm nhỏ
+1963,368,300g,Yes,Củ sen
+1964,368,100g,No,Thịt ba chỉ
+1965,368,200g,No,Tôm sú
+1966,369,300g,Yes,Thịt cổ bò
+1967,369,200g,No,Rau càng cua
+1968,369,100g,No,Cà chua bi
+1969,369,1 trái,No,Ớt sừng cắt sợi
+1970,370,100g,Yes,Đậu hũ trắng
+1971,370,70g,No,Bắp hạt
+1972,370,50g,No,Cà rốt
+1973,370,20g,No,Hành tây
+1974,370,50g,No,Đậu ve nhật
+1975,370,50g,No,Củ năng
+1976,370,50g,No,Nấm rơm
+1977,370,50g,No,Su su
+1978,370,50g,No,Tàu hũ ki
+1979,370,300g,No,Bột năng
+1980,370,50g,No,Hành tây
+1981,371,200g,Yes,Thịt gà
+1982,371,100g,No,Bông cải trắng
+1983,371,100g,No,Cà rốt
+1984,371,100g,No,Bông cải xanh
+1985,371,1M,No,Hành tím băm
+1986,372,300g,Yes,Cá khoai tươi
+1987,372,50g,No,Lá giang
+1988,372,1/4 trái,No,Thơm chín
+1989,372,1 quả,No,Cà chua lớn
+1990,372,2 lá,No,Ngò gai
+1991,372,1 trái,No,Ớt hiểm
+1992,372,2M,No,Hành tỏi băm
+1993,373,150g,Yes,Thịt nghêu
+1994,373,300g,No,Rau dền cơm
+1995,373,1 trái,No,Mướp khía
+1996,373,3 nhánh,No,Hành lá
+1997,374,300g,Yes,Xương gà
+1998,374,150g,No,Thịt cua
+1999,374,150g,No,Thịt ức gà
+2000,374,20g,No,Nấm tuyết khô
+2001,374,1 quả,No,Trứng gà
+2002,374,50g,No,Hành tây
+2003,374,100g,No,Bột năng
+2004,375,10g,Yes,Rong biển wakame khô
+2005,375,100g,No,Hạt sen tươi
+2006,375,100g,No,Nấm rơm trắng
+2007,376,500g,Yes,Hủ tiếu khô
+2008,376,500g,No,Xương heo
+2009,376,500g,No,Xương gà
+2010,376,300g,No,Mực tươi
+2011,376,200g,No,Thịt xay
+2012,376,20g,No,Tôm khô
+2013,377,300g,Yes,Bí xanh (bí đao trái lớn)
+2014,377,50g,No,Cà rốt
+2015,377,1M,No,Hành tím băm
+2016,378,150g,Yes,Khoai lang
+2017,378,150g,No,Khoai mỡ
+2018,378,100g,No,Rau đắng
+2019,378,100g,No,Thịt nạc dăm xay
+2020,379,100g,Yes,Thịt heo
+2021,379,50g,No,Giò sống
+2022,379,3 quả,No,Dưa leo
+2023,380,300g,Yes,Khoai môn cao
+2024,380,200g,No,Cà rốt
+2025,380,1M,No,Nước cốt hành tím
+2026,381,300g,Yes,Bí đỏ
+2027,381,100g,No,Rong biển khô
+2028,381,50g,No,Nấm kim châm
+2029,382,300g,Yes,Lươn
+2030,382,200g,No,Bắp chuối hột
+2031,382,10 lá,No,Lá lốt
+2032,382,1 trái,No,Khế chua
+2033,382,1 trái,No,Ớt sừng
+2034,382,1 trái,No,Chanh
+2035,383,100g,Yes,Mực ống nhỏ
+2036,383,100g,No,Cá thác lác
+2037,383,1 trái,No,Thơm
+2038,383,2 trái,No,Cà chua
+2039,383,1 trái,No,Ớt sừng
+2040,384,100g,Yes,Thịt băm
+2041,384,400g,No,Bí đỏ
+2042,384,30g,No,Đậu xanh còn vỏ
+2043,385,200g,Yes,Thịt nghêu tươi
+2044,385,50g,No,Lá tía tô
+2045,385,200g,No,Kim chi cải thảo
+2046,385,50g,No,Nấm kim châm
+2047,386,200g,Yes,Thịt gà băm (phần thịt đùi)
+2048,386,200g,No,Măng vàng luộc
+2049,386,50g,No,Giò sống
+2050,387,500g,Yes,Lươn làm sạch
+2051,387,200g,No,Khoai môn cao
+2052,387,50g,No,Đậu xanh giã bể còn vỏ
+2053,387,100g,No,Gạo tấm
+2054,387,30g,No,Nếp
+2055,388,6M,Yes,Nước cốt tắc
+2056,388,50g,No,Đậu bắp
+2057,388,50g,No,Bạc hà
+2058,388,2 nhánh,No,Ngò gai
+2059,389,100g,Yes,Thịt bò mềm
+2060,389,200g,No,Bí đỏ
+2061,389,50g,No,Nấm kim châm
+2062,389,1M,No,Hành tím băm
+2063,390,500g,Yes,Bánh canh bột gạo
+2064,390,20g,No,Tôm khô
+2065,390,200g,No,"Rau đắng, rau má"
+2066,390,100g,No,"Giá, chanh"
+2067,391,300g,Yes,Đu đủ hườm
+2068,391,50g,No,Lá lốt
+2069,391,150g,No,Nấm bào ngư
+2070,392,50g,Yes,Đầu hành lá
+2071,392,50g,No,Ngò rí
+2072,392,5 trái,No,Ớt hiểm
+2073,392,2M,No,Tỏi xay nhuyễn
+2074,392,2M,No,Nước cốt chanh
+2075,393,200g,Yes,Măng chua
+2076,393,150g,No,Lá giang
+2077,393,1 trái,No,Cà chua chín
+2078,394,200g,Yes,Giò sống
+2079,394,100g,No,"Tôm bóc vỏ, cắt hạt lựu"
+2080,394,150g,No,Hạt sen Huế tươi
+2081,394,100g,No,Nấm rơm búp
+2082,395,300g,Yes,Má đùi gà rút xương
+2083,395,100g,No,Xà lách mỡ
+2084,395,50g,No,Cà chua bi
+2085,395,20g,No,Bắp Mỹ hạt
+2086,395,50g,No,Dưa leo
+2087,395,2M,No,Hành tỏi băm
+2088,396,1 quả,Yes,Ớt sừng
+2089,396,4 lá,No,Lá chúc
+2090,396,25g,No,Lá húng quế
+2091,396,1M,No,Cốt chanh
+2092,397,1 nhánh,Yes,Gừng
+2093,397,1M,No,Kỷ tử
+2094,397,10 trái,No,Ớt khô
+2095,397,2 nhánh,No,Tiêu xanh
+2096,398,10ml,Yes,Nước tỏi
+2097,398,1 quả,No,Trứng gà
+2098,398,1M,No,Bột mì
+2099,398,1 quả,No,Trứng luộc băm
+2100,398,1M,No,Dưa chuột muối băm
+2101,399,600g,Yes,Dừa nạo
+2102,399,1m,No,Cà ri bột
+2103,399,1M,No,Cà ri dầu
+2104,399,1m,No,Ớt băm
+2105,399,2M,No,Hành tây xay
+2106,399,1M,No,Tỏi băm
+2107,399,1M,No,Hành tím băm
+2108,399,1M,No,Gừng băm
+2109,400,250g,Yes,Ức gà không da
+2110,400,50g,No,Cải thảo
+2111,400,25g,No,Nấm linh chi nâu
+2112,400,1m,No,Bột bắp
+2113,400,1m,No,Gừng mài
+2114,400,1m,No,Hành tím băm
+2115,400,25g,No,Cà rốt
+2116,401,500g,Yes,Má đùi gà rút xương
+2117,401,1.5M,No,Hành tỏi băm
+2118,401,1m,No,Mật ong
+2119,402,1 trái,Yes,Dừa tươi
+2120,402,25g,No,Hạt sen khô
+2121,402,10g,No,Nhãn nhục khô
+2122,403,500g,Yes,Má đùi gà
+2123,403,1M,No,Sả băm
+2124,403,2M,No,Nước tỏi
+2125,403,2M,No,Nước hành tím
+2126,404,500g,Yes,Đùi tỏi gà
+2127,404,100g,No,Me vắt
+2128,404,2M,No,Gừng cắt sợi
+2129,404,4M,No,Mè trắng rang giã dập
+2130,405,4 trái,Yes,Bắp non
+2131,405,40g,No,Cà rốt
+2132,405,1M,No,Hành tỏi băm
+2133,405,1M,No,Gừng băm
+2134,406,500g,Yes,Cánh gà
+2135,406,2M,No,Hành tím băm
+2136,406,2 trái,No,Cà chua
+2137,406,2 trái,No,Ớt hiểm
+2138,407,1/4 trái,Yes,Ớt chuông xanh
+2139,407,1/4 trái,No,Thơm chín
+2140,407,2 trái,No,Ớt sừng
+2141,407,15g,No,Gừng
+2142,407,1M,No,Hành tím băm
+2143,407,2M,No,Nước tỏi
+2144,408,2 trái,Yes,Lê vàng
+2145,408,1 trái,No,Dừa tươi
+2146,408,100g,No,Cà rốt
+2147,409,300g,Yes,Thịt gà xay
+2148,409,150ml,No,Sữa tươi
+2149,409,2 quả,No,Trứng gà
+2150,410,300g,Yes,Đùi gà góc tư
+2151,410,150g,No,Củ cải trắng
+2152,410,2M,No,Gừng cắt sợi
+2153,410,2M,No,Hành tỏi băm
+2154,411,20g,Yes,Bột xù trắng
+2155,411,1/3m,No,Nước cốt chanh
+2156,411,1/3m,No,Hạt nêm Aji-ngon
+2157,412,250g,Yes,Thịt ức gà
+2158,412,250g,No,Khoai tây
+2159,412,10 lá,No,Lá quế
+2160,413,6 trái,Yes,Tắc
+2161,413,8 lá,No,Lá chúc
+2162,413,10 trái,No,Ớt hiểm xanh đỏ
+2163,414,200g,Yes,Mề gà
+2164,414,1/4 quả,No,Thơm chín
+2165,414,20g,No,Nấm hương khô
+2166,414,3 trái,No,Ớt hiểm
+2167,414,50g,No,Hành tím củ
+2168,414,2M,No,Hành tỏi băm
+2169,414,10g,No,Gừng cắt lát
+2170,415,500g,Yes,Ức gà phi lê
+2171,415,30g,No,Khoai môn cau
+2172,415,50g,No,Thịt ba chỉ
+2173,415,30g,No,Khoai lang
+2174,415,2M,No,Nước tỏi
+2175,416,400g,Yes,Thịt má đùi gà
+2176,416,100g,No,Củ sen
+2177,416,100g,No,Măng luộc
+2178,416,100g,No,Cà rốt
+2179,417,700g,Yes,Gà ta nửa con
+2180,417,100g,No,Riềng già
+2181,417,1 trái,No,Ớt hiểm
+2182,418,400g,Yes,Đùi gà
+2183,418,1 trái,No,Ớt sừng
+2184,418,1M,No,Mè đen rang
+2185,418,1m,No,Tỏi băm
+2186,419,200g,Yes,Măng khô
+2187,419,400g,No,Miến đậu xanh
+2188,419,50g,No,Cà rốt
+2189,420,50g,Yes,Hành tím phi
+2190,420,30g,No,Đầu hành lá
+2191,420,3 trái,No,Ớt hiềm
+2192,420,30g,No,Hành tím củ
+2193,420,1 trái,No,Dừa tươi
