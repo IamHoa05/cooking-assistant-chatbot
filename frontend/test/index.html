@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let's Cook</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="chat-container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="profile">
+                <div class="profile-img">
+                    <i class="fas fa-chef-hat"></i>
+                </div> 
+                <p>Chuyên gia ẩm thực</p>
+            </div>
+            
+            <div class="quick-tips">
+                <h3><i class="fas fa-lightbulb"></i> Mẹo nhanh</h3>
+                <ul class="tips-list">
+                    <li><i class="fas fa-check-circle"></i> <span>Chọn nguyên liệu trước</span></li>
+                    <li><i class="fas fa-sliders-h"></i> <span>Tùy chỉnh khẩu vị</span></li>
+                    <li><i class="fas fa-exchange-alt"></i> <span>Thay thế nguyên liệu</span></li>
+                </ul>
+            </div>
+            
+            <button class="new-recipe-btn">
+                <i class="fas fa-plus-circle"></i>
+                <span>Start a new recipe</span>
+            </button>
+        </div>
+        
+        <!-- Chat Area -->
+        <div class="chat-area">
+            <div class="chat-header">
+                <h1>Let's cook</h1>
+                <div class="online-status">
+                    <div class="online-dot"></div>
+                    <span>Online</span>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chatMessages">
+                <div class="message ai">
+                    <div class="message-bubble">
+                        Xin chào! Tôi có thể giúp bạn tìm công thức nấu ăn, gợi ý món ngon, hoặc hướng dẫn bạn từng bước nấu các món ăn. Bạn muốn nấu món gì hôm nay?
+                    </div>
+                </div>
+            </div>
+            
+            <div class="chat-input-container">
+                <div class="chat-input-wrapper">
+                    <input type="text" class="chat-input" id="chatInput" placeholder="Gõ tin nhắn của bạn ở đây...">
+                    <button class="send-button" id="sendButton">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="privacy-notice">Privacy: Tin nhắn có thể được dùng để cải thiện AI.</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatMessages = document.getElementById('chatMessages');
+            const chatInput = document.getElementById('chatInput');
+            const sendButton = document.getElementById('sendButton');
+
+            // Hàm thêm tin nhắn vào khung chat
+            function addMessage(message, isUser = false) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isUser ? 'user' : 'ai'}`;
+                
+                const bubbleDiv = document.createElement('div');
+                bubbleDiv.className = 'message-bubble';
+                bubbleDiv.textContent = message;
+                
+                messageDiv.appendChild(bubbleDiv);
+                chatMessages.appendChild(messageDiv);
+                
+                // Cuộn xuống dưới cùng
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
+
+            // Hàm xử lý gửi tin nhắn
+            function sendMessage() {
+                const message = chatInput.value.trim();
+                if (message) {
+                    // Thêm tin nhắn của người dùng
+                    addMessage(message, true);
+                    chatInput.value = '';
+                    
+                    // Giả lập phản hồi AI sau 1 giây
+                    setTimeout(() => {
+                        const responses = [
+                            "Tuyệt vời! Để tôi gợi ý công thức phù hợp với nguyên liệu bạn có.",
+                            "Món đó rất ngon! Bạn muốn phiên bản đơn giản hay công thức đầy đủ?",
+                            "Tôi có vài công thức ngon cho món đó. Bạn có dị ứng với nguyên liệu nào không?",
+                            "Để tôi tìm công thức phù hợp cho bạn. Bạn thích ăn cay hay nhạt?",
+                            "Món này rất phổ biến! Bạn muốn nấu trong bao lâu? Tôi có thể gợi ý công thức nhanh hoặc chậm tùy ý."
+                        ];
+                        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                        addMessage(randomResponse);
+                    }, 1000);
+                }
+            }
+
+            // Sự kiện click nút gửi
+            sendButton.addEventListener('click', sendMessage);
+
+            // Sự kiện nhấn Enter trong ô input
+            chatInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    sendMessage();
+                }
+            });
+
+            // Focus vào ô input khi trang load
+            chatInput.focus();
+        });
+    </script>
+</body>
+</html>
