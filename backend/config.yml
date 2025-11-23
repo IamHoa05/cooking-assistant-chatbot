@@ -1,0 +1,10 @@
+paths:
+  recipe_data: "data/raw/recipes.csv"                     # Raw recipe dataset from Kaggle
+  cleaned_data_csv: "data/processed/test_processed_recipes.csv"  # Cleaned CSV after preprocessing
+  cleaned_data_pkl: "data/processed/test_processed_recipes.pkl"  # Serialized data for fast loading
+  faiss_index_dir: "data/indexes"                         # Directory containing FAISS indexes
+  model_path: "models/mistral-7b-instruct-v0.2.Q5_K_M.gguf"  # Path to the downloaded GGUF model
+
+embedding:
+  model_name: "BAAI/bge-base-en-v1.5"    # Sentence-transformers model used for recipe embeddings
+  batch_size: 128                   # Batch size for embedding generation
