@@ -4,17 +4,17 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time, json, os
 
-def crawl_monngonmoingay(search_url, max_pages=1, scroll_times=3, limit_per_page=50):
+def crawl_monngonmoingay(search_url, start_page=5, max_pages=10, scroll_times=3, limit_per_page=50):
     driver = webdriver.Chrome()
     all_recipes = []
 
     # --- Thu thập link + ảnh từ list pages ---
-    for page in range(1, max_pages+1):
-        url = f"{search_url}&page={page}"
+    for page in range(start_page, max_pages+1):
+        url = f"{search_url}/page/{page}"
         driver.get(url)
 
         # Đóng popup cookie (chỉ lần đầu)
-        if page == 1:
+        if page == start_page:
             try:
                 close_btn = WebDriverWait(driver, 5).until(
                     EC.element_to_be_clickable((By.CSS_SELECTOR, "span.cookieDrawer__close"))
@@ -101,8 +101,9 @@ def crawl_monngonmoingay(search_url, max_pages=1, scroll_times=3, limit_per_page
 
 
 recipes = crawl_monngonmoingay(
-    "https://monngonmoingay.com/tim-kiem-mon-ngon/page/5/?tim=1&nguyen-lieu=mon-ngon-tu-thit-ga&sort=like",
-    max_pages=2,      
+    "https://monngonmoingay.com/tim-kiem-mon-ngon/",
+    start_page=5,
+    max_pages=20,   # crawl trang 5 → 20      
     scroll_times=3,   # scroll 3 lần mỗi trang
     limit_per_page=50 # số món tối đa mỗi trang
 )
