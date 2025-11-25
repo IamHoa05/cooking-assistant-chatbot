@@ -216,7 +216,7 @@ def load_vietnamese_embedding_model(device: str = None):
     """
     Load BGE embedding model with GPU support.
     """
-    model_name = "BAAI/bge-base-en-v1.5"   # hoặc bản fine-tuned tiếng Việt nếu có
+    model_name = "BAAI/bge-m3"   # hoặc bản fine-tuned tiếng Việt nếu có
     print(f"🔹 Loading BGE model: {model_name}")
 
     if device is None:

@@ -1,74 +1,91 @@
-# import pandas as pd
-# import numpy as np
-
-# # ===== ĐƯỜNG DẪN FILE EMBEDDING (.pkl) =====
-# pkl_path = "./data/recipes_embeddings.pkl"
-
-# # ===== LOAD DỮ LIỆU EMBEDDINGS =====
-# df_emb = pd.read_pickle(pkl_path)
-# print("✅ Loaded embeddings dataframe:", df_emb.shape)
-
-# # ===== CHỌN CÁC CỘT EMBEDDING CẦN DÙNG =====
-# embedding_cols = [
-#     "ingredient_names_embedding",
-#     "ingredient_quantities_embedding",
-#     "dish_name_embedding"
-# ]
-
-# # ===== GỘP (CONCATENATE) TẤT CẢ EMBEDDING CỘT LẠI THÀNH 1 VECTOR DUY NHẤT =====
-# # Mỗi embedding là 1 list hoặc ndarray → chuyển sang numpy rồi nối lại
-# combined_embeddings = np.concatenate(
-#     [np.vstack(df_emb[col].values) for col in embedding_cols], axis=1
-# )
-
-# # ===== CHUYỂN SANG DẠNG float32 (FAISS YÊU CẦU) =====
-# embedding_matrix = combined_embeddings.astype("float32")
-
-# # ===== LƯU RA FILE .NPY =====
-# output_path = "./data/recipes_embeddings.npy"
-# np.save(output_path, embedding_matrix)
-
-# print(f"✅ Saved numpy embeddings to {output_path}")
-# print(f"📏 Shape: {embedding_matrix.shape}")
-
+# test_faiss_with_pickle.py
 import pandas as pd
 import numpy as np
+from new_faiss_handler import FAISSHandler
+from new_embedder import load_embedding_model, embed_texts
+import ast
 
-# ===== ĐƯỜNG DẪN FILE EMBEDDING (.pkl) =====
-pkl_path = "./data/recipes_embeddings.pkl"
+# ---------------------------
+# 1️⃣ Load embeddings từ pickle
+# ---------------------------
+pickle_path = "./data/recipes_embeddings.pkl"
+df = pd.read_pickle(pickle_path)
 
-# ===== LOAD DỮ LIỆU EMBEDDINGS =====
-df_emb = pd.read_pickle(pkl_path)
-print("✅ Loaded embeddings dataframe:", df_emb.shape)
+# Nếu ingredient_names trong pickle vẫn là string, parse sang list
+def parse_list(x):
+    if isinstance(x, str):
+        try:
+            return ast.literal_eval(x)
+        except:
+            return []
+    elif isinstance(x, list):
+        return x
+    else:
+        return []
 
-# ===== CỘT EMBEDDING CẦN DÙNG =====
-embedding_cols = [
-    "ingredient_names_embedding",
-    "ingredient_quantities_embedding",
-    "dish_name_embedding"
-]
+df['ingredient_names'] = df['ingredient_names'].apply(parse_list)
 
-# ===== CHUẨN HÓA SHAPE MỖI ROW TRONG CỘT =====
-all_embeddings = []
-for col in embedding_cols:
-    col_emb = []
-    for row in df_emb[col].values:
-        arr = np.array(row, dtype=np.float32)
-        if arr.ndim == 1:
-            col_emb.append(arr)
-        elif arr.ndim == 2:
-            col_emb.append(arr.flatten())  # flatten nếu 2D
-        else:
-            raise ValueError(f"❌ Unexpected shape in column {col}: {arr.shape}")
-    col_emb = np.stack(col_emb)  # (num_recipes, embedding_dim)
-    all_embeddings.append(col_emb)
+print(f"Loaded {len(df)} recipes from pickle")
 
-# ===== NỐI TẤT CẢ EMBEDDING LẠI =====
-combined_embeddings = np.concatenate(all_embeddings, axis=1)  # shape = (num_recipes, sum_dims)
+# ---------------------------
+# 2️⃣ Load embedding model
+# ---------------------------
+model = load_embedding_model("BAAI/bge-m3")
 
-# ===== LƯU RA FILE .NPY =====
-output_path = "./data/recipes_embeddings.npy"
-np.save(output_path, combined_embeddings)
+# ---------------------------
+# 3️⃣ Load FAISS indexes
+# ---------------------------
+handler = FAISSHandler(df, index_dir="./new_faiss_indexes")
 
-print(f"✅ Saved numpy embeddings to {output_path}")
-print(f"📏 Shape: {combined_embeddings.shape}")
+# ---------------------------
+# 4️⃣ Input user
+# ---------------------------
+ingredients_input = input("💬 Nhập danh sách nguyên liệu (ngăn cách bằng dấu phẩy):\n👉 Ingredients: ")
+ingredients = [x.strip() for x in ingredients_input.split(",") if x.strip()]
+
+# ---------------------------
+# 5️⃣ Encode input
+# ---------------------------
+query_vecs = embed_texts(ingredients, model)
+
+# ---------------------------
+# 6️⃣ Search FAISS (ingredient_names)
+# ---------------------------
+# Flatten vectors + row map, lấy trung bình
+results_dict = {}
+for vec in query_vecs:
+    results = handler.search(vec, column_key="names", top_k=20)
+    for r in results:
+        rowid = r["_rowid"]
+        if rowid not in results_dict:
+            results_dict[rowid] = {"recipe": r, "count": 0}
+        results_dict[rowid]["count"] += 1
+
+# ---------------------------
+# 7️⃣ Tính final score (cosine + match ratio)
+# ---------------------------
+final_results = []
+for rowid, info in results_dict.items():
+    recipe = info["recipe"]
+    match_ratio = info["count"] / len(ingredients)
+    cosine = recipe["_distance"]
+    final_score = 0.7 * cosine + 0.3 * match_ratio
+    final_results.append({
+        "dish_name": recipe["dish_name"],
+        "ingredients": recipe["ingredient_names"],
+        "cosine": cosine,
+        "match_ratio": match_ratio,
+        "final_score": final_score
+    })
+
+# Sắp xếp theo final_score
+final_results = sorted(final_results, key=lambda x: x["final_score"], reverse=True)
+
+# ---------------------------
+# 8️⃣ In ra top 5
+# ---------------------------
+print("\n🎯 Top gợi ý món ăn:")
+for r in final_results[:5]:
+    print(f"- {r['dish_name']}  |  final_score={r['final_score']:.4f}")
+    print(f"  Ingredients: {r['ingredients']}")
+    print(f"  Cosine: {r['cosine']:.4f} | Match ratio: {r['match_ratio']:.2f}\n")
