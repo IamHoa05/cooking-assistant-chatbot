@@ -51,18 +51,18 @@ embedding_cols = [
 # ===== CHUẨN HÓA SHAPE MỖI ROW TRONG CỘT =====
 all_embeddings = []
 for col in embedding_cols:
+    shapes = [np.array(row, dtype=np.float32).size for row in df_emb[col].values]
+    max_len = max(shapes)
+    
     col_emb = []
     for row in df_emb[col].values:
-        arr = np.array(row, dtype=np.float32)
-        if arr.ndim == 1:
-            col_emb.append(arr)
-        elif arr.ndim == 2:
-            col_emb.append(arr.flatten())  # flatten nếu 2D
-        else:
-            raise ValueError(f"❌ Unexpected shape in column {col}: {arr.shape}")
-    col_emb = np.stack(col_emb)  # (num_recipes, embedding_dim)
+        arr = np.array(row, dtype=np.float32).flatten()
+        if arr.size < max_len:
+            arr = np.pad(arr, (0, max_len - arr.size))
+        col_emb.append(arr)
+    col_emb = np.stack(col_emb)
     all_embeddings.append(col_emb)
-
+    
 # ===== NỐI TẤT CẢ EMBEDDING LẠI =====
 combined_embeddings = np.concatenate(all_embeddings, axis=1)  # shape = (num_recipes, sum_dims)
 

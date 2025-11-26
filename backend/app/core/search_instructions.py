@@ -1,0 +1,73 @@
+# app/services/dish_search_service.py
+import pandas as pd
+import numpy as np
+import faiss
+from app.utils.embedder import load_vietnamese_embedding_model, embed_texts
+
+# ============================
+# LOAD DATAFRAME
+# ============================
+DF_PATH = "app/utils/data/recipes_embeddings.pkl"
+df = pd.read_pickle(DF_PATH)
+
+# df cần có các cột:
+# - dish_name: str
+# - dish_name_embedding: list/np.array (embedding vector)
+
+if "dish_name_embedding" not in df.columns:
+    raise ValueError("Column 'dish_name_embedding' not found in DataFrame.")
+
+dish_names = df["dish_name"].astype(str).tolist()
+dish_vectors = np.stack(df["dish_name_embedding"].values).astype("float32")
+
+# ============================
+# NORMALIZE VECTORS (cosine similarity)
+# ============================
+dish_vectors = dish_vectors / np.linalg.norm(dish_vectors, axis=1, keepdims=True)
+
+# ============================
+# BUILD FAISS INDEX
+# ============================
+dim = dish_vectors.shape[1]
+dish_index = faiss.IndexFlatIP(dim)  # IP = inner product ~ cosine similarity
+dish_index.add(dish_vectors)
+
+# ============================
+# LOAD EMBEDDING MODEL
+# ============================
+embedding_model = load_vietnamese_embedding_model()
+
+# ============================
+# HELPER FUNCTION
+# ============================
+def search_dish(user_input: str, top_k: int = 1, score_threshold: float = 0.7):
+    """
+    Search for best matching dish name using embedding + FAISS.
+
+    Returns:
+        List[dict]: [{"dish_name": ..., "score": ..., "metadata": {...}}, ...]
+    """
+    # 1️⃣ Encode user input
+    query_vec = embed_texts([user_input], embedding_model, text_type="dish")[0]
+    query_vec = np.array(query_vec, dtype="float32").reshape(1, -1)
+    query_vec /= np.linalg.norm(query_vec)
+
+    # 2️⃣ Search FAISS
+    distances, indices = dish_index.search(query_vec, top_k)
+    results = []
+
+    for idx, score in zip(indices[0], distances[0]):
+        if score < score_threshold:
+            continue
+        row = df.iloc[idx]
+        metadata = {
+            "ingredients": row.get("ingredient_names", []),
+            "instructions": row.get("instructions", [])
+        }
+        results.append({
+            "dish_name": row["dish_name"],
+            "score": float(score),
+            "metadata": metadata
+        })
+
+    return results
