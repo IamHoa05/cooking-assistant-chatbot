@@ -1,5 +1,3 @@
-
-
 from sentence_transformers import SentenceTransformer
 from tqdm import tqdm
 import pandas as pd
@@ -97,7 +95,7 @@ def generate_vietnamese_recipe_embeddings(df: pd.DataFrame):
 
 if __name__ == "__main__":
     # Load CSV
-    df = pd.read_csv("./data/test_recipes_501_1000_remove_null.csv")
+    df = pd.read_csv("./data/test_recipes_remove_null.csv")
 
     # Tạo embeddings
     df_emb = generate_vietnamese_recipe_embeddings(df)

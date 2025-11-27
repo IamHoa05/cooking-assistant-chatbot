@@ -23,7 +23,7 @@ frontend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../fron
 app.mount("/static", StaticFiles(directory=frontend_path), name="static")
 
 # Include API routes
-app.include_router(api_router, prefix="/api")
+app.include_router(api_router)
 
 # Route trả index.html
 @app.get("/", response_class=HTMLResponse)
