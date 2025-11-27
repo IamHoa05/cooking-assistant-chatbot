@@ -1,6 +1,3 @@
-
-
-
 # app/api.py
 from xml.sax import handler
 from fastapi import APIRouter, FastAPI
@@ -18,9 +15,8 @@ from langchain_groq import ChatGroq  # hoặc gemini API client
 from langchain_core.messages import SystemMessage, HumanMessage
 from app.core.search_engine import search_dishes
 
-# -------------------------
+
 # Load .env
-# -------------------------
 from dotenv import load_dotenv
 env_path = os.path.join(os.path.dirname(__file__), "../../.env")
 load_dotenv(env_path)
@@ -28,14 +24,13 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 if not GROQ_API_KEY:
     raise ValueError("GROQ_API_KEY not found in .env")
 
-# -------------------------
+
 # FastAPI router
-# -------------------------
 router = APIRouter()
 
-# -------------------------
+
+
 # Load embeddings & FAISS
-# -------------------------
 df = pd.read_pickle("app/utils/data/recipes_embeddings.pkl")
 embedding_columns = {
     "names": "ingredient_names_embedding",
@@ -50,9 +45,9 @@ faiss_handler = FAISSHandler(
 
 embedding_model = load_vietnamese_embedding_model()
 
-# -------------------------
+
+
 # Input models
-# -------------------------
 class RecipeQuery(BaseModel):
     ingredients: List[str]
 
@@ -80,51 +75,55 @@ class SmoothQuery(BaseModel):
 #     output = [{"dish_name": r.get("dish_name")} for r in results]
 #     return {"results": output}
 
-def search_recipes(query: RecipeQuery):
-    dishes = search_dishes(df, faiss_handler, query.ingredients)
-    return {"results": dishes}
-
-# -------------------------
-# API: smooth_recipes (Groq)
-# -------------------------
-
 def smooth_recipes(query: SmoothQuery):
-    if not query.top_dishes:
-        return {"text": "Không có món ăn nào để hiển thị."}
+    dishes = query.top_dishes or []
+    if not dishes:
+        return {"text": "Hông thấy món nào hợp á, thử thêm nguyên liệu khác xem!"}
+
+    dishes_text = ", ".join(dishes)
 
     groq_chat = ChatGroq(
         groq_api_key=GROQ_API_KEY,
-        model_name="llama-3.1-8b-instant"  # hoặc model Groq/Gemini bạn muốn
+        model_name="llama-3.1-8b-instant"
     )
-
-    user_text = "\n".join([f"- {d}" for d in query.top_dishes])
-    
 
     messages = [
     SystemMessage(
         content=(
-            "Bạn là chuyên gia ẩm thực Việt Nam. "
-            "Hãy trả lời trực tiếp, cuốn hút và thân thiện, dựa trên nguyên liệu mà người dùng cung cấp. "
-            "Không liệt kê công thức, không chào hỏi dài dòng. "
-            "Tập trung vào trải nghiệm khi ăn, mùi vị, màu sắc và cảm giác. "
-            "Bạn có thể gợi ý món ăn hoặc hỏi người dùng muốn thử món nào."
+            "Bạn là chuyên gia ẩm thực Việt Nam, giọng Gen Z, vui vẻ.\n"
+            "LUẬT BẮT BUỘC:\n"
+            "1) Chỉ nói về các món trong DANH SÁCH HỆ THỐNG cung cấp.\n"
+            "2) Không bịa món hay thêm món ngoài danh sách.\n"
+            "3) Trả lời ≤ 50 chữ.\n"
+            "4) Bạn được phép gợi ý 1-2 món nổi bật nên thử trong danh sách, bằng cách mô tả thật tự nhiên và sinh động cảm giác khi ăn.\n"
+            "5) Không hỏi người dùng, không gợi ý nguyên liệu ngoài danh sách."
+        )
+    ),
+    SystemMessage(
+        content=(
+            "Ví dụ:\n"
+            "Danh sách món: Phở bò, Bò xào sả ớt, Gỏi cuốn\n"
+            "Đúng: 'Phở bò thơm nức mùi quế hồi, ăn là mê luôn. Bò xào sả ớt cay nhẹ, siêu đã!'"
+            "❌ Sai: 'Món ăn thơm ngon, cuốn hút lắm.' (không nhắc tên món)"
         )
     ),
     HumanMessage(
         content=(
-            "Người dùng cung cấp nguyên liệu sau: {user_text}\n\n"
-            "Hãy viết đoạn chat như sau:\n"
-            "- Giới thiệu các món ăn phù hợp\n"
-            "- Mô tả cuốn hút, sinh động\n"
-            "- Có thể đưa ra gợi ý hoặc hỏi người dùng\n"
-            "Tối đa 3–5 câu, nhấn mạnh trải nghiệm, hương vị, màu sắc, cảm giác khi ăn."
+            f"DANH SÁCH MÓN HIỆN TẠI: {dishes_text}\n"
+            "Hãy mô tả thật tự nhiên và gợi ý 1-2 món nổi bật nên thử. "
+            "Không thêm món mới, không đặt câu hỏi, tối đa 40 chữ."
         )
     )
 ]
-    response = groq_chat.generate([messages])  # lưu ý: phải bọc trong list!
-    output_text = response.generations[0][0].text
 
-    return {"text": output_text}
+
+
+    response = groq_chat.invoke(messages)
+    text = response.content.replace("?", "")  # loại bỏ câu hỏi nếu có
+    return {"text": text}
+
+
+
 
 # -------------------------
 # API: smart_recipes (search + smooth)

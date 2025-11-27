@@ -64,59 +64,39 @@ def avg_cosine_score(input_vecs, recipe_vecs):
 # -----------------------------
 # Main search function (API dùng hàm này)
 # -----------------------------
-def search_dishes(df, handler: FAISSHandler, input_ingredients,
+def search_dishes(df, handler, input_ingredients,
                   top_faiss=100, top_k=5, alpha=0.7):
     """
-    Tìm món ăn dựa trên:
-    - cosine similarity
-    - fuzzy matching
-    - tổng hợp score_total = alpha*cosine + (1-alpha)*fuzzy
-    Trả về: list tên món ăn
+    ĐÃ SỬA:
+    - Không dùng embedding, không gọi FAISS
+    - Chỉ dùng fuzzy_match + keyword match
+    - Giữ nguyên TÊN HÀM để không phá API
     """
     if not input_ingredients:
         return []
 
-    # 1️⃣ Encode input ingredients
-    model = load_vietnamese_embedding_model(device="cpu")
-    input_vecs = embed_texts(input_ingredients, model, text_type="query")
-    input_vecs = [np.array(v).astype("float32") for v in input_vecs]
+    # Chuẩn hóa input
+    input_clean = [clean_ingredient(i) for i in input_ingredients]
 
-    # 2️⃣ FAISS search từng nguyên liệu
-    score_map = defaultdict(list)
+    results = []
 
-    for vec in input_vecs:
-        results = handler.search(query_vector=vec, column_key="names", top_k=top_faiss)
-        for r in results:
-            idx = r.get("_rowid__") or r.get("index")
-            if idx is not None:
-                score_map[idx].append(r["_distance"])
+    for idx, row in df.iterrows():
+        recipe_ings = parse_ingredient_list(row["ingredient_names"])
+        recipe_clean = [clean_ingredient(i) for i in recipe_ings]
 
-    if not score_map:
-        return []
+        # Fuzzy
+        score_fuzzy = fuzzy_match(recipe_ings, input_ingredients)
 
-    # 3️⃣ Tính tổng score
-    final_scores = []
+        # Keyword match (tăng độ chính xác)
+        keyword_hits = sum(1 for x in input_clean if x in recipe_clean)
+        score_keyword = keyword_hits / len(input_clean)
 
-    for idx, row in df.iloc[list(score_map.keys())].iterrows():
-        # lấy embedding của món
-        recipe_vecs = []
-        embeds = row["ingredient_names_embedding"]
+        # Tổng hợp (embedding bỏ → cosine = 0)
+        score_total = 0.7 * score_keyword + 0.3 * score_fuzzy
 
-        if isinstance(embeds, list):
-            recipe_vecs = [np.array(v).astype("float32") for v in embeds]
+        results.append((row["dish_name"], score_total))
 
-        if not recipe_vecs:
-            continue
+    # Sắp xếp
+    results.sort(key=lambda x: x[1], reverse=True)
 
-        score_cos = avg_cosine_score(input_vecs, recipe_vecs)
-        score_fuzzy = fuzzy_match(row["ingredient_names"], input_ingredients)
-
-        score_total = alpha * score_cos + (1 - alpha) * score_fuzzy
-
-        final_scores.append((row["dish_name"], score_total))
-
-    # 4️⃣ Sắp xếp theo score giảm dần
-    final_scores.sort(key=lambda x: x[1], reverse=True)
-
-    # 5️⃣ Return danh sách tên món ăn
-    return [name for name, score in final_scores[:top_k]]
+    return [name for name, score in results[:top_k]]
