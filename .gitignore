@@ -209,4 +209,5 @@ __marimo__/
 # Large data / embeddings
 # Dữ liệu lớn / index / embeddings
 backend/app/utils/data/*.pkl
+backend/app/utils/data/*.npy
 backend/app/utils/faiss_indexes/
