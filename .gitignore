@@ -205,3 +205,7 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Large data / embeddings
+backend/app/utils/data/recipes_embeddings.pkl
+backend/app/utils/faiss_indexes/
