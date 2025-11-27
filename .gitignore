@@ -207,5 +207,6 @@ marimo/_lsp/
 __marimo__/
 
 # Large data / embeddings
-backend/app/utils/data/recipes_embeddings.pkl
+# Dữ liệu lớn / index / embeddings
+backend/app/utils/data/*.pkl
 backend/app/utils/faiss_indexes/
