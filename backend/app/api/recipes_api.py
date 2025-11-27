@@ -732,8 +732,6 @@ def recipes_by_difficulty(query: DifficultyQuery):
 class CookTimeQuery(BaseModel):
     minutes: int
 
-router = APIRouter()
-
 @router.post("/recipes_by_time")
 def recipes_by_time(query: CookTimeQuery):
     target_time = query.minutes
