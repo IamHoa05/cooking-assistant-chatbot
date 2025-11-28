@@ -18,24 +18,18 @@ const placeholders = {
 // Click vào menu
 menuItems.forEach(item => {
     item.addEventListener('click', () => {
-        // Xóa selected cũ
         menuItems.forEach(i => i.classList.remove('selected'));
         item.classList.add('selected');
 
         selectedMode = item.getAttribute('data-mode') || 'ingredient';
-
-        // Reset chat và hiển thị thông báo chế độ mới
         chatMessages.innerHTML = '';
-        if(selectedMode === 'ingredient'){
-            addMessage(`Bạn đã chuyển sang chế độ: ${item.textContent.trim()}`);
-        } else {
-            addMessage(`Chế độ "${item.textContent.trim()}" hiện đang phát triển.`);
-        }
 
-        // Update placeholder
+        addMessage(`✅ Đã chọn chế độ: <strong>${item.querySelector('span').textContent}</strong>`);
+
         chatInput.placeholder = placeholders[selectedMode] || 'Gõ tin nhắn của bạn...';
     });
 });
+
 
 function addMessage(text, isUser=false) {
     const msg = document.createElement('div');
@@ -112,61 +106,36 @@ async function sendMessage() {
     addMessage(message, true);
     chatInput.value = '';
 
-    if (selectedMode !== 'ingredient') {
-        addMessage('Chức năng này đang phát triển, vui lòng thử chế độ Nguyên liệu.');
-        return;
-    }
-
-    const loadingMessage = "Đang tìm công thức...";
-    addMessage(loadingMessage, false);
-
-    // Tạo list ingredients từ chuỗi người dùng nhập
-    const ingredientsArray = message
-        .split(",")
-        .map(i => i.trim())
-        .filter(i => i !== "");
-
-    try {
-        const res = await fetch("/api/smart_recipes", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ ingredients: ingredientsArray })
-        });
-
-        const data = await res.json();
-
-        // xóa loading
-        const lastMsg = chatMessages.lastChild;
-        if (lastMsg && lastMsg.querySelector('.message-bubble').textContent === loadingMessage) {
-            lastMsg.remove();
-        }
-
-        // Debug: log ra console
-        console.log("DEBUG - smart_recipes result:", data);
-
-        if (data.top_dishes && data.top_dishes.length > 0) {
-            addMessage("Món tìm được: " + data.top_dishes.join(", "));
-        }
-
-        if (data.description) {
-            addMessage(data.description);
-        } else {
-            addMessage("Không tìm thấy món ăn phù hợp.");
-        }
-
-    } catch (err) {
-        console.error(err);
-        const lastMsg = chatMessages.lastChild;
-        if (lastMsg && lastMsg.querySelector('.message-bubble').textContent === loadingMessage) {
-            lastMsg.remove();
-        }
-        addMessage("Có lỗi xảy ra khi tìm kiếm công thức.");
+    switch(selectedMode) {
+        case 'ingredient':
+            await searchByIngredients(message);
+            break;
+        case 'time':
+            await searchByTime(message);
+            break;
+        case 'difficulty':
+            await searchByDifficulty(message);
+            break;
+        case 'serving':
+            await searchByServing(message);
+            break;
+        case 'category':
+            await searchByCategory(message);
+            break;
+        case 'guide':
+            await searchInstructions(message);
+            break;
+        default:
+            addMessage('Vui lòng chọn chế độ tìm kiếm.');
     }
 }
+
 
 // Event listeners
 sendButton.addEventListener('click', sendMessage);
 chatInput.addEventListener('keypress', e => {
     if (e.key === 'Enter') sendMessage();
 });
+
+
 
