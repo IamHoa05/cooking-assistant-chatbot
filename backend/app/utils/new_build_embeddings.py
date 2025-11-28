@@ -3,7 +3,7 @@ from new_embedder import load_embedding_model, embed_texts
 import numpy as np
 
 # Load CSV
-df = pd.read_csv("./data/test_recipes_501_1000_remove_null.csv")
+df = pd.read_csv("C:/Users/thuyt/Desktop/Artificial Intelligence/cooking-assistant-chatbot/dataset/processed/cleaned_recipes.csv")
 
 # Load BGE-M3
 model = load_embedding_model("BAAI/bge-m3")

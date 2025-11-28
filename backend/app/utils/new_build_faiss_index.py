@@ -1,4 +1,3 @@
-# new_build_faiss_index.py
 import os
 import numpy as np
 import pandas as pd
@@ -77,5 +76,5 @@ def build_all_indexes(df: pd.DataFrame):
 
 
 if __name__ == "__main__":
-    df = pd.read_csv("./data/test_recipes_501_1000_remove_null.csv")
+    df = pd.read_csv("C:/Users/thuyt/Desktop/Artificial Intelligence/cooking-assistant-chatbot/dataset/processed/cleaned_recipes.csv")
     build_all_indexes(df)

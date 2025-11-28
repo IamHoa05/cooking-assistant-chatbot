@@ -195,21 +195,20 @@
 
 
 # app/api.py
-from xml.sax import handler
-from fastapi import APIRouter, FastAPI
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
-from typing import List
+from typing import List, Dict, Any
 import os
 import pandas as pd
 import numpy as np
-import requests
 
 # utils
-from app.utils.faiss_handler import FAISSHandler
-from app.utils.embedder import load_vietnamese_embedding_model, embed_texts
-from langchain_groq import ChatGroq  # hoặc gemini API client
-from langchain_core.messages import SystemMessage, HumanMessage
-from app.core.search_engine import search_dishes
+from app.utils.new_faiss_handler import FAISSHandler
+from app.utils.new_embedder import load_embedding_model, embed_texts
+# Tạm comment Groq nếu chưa cần
+# from langchain_groq import ChatGroq
+# from langchain_core.messages import SystemMessage, HumanMessage
+from app.core.new_search_engine import search_dishes, initialize_search_engine
 
 # -------------------------
 # Load .env
@@ -218,8 +217,8 @@ from dotenv import load_dotenv
 env_path = os.path.join(os.path.dirname(__file__), "../../.env")
 load_dotenv(env_path)
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
-if not GROQ_API_KEY:
-    raise ValueError("GROQ_API_KEY not found in .env")
+# if not GROQ_API_KEY:
+#     raise ValueError("GROQ_API_KEY not found in .env")  # Comment tạm nếu chưa dùng
 
 # -------------------------
 # FastAPI router
@@ -227,21 +226,14 @@ if not GROQ_API_KEY:
 router = APIRouter()
 
 # -------------------------
-# Load embeddings & FAISS
+# Load embeddings & FAISS - SỬA LẠI
 # -------------------------
-df = pd.read_pickle("app/utils/data/recipes_embeddings.pkl")
-embedding_columns = {
-    "names": "ingredient_names_embedding",
-    "quantities": "ingredient_quantities_embedding",
-    "dish": "dish_name_embedding"
-}
-faiss_handler = FAISSHandler(
-    df=df,
-    embedding_columns=embedding_columns,
-    index_dir="app/utils/faiss_indexes"
-)
-
-embedding_model = load_vietnamese_embedding_model()
+try:
+    df, faiss_handler = initialize_search_engine()
+    print("✅ Search engine initialized successfully in API")
+except Exception as e:
+    print(f"❌ Error initializing search engine in API: {e}")
+    df, faiss_handler = None, None
 
 # -------------------------
 # Input models
@@ -250,90 +242,123 @@ class RecipeQuery(BaseModel):
     ingredients: List[str]
 
 class SmoothQuery(BaseModel):
-    top_dishes: List[str]
+    top_dishes: List[dict]
 
 # -------------------------
-# API: search_recipes
+# API: search_recipes - SỬA LẠI
 # -------------------------
-# @router.post("/search_recipes")
-# def search_recipes(query: RecipeQuery):
-#     if not query.ingredients:
-#         return {"results": []}
-
-#     query_text = ", ".join(query.ingredients)
-#     query_vector = embed_texts([query_text], embedding_model, text_type="query")[0]
-#     query_vector = np.array(query_vector).astype("float32")
-
-#     results = faiss_handler.search(
-#         query_vector=query_vector,
-#         column_key="names",
-#         top_k=3
-#     )
-
-#     output = [{"dish_name": r.get("dish_name")} for r in results]
-#     return {"results": output}
-
+@router.post("/search_recipes")
 def search_recipes(query: RecipeQuery):
-    dishes = search_dishes(df, faiss_handler, query.ingredients)
-    return {"results": dishes}
+    """Search recipes by ingredients"""
+    if not query.ingredients:
+        return {"results": []}
+    
+    if df is None or faiss_handler is None:
+        raise HTTPException(status_code=500, detail="Search engine not initialized")
+    
+    try:
+        dishes = search_dishes(df, faiss_handler, query.ingredients, top_k=5)
+        return {"results": dishes}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Search error: {str(e)}")
 
 # -------------------------
-# API: smooth_recipes (Groq)
+# API: smooth_recipes (Groq) - SỬA LẠI
 # -------------------------
-
 def smooth_recipes(query: SmoothQuery):
+    """Generate description for top dishes"""
     if not query.top_dishes:
         return {"text": "Không có món ăn nào để hiển thị."}
 
-    groq_chat = ChatGroq(
-        groq_api_key=GROQ_API_KEY,
-        model_name="llama-3.1-8b-instant"  # hoặc model Groq/Gemini bạn muốn
-    )
-
-    user_text = "\n".join([f"- {d}" for d in query.top_dishes])
+    # Tạm thời trả về mô tả đơn giản nếu chưa dùng Groq
+    dish_names = [dish["dish_name"] if isinstance(dish, dict) else dish for dish in query.top_dishes]
     
+    if dish_names:
+        text = f"Tìm thấy {len(dish_names)} món ăn phù hợp: {', '.join(dish_names)}. "
+        text += "Bạn muốn thử món nào trong số này?"
+    else:
+        text = "Không tìm thấy món ăn phù hợp với nguyên liệu đã cung cấp."
+    
+    return {"text": text}
 
-    messages = [
-    SystemMessage(
-        content=(
-            "Bạn là chuyên gia ẩm thực Việt Nam. "
-            "Hãy trả lời trực tiếp, cuốn hút và thân thiện, dựa trên nguyên liệu mà người dùng cung cấp. "
-            "Không liệt kê công thức, không chào hỏi dài dòng. "
-            "Tập trung vào trải nghiệm khi ăn, mùi vị, màu sắc và cảm giác. "
-            "Bạn có thể gợi ý món ăn hoặc hỏi người dùng muốn thử món nào."
-        )
-    ),
-    HumanMessage(
-        content=(
-            "Người dùng cung cấp nguyên liệu sau: {user_text}\n\n"
-            "Hãy viết đoạn chat như sau:\n"
-            "- Giới thiệu các món ăn phù hợp\n"
-            "- Mô tả cuốn hút, sinh động\n"
-            "- Có thể đưa ra gợi ý hoặc hỏi người dùng\n"
-            "Tối đa 3–5 câu, nhấn mạnh trải nghiệm, hương vị, màu sắc, cảm giác khi ăn."
-        )
-    )
-]
-    response = groq_chat.generate([messages])  # lưu ý: phải bọc trong list!
-    output_text = response.generations[0][0].text
+    # # Nếu muốn dùng Groq, bỏ comment phần dưới
+    # try:
+    #     groq_chat = ChatGroq(
+    #         groq_api_key=GROQ_API_KEY,
+    #         model_name="llama-3.1-8b-instant"
+    #     )
 
-    return {"text": output_text}
+    #     user_text = "\n".join([f"- {d}" for d in query.top_dishes])
+        
+    #     messages = [
+    #         SystemMessage(
+    #             content=(
+    #                 "Bạn là chuyên gia ẩm thực Việt Nam. "
+    #                 "Hãy trả lời trực tiếp, cuốn hút và thân thiện, dựa trên nguyên liệu mà người dùng cung cấp. "
+    #                 "Không liệt kê công thức, không chào hỏi dài dòng. "
+    #                 "Tập trung vào trải nghiệm khi ăn, mùi vị, màu sắc và cảm giác. "
+    #                 "Bạn có thể gợi ý món ăn hoặc hỏi người dùng muốn thử món nào."
+    #             )
+    #         ),
+    #         HumanMessage(
+    #             content=(
+    #                 f"Người dùng cung cấp nguyên liệu và tìm được các món ăn sau:\n{user_text}\n\n"
+    #                 "Hãy viết đoạn chat như sau:\n"
+    #                 "- Giới thiệu các món ăn phù hợp\n"
+    #                 "- Mô tả cuốn hút, sinh động\n"
+    #                 "- Có thể đưa ra gợi ý hoặc hỏi người dùng\n"
+    #                 "Tối đa 3–5 câu, nhấn mạnh trải nghiệm, hương vị, màu sắc, cảm giác khi ăn."
+    #             )
+    #         )
+    #     ]
+        
+    #     response = groq_chat.invoke(messages)  # Sửa từ generate thành invoke
+    #     output_text = response.content
+        
+    #     return {"text": output_text}
+        
+    # except Exception as e:
+    #     print(f"Groq error: {e}")
+    #     return {"text": f"Tìm thấy các món ăn: {', '.join(query.top_dishes)}"}
 
 # -------------------------
-# API: smart_recipes (search + smooth)
+# API: smart_recipes (search + smooth) - SỬA LẠI
 # -------------------------
 @router.post("/smart_recipes")
 def smart_recipes(query: RecipeQuery):
-    # 1️⃣ Lấy top dishes từ hàm logic search_dishes
-    top_dishes = search_dishes(df, faiss_handler, query.ingredients)
+    """Smart search with AI description"""
+    if not query.ingredients:
+        return {"top_dishes": [], "description": "Vui lòng cung cấp nguyên liệu"}
+    
+    if df is None or faiss_handler is None:
+        raise HTTPException(status_code=500, detail="Search engine not initialized")
+    
+    try:
+        # 1️⃣ Lấy top dishes từ search
+        top_dishes_results = search_dishes(df, faiss_handler, query.ingredients, top_k=5)
 
-    # Debug: in ra terminal xem kết quả
-    print("DEBUG - top_dishes:", top_dishes)
+        # Debug: in ra terminal xem kết quả
+        print("DEBUG - top_dishes_results:", [r["dish_name"] for r in top_dishes_results])
 
-    # 2️⃣ Smooth bằng LLM/Groq
-    smooth_result = smooth_recipes(SmoothQuery(top_dishes=top_dishes))
+        # 2️⃣ Smooth bằng LLM/Groq
+        smooth_result = smooth_recipes(SmoothQuery(top_dishes=top_dishes_results))
 
+        return {
+            "top_dishes": top_dishes_results,
+            "description": smooth_result["text"]
+        }
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Search error: {str(e)}")
+
+# -------------------------
+# Health check endpoint
+# -------------------------
+@router.get("/health")
+def health_check():
+    """Health check for search API"""
+    status = "healthy" if (df is not None and faiss_handler is not None) else "unhealthy"
     return {
-        "top_dishes": top_dishes,           # <-- optional trả về frontend luôn
-        "description": smooth_result["text"]
+        "status": status,
+        "search_engine_initialized": df is not None and faiss_handler is not None
     }
