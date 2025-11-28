@@ -63,7 +63,8 @@ intent_samples = {
         "Hướng dẫn làm món tôm rang muối",
         "Công thức nấu canh bí đỏ cho trẻ",
         "Làm món salad trộn, hướng dẫn chi tiết",
-        "Bạn chỉ cách nấu gà sốt tiêu đen"
+        "Bạn chỉ cách nấu gà sốt tiêu đen",
+        "vậy nấu món Súp đậu non trứng rong biển như nào"
     ]
 }
 
@@ -152,15 +153,16 @@ def extract_category(text):
 
 def extract_dish_name(text, category=None, threshold=60, dishes_set=None):
     """
-    Extract tên món từ text bằng fuzzy match, theo logic giống extract_best_dish.
+    Extract tên món từ text bằng fuzzy match.
     - threshold: chỉ nhận match score >= threshold
+    - ưu tiên match tên món dài nhất
     """
     if dishes_set is None:
         raise ValueError("Bạn phải truyền dishes_set vào")
 
     text_lower = text.lower().strip()
     tokens = tokenize(text_lower)
-    ngrams = generate_ngrams(tokens)  # tạo tất cả n-gram từ 1 token tới length
+    ngrams = generate_ngrams(tokens)  # từ dài → ngắn
 
     best_match = None
     best_score = 0
@@ -168,50 +170,87 @@ def extract_dish_name(text, category=None, threshold=60, dishes_set=None):
     for ng, start, end in ngrams:
         joined = "_".join(ng)
         for dish in dishes_set:
-            score = fuzz.partial_ratio(joined, dish)
+            score = fuzz.ratio(joined, dish)  # dùng ratio thay partial_ratio
             if score > best_score and score >= threshold:
                 best_score = score
                 best_match = dish
-                # debug
-                print(f"[DEBUG] New best match: {best_match.replace('_',' ')} with score {best_score}")
 
     if best_match:
         return best_match.replace("_", " ")
 
     return None
-def extract_all_slots(text):
+def extract_all_slots(text, intent=None):
+    """
+    Extract slots from text based on intent.
+    - suggest_dishes: category, ingredient, time, difficulty, serving
+    - cooking_guide: dish_name
+    """
     slots = {}
-    category = extract_category(text)
-    if category:
-        slots["category"] = category
 
-    ingredients = extract_ingredients(text)
-    if category and category in ingredients:
-        ingredients.remove(category)
-    if ingredients:
-        slots["ingredient"] = ingredients
+    if intent == "suggest_dishes":
+        # Category
+        category = extract_category(text)
+        if category:
+            slots["category"] = category
 
-    time = extract_time(text)
-    if time:
-        slots["time"] = time
+        # Ingredients
+        ingredients = extract_ingredients(text)
+        if category and category in ingredients:
+            ingredients.remove(category)
+        if ingredients:
+            slots["ingredient"] = ingredients
 
-    difficulty = extract_difficulty(text)
-    if difficulty:
-        slots["difficulty"] = difficulty
+        # Time
+        time = extract_time(text)
+        if time:
+            slots["time"] = time
 
-    serving = extract_serving(text)
-    if serving:
-        slots["serving"] = serving
+        # Difficulty
+        difficulty = extract_difficulty(text)
+        if difficulty:
+            slots["difficulty"] = difficulty
 
-    dish_name = extract_dish_name(text, category, dishes_set=dishes_set)
-    if dish_name:
-        slots["dish_name"] = dish_name
+        # Serving
+        serving = extract_serving(text)
+        if serving:
+            slots["serving"] = serving
+
+    elif intent == "cooking_guide":
+        # Dish name
+        dish_name = extract_dish_name(text, dishes_set=dishes_set)
+        if dish_name:
+            slots["dish_name"] = dish_name
+
+    else:
+        # fallback: try all
+        category = extract_category(text)
+        if category:
+            slots["category"] = category
+
+        ingredients = extract_ingredients(text)
+        if category and category in ingredients:
+            ingredients.remove(category)
+        if ingredients:
+            slots["ingredient"] = ingredients
+
+        time = extract_time(text)
+        if time:
+            slots["time"] = time
+
+        difficulty = extract_difficulty(text)
+        if difficulty:
+            slots["difficulty"] = difficulty
+
+        serving = extract_serving(text)
+        if serving:
+            slots["serving"] = serving
+
+        dish_name = extract_dish_name(text, dishes_set=dishes_set)
+        if dish_name:
+            slots["dish_name"] = dish_name
 
     return slots
 
-# -------------------------
-# Format output theo intent
-# -------------------------
 def format_output_by_intent(intent, slots):
     if intent == "suggest_dishes":
         return {
@@ -227,18 +266,18 @@ def format_output_by_intent(intent, slots):
         }
     else:
         return slots
-
-# -------------------------
-# Demo interactive
-# -------------------------
-if __name__ == "__main__":
-    print("Nhập câu để detect intent + extract slots (gõ 'exit' để thoát):")
-    while True:
-        text = input("Bạn: ")
-        if text.lower() in ["exit","thoát"]:
-            break
-        intent, score, _ = detect_intent(text)
-        slots = extract_all_slots(text)
-        output = format_output_by_intent(intent, slots)
-        print(f"Intent: {intent}, Score: {score:.3f}")
-        print("Output JSON:", json.dumps(output, ensure_ascii=False, indent=2))
+    
+# # -------------------------
+# # Demo interactive
+# # -------------------------
+# if __name__ == "__main__":
+#     print("Nhập câu để detect intent + extract slots (gõ 'exit' để thoát):")
+#     while True:
+#         text = input("Bạn: ")
+#         if text.lower() in ["exit","thoát"]:
+#             break
+#         intent, score, _ = detect_intent(text)
+#         slots = extract_all_slots(text)
+#         output = format_output_by_intent(intent, slots)
+#         print(f"Intent: {intent}, Score: {score:.3f}")
+#         print("Output JSON:", json.dumps(output, ensure_ascii=False, indent=2))

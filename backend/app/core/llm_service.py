@@ -1,7 +1,3 @@
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 # app/core/llm_service.py
 from typing import List
 from langchain_groq import ChatGroq

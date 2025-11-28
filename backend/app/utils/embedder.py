@@ -38,7 +38,7 @@ def load_embedding_model(model_name=None, device=None):
     return model
 
 
-def embed_texts(texts, model, batch_size=None):
+def embed_texts(texts, model, batch_size=None, text_type = None):
     """
     Encode list text bằng BGE-M3 (không prefix).
     Output: numpy.float32 matrix
