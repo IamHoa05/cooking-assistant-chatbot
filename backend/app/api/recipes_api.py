@@ -1,6 +1,5 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from typing import Optional
 import numpy as np
 import ast
 import pandas as pd
@@ -83,7 +82,7 @@ def process_text(query: TextQuery):
             top_dishes = [d["dish_name"] for d in cat_meta if d["dish_name"] in top_dishes]
 
         # 3.3 LLM tạo mô tả
-        description = describe_dishes(top_dishes)
+        description = describe_dishes(top_dishes,text)
 
         # 3.4 Format output
         output = format_output_by_intent(intent, slots)

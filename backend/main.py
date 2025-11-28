@@ -32,4 +32,7 @@ def root():
     with open(html_path, "r", encoding="utf-8") as f:
         html_content = f.read()
     return HTMLResponse(content=html_content)
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes

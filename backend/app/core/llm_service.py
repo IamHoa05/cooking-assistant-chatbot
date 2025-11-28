@@ -1,3 +1,7 @@
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 # app/core/llm_service.py
 from typing import List
 from langchain_groq import ChatGroq
@@ -12,27 +16,49 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 if not GROQ_API_KEY:
     raise ValueError("GROQ_API_KEY not found in .env")
 
-def describe_dishes(top_dishes: List[str]) -> str:
+def describe_dishes(top_dishes: List[str], user_input: str) -> str:
     """
-    Intent 'search': tạo đoạn mô tả hấp dẫn cho danh sách món ăn.
+    Tạo mô tả món ăn dựa trên danh sách món đã được lọc.
+    Kết quả: luôn trả về 1 string.
     """
     if not top_dishes:
-        return "Không có món ăn nào để hiển thị."
+        return "Hông thấy món nào hợp á, thử thêm nguyên liệu khác xem!"
 
-    groq_chat = ChatGroq(groq_api_key=GROQ_API_KEY, model_name="llama-3.1-8b-instant")
+    groq_chat = ChatGroq(
+        groq_api_key=GROQ_API_KEY,
+        model_name="llama-3.1-8b-instant"
+    )
+
+    # Format danh sách món
     dishes_text = "\n".join([f"- {d}" for d in top_dishes])
 
     messages = [
-        SystemMessage(content=(
-            "Bạn là chuyên gia ẩm thực Việt Nam. "
-            "Viết đoạn giới thiệu ngắn 3–5 câu mô tả sinh động, hấp dẫn về các món ăn dưới đây."
-        )),
-        HumanMessage(content=f"Các món ăn phù hợp:\n{dishes_text}")
+        SystemMessage(
+            content=(
+                "Bạn là chuyên gia ẩm thực Việt Nam, giọng Gen Z.\n"
+                "LUẬT BẮT BUỘC – LLM PHẢI TUÂN THỦ:\n"
+                "1) Chỉ được mô tả các món trong DANH SÁCH MÓN.\n"
+                "2) Không được tự nghĩ thêm món mới hoặc nhắc món ngoài danh sách.\n"
+                "3) Có thể liên hệ nhẹ đến yêu cầu của người dùng, nhưng KHÔNG được tạo món mới từ input.\n"
+                "4) Không được nói chung chung kiểu 'món Việt Nam' – phải nhắc tên món trong danh sách.\n"
+                "5) Chọn 1–2 món trong danh sách để mô tả.\n"
+                "6) Mô tả tự nhiên, vui vẻ, tối đa 40 chữ.\n"
+                "7) Không emoji. Không hỏi người dùng."
+            )
+        ),
+        HumanMessage(
+            content=(
+                f"Yêu cầu ban đầu của người dùng: {user_input}\n"
+                f"DANH SÁCH MÓN: \n{dishes_text}\n"
+                "Hãy mô tả 1–2 món trong danh sách sao cho hợp ngữ cảnh yêu cầu trên."
+            )
+        )
     ]
 
     try:
         response = groq_chat.generate([messages])
-        return response.generations[0][0].text.strip()
+        text = response.generations[0][0].text.strip()
+        return text
     except Exception as e:
         print("⚠️ LLM error (describe_dishes):", e)
         return "Không thể tạo mô tả món ăn bằng LLM."

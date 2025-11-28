@@ -1,5 +1,4 @@
 # app/core/search_servings.py
-from typing import List, Dict
 import numpy as np
 
 def search_dishes_by_servings(df, faiss_handler, target_servings: int, top_k: int = 5):

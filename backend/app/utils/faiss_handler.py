@@ -1,128 +1,77 @@
-# # faiss_handler.py
-# import os
-# import faiss
-# import numpy as np
-
-# class FAISSHandler:
-#     def __init__(self, df, embedding_columns, index_dir="./faiss_indexes"):
-#         """
-#         Class để load FAISS index từ file và search.
-        
-#         Args:
-#             df: DataFrame chứa dữ liệu (metadata)
-#             embedding_columns: dict {key: column_name_in_df}
-#             index_dir: thư mục chứa index đã build
-#         """
-#         self.df = df
-#         self.embedding_columns = embedding_columns
-#         self.index_dir = index_dir
-#         self.indexes = {}
-
-#         # Load tất cả index từ file
-#         self._load_indexes()
-
-#     def _load_indexes(self):
-#         for key, col in self.embedding_columns.items():
-#             index_path = os.path.join(self.index_dir, f"{col}.index")
-#             if not os.path.exists(index_path):
-#                 raise FileNotFoundError(f"Index file not found: {index_path}")
-#             self.indexes[col] = faiss.read_index(index_path)
-#             print(f"✅ Loaded FAISS index for column '{col}' from '{index_path}'")
-
-#     def search(self, query_vector: np.ndarray, column_key: str, top_k: int = 5):
-#         """
-#         Tìm top_k kết quả gần nhất cho query_vector trên cột embedding column_key.
-#         Không dùng cosine similarity.
-        
-#         Args:
-#             query_vector: np.ndarray (1D) vector query
-#             column_key: key trong embedding_columns
-#             top_k: số lượng kết quả trả về
-#         Returns:
-#             List of dict (row metadata + distance)
-#         """
-#         if column_key not in self.embedding_columns:
-#             raise ValueError(f"Invalid column_key '{column_key}'")
-
-#         index = self.indexes[self.embedding_columns[column_key]]
-#         query_vector = np.array([query_vector]).astype("float32")
-
-#         # Search top_k
-#         distances, indices = index.search(query_vector, top_k)
-
-#         results = []
-#         for dist, idx in zip(distances[0], indices[0]):
-#             row = self.df.iloc[idx].to_dict()
-#             row["_distance"] = dist
-#             row["__rowid__"] = idx   # 🔥 Quan trọng: lưu lại chỉ số dòng thật
-#             results.append(row)
-#         return results
-
-
-# faiss_handler.py
 import os
 import faiss
 import numpy as np
 
+
 class FAISSHandler:
-    def __init__(self, df, embedding_columns, index_dir="./faiss_indexes"):
-        """
-        Load FAISS index + row mapping.
-        df: DataFrame chứa metadata.
-        embedding_columns: dict {key: column_name_in_df}
-        index_dir: thư mục chứa index đã build.
-        """
+
+    def __init__(self, df, index_dir="./faiss_indexes"):
         self.df = df
-        self.embedding_columns = embedding_columns
         self.index_dir = index_dir
+
+        # index name → df column
+        self.cols = {
+            "dish": "dish_name_embedding",
+            "names": "ingredient_names_embedding"
+        }
+
         self.indexes = {}
-        self.row_indices = {}  # chỉ dùng cho flattened ingredient_names
+        self.row_map = {}
 
-        self._load_indexes()
+        self._load_all()
 
-    def _load_indexes(self):
-        for key, col in self.embedding_columns.items():
-            index_path = os.path.join(self.index_dir, f"{col}.index")
-            if not os.path.exists(index_path):
-                raise FileNotFoundError(f"Index file not found: {index_path}")
+    def _load_all(self):
+        """Load tất cả FAISS indexes."""
+        # dish_name
+        self.indexes["dish"] = faiss.read_index(f"{self.index_dir}/dish_name_embedding.index")
 
-            index = faiss.read_index(index_path)
-            self.indexes[col] = index
+        # ingredient names (flatten)
+        self.indexes["names"] = faiss.read_index(f"{self.index_dir}/ingredient_names_embedding.index")
+        self.row_map["names"] = np.load(f"{self.index_dir}/ingredient_names_row_ids.npy")
 
-            # Nếu là ingredient_names_embedding, load row_indices
-            if col == "ingredient_names_embedding":
-                row_idx_path = os.path.join(self.index_dir, f"{col}_row_indices.npy")
-                if not os.path.exists(row_idx_path):
-                    raise FileNotFoundError(f"Row indices file not found: {row_idx_path}")
-                self.row_indices[col] = np.load(row_idx_path)
+        print("✅ All FAISS indexes loaded successfully.")
 
-            print(f"✅ Loaded FAISS index for '{col}' from '{index_path}'")
+    def search(self, query_vec: np.ndarray, column_key: str, top_k: int = 10):
+        if column_key not in self.indexes:
+            raise ValueError(f"Invalid column key: {column_key}")
 
-    def search(self, query_vector: np.ndarray, column_key: str, top_k: int = 10):
-        """
-        Tìm top_k kết quả gần nhất cho query_vector.
-        """
-        if column_key not in self.embedding_columns:
-            raise ValueError(f"Invalid column_key '{column_key}'")
+        index = self.indexes[column_key]
+        q = np.array(query_vec, dtype="float32").reshape(1, -1)
+        distances, indices = index.search(q, top_k)
 
-        index = self.indexes[self.embedding_columns[column_key]]
-        query_vector = np.array([query_vector]).astype("float32")
+        # ingredient names → group by row_id, flat dict
+        if column_key == "names":
+            result_dict = {}
+            for dist, idx in zip(distances[0], indices[0]):
+                if idx < 0:
+                    continue
+                row_id = int(self.row_map["names"][idx])
+                if row_id not in result_dict:
+                    row_dict = self.df.iloc[row_id].to_dict()
+                    row_dict["_distance"] = float(dist)
+                    row_dict["_rowid"] = row_id
+                    row_dict["_match_count"] = 1
+                    result_dict[row_id] = row_dict
+                else:
+                    # tăng số nguyên liệu match
+                    result_dict[row_id]["_match_count"] += 1
+                    # giữ distance tốt nhất
+                    if dist < result_dict[row_id]["_distance"]:
+                        result_dict[row_id]["_distance"] = float(dist)
 
-        distances, indices = index.search(query_vector, top_k)
+            # convert dict → list, sort theo match_count + distance
+            results = list(result_dict.values())
+            results.sort(key=lambda x: (-x["_match_count"], x["_distance"]))
+            return results
+
+        # dish / qty → regular search
         results = []
-
         for dist, idx in zip(distances[0], indices[0]):
-            row_dict = {}
-
-            # Nếu flattened ingredient_names → map về row gốc
-            if column_key == "names":
-                row_idx = self.row_indices[self.embedding_columns[column_key]][idx]
-            else:
-                row_idx = idx
-
-            row_dict.update(self.df.iloc[row_idx].to_dict())
-            row_dict["_distance"] = dist
-            row_dict["_rowid__"] = row_idx  # chỉ số món gốc
-            results.append(row_dict)
+            if idx < 0:
+                continue
+            row = self.df.iloc[idx].to_dict()
+            row["_distance"] = float(dist)
+            row["_rowid"] = idx
+            results.append(row)
 
         return results

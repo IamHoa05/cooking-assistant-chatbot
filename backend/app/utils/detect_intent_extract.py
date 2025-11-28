@@ -149,38 +149,6 @@ def extract_category(text):
             return cat
     return None
 
-# def extract_dish_name(text, category=None, threshold=60, dishes_set=None):
-#     """
-#     Kết hợp category detection + fuzzy match danh sách dishes
-#     Giống logic extract_best_dish
-#     """
-#     if dishes_set is None:
-#         raise ValueError("Bạn phải truyền dishes_set vào")
-
-#     text_lower = text.lower().strip()
-
-#     # 1️⃣ Exact match với category trước (fallback)
-#     if category and category.lower() in text_lower:
-#         return category.lower()
-
-#     # 2️⃣ Tokenize + n-grams + fuzzy match
-#     tokens = tokenize(text_lower)
-#     ngrams = generate_ngrams(tokens)
-#     best_match = None
-#     best_score = 0
-
-#     for ng, start, end in ngrams:
-#         joined = "_".join(ng)
-#         for dish in dishes_set:
-#             score = fuzz.partial_ratio(joined, dish)
-#             if score > best_score and score >= threshold:
-#                 best_score = score
-#                 best_match = dish
-
-#     if best_match:
-#         return best_match.replace("_", " ")
-
-#     return None
 
 def extract_dish_name(text, category=None, threshold=60, dishes_set=None):
     """

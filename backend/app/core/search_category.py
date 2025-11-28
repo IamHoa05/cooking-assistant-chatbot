@@ -1,5 +1,4 @@
 # app/core/search_category.py
-from typing import List, Dict
 import pandas as pd
 
 def search_dishes_by_category(df: pd.DataFrame, category: str, max_results: int = 5):
