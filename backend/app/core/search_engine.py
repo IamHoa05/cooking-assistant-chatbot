@@ -64,39 +64,66 @@ def avg_cosine_score(input_vecs, recipe_vecs):
 # -----------------------------
 # Main search function (API dùng hàm này)
 # -----------------------------
-def search_dishes(df, handler, input_ingredients,
-                  top_faiss=100, top_k=5, alpha=0.7):
+# def search_dishes(df, handler, input_ingredients,
+#                   top_faiss=100, top_k=5, alpha=0.7):
+#     """
+#     ĐÃ SỬA:
+#     - Không dùng embedding, không gọi FAISS
+#     - Chỉ dùng fuzzy_match + keyword match
+#     - Giữ nguyên TÊN HÀM để không phá API
+#     """
+#     if not input_ingredients:
+#         return []
+
+#     # Chuẩn hóa input
+#     input_clean = [clean_ingredient(i) for i in input_ingredients]
+
+#     results = []
+
+#     for idx, row in df.iterrows():
+#         recipe_ings = parse_ingredient_list(row["ingredient_names"])
+#         recipe_clean = [clean_ingredient(i) for i in recipe_ings]
+
+#         # Fuzzy
+#         score_fuzzy = fuzzy_match(recipe_ings, input_ingredients)
+
+#         # Keyword match (tăng độ chính xác)
+#         keyword_hits = sum(1 for x in input_clean if x in recipe_clean)
+#         score_keyword = keyword_hits / len(input_clean)
+
+#         # Tổng hợp (embedding bỏ → cosine = 0)
+#         score_total = 0.7 * score_keyword + 0.3 * score_fuzzy
+
+#         results.append((row["dish_name"], score_total))
+
+#     # Sắp xếp
+#     results.sort(key=lambda x: x[1], reverse=True)
+
+#     return [name for name, score in results[:top_k]]
+
+
+
+def search_dishes(df, input_ingredients, top_k=5, alpha=0.7):
     """
-    ĐÃ SỬA:
-    - Không dùng embedding, không gọi FAISS
-    - Chỉ dùng fuzzy_match + keyword match
-    - Giữ nguyên TÊN HÀM để không phá API
+    Tìm kiếm theo nguyên liệu, giữ chữ ký cũ cho API.
+    Không dùng FAISS / embedding.
     """
     if not input_ingredients:
         return []
 
-    # Chuẩn hóa input
     input_clean = [clean_ingredient(i) for i in input_ingredients]
-
     results = []
 
     for idx, row in df.iterrows():
         recipe_ings = parse_ingredient_list(row["ingredient_names"])
         recipe_clean = [clean_ingredient(i) for i in recipe_ings]
 
-        # Fuzzy
         score_fuzzy = fuzzy_match(recipe_ings, input_ingredients)
-
-        # Keyword match (tăng độ chính xác)
         keyword_hits = sum(1 for x in input_clean if x in recipe_clean)
         score_keyword = keyword_hits / len(input_clean)
 
-        # Tổng hợp (embedding bỏ → cosine = 0)
         score_total = 0.7 * score_keyword + 0.3 * score_fuzzy
-
         results.append((row["dish_name"], score_total))
 
-    # Sắp xếp
     results.sort(key=lambda x: x[1], reverse=True)
-
     return [name for name, score in results[:top_k]]
