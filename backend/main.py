@@ -59,21 +59,17 @@
 
 
 
-
-# app/main.py
 import os
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
-
-# import router từ api
-from app.api import router as api_router
+from fastapi.staticfiles import StaticFiles
+from app.api.recipes_api import router as api_router
 
 app = FastAPI(
     title="Vietnamese Recipe Search API",
-    description="API tìm kiếm món ăn Việt Nam với nhiều tiêu chí: nguyên liệu, thể loại, độ khó, khẩu phần, thời gian nấu.",
+    description="API tìm kiếm món ăn Việt Nam",
     version="1.0.0"
 )
 
@@ -86,17 +82,21 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Mount router
+# Include API
 app.include_router(api_router, prefix="/api")
 
-# Root endpoint
+# Mount frontend static files
+frontend_path = os.path.join(os.path.dirname(__file__), "../frontend")
+app.mount("/static", StaticFiles(directory=frontend_path), name="static")
+
+# Route index.html
 @app.get("/", response_class=HTMLResponse)
 def root():
-    return {"message": "Vietnamese Recipe Search API is running."}
+    index_file = os.path.join(frontend_path, "index.html")
+    with open(index_file, "r", encoding="utf-8") as f:
+        html_content = f.read()
+    return HTMLResponse(html_content)
 
 
 if __name__ == "__main__":
-    uvicorn.run("app.main:app", host="0.0.0.0", port=8000, reload=True)
-
-
-
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)

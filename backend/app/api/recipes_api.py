@@ -319,7 +319,6 @@
 
 
 # app/api.py
-
 from fastapi import APIRouter
 from pydantic import BaseModel
 from typing import List
@@ -345,6 +344,7 @@ from app.core.llm import (
 )
 
 router = APIRouter()
+
 
 # Load DF
 DF_PATH = os.path.join(os.path.dirname(__file__), "../utils/data/recipes_embeddings.pkl")
