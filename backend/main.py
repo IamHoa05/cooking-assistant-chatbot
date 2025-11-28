@@ -33,22 +33,3 @@ def root():
         html_content = f.read()
     return HTMLResponse(content=html_content)
 
-# # Mount toàn bộ folder frontend để serve index.html + các file tĩnh nếu có
-# frontend_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "../frontend"))
-# app.mount("/static", StaticFiles(directory=frontend_path), name="static")
-
-# # Include API routes
-# app.include_router(api_router, prefix="/api")
-
-# # Route trả index.html
-# @app.get("/", response_class=HTMLResponse)
-# def root():
-#     index_file = os.path.join(frontend_path, "index.html")
-#     with open(index_file, "r", encoding="utf-8") as f:
-#         html_content = f.read()
-    
-#     # Thay thế đường dẫn file tĩnh nếu cần
-#     html_content = html_content.replace('src="', 'src="/static/')
-#     html_content = html_content.replace('href="', 'href="/static/')
-    
-#     return HTMLResponse(html_content)

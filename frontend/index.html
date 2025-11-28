@@ -1,51 +1,109 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Let's Cook</title>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="/static/style.css">
-</head>
-<body>
-<div class="chat-container">
-
-    <!-- Sidebar -->
-    <div class="sidebar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Let's Cook</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="chat-container">
+      <!-- Sidebar -->
+      <div class="sidebar">
         <div class="profile">
-            <div class="profile-img"><i class="fas fa-chef-hat"></i></div>
-            <p>Chuyên gia ẩm thực</p>
+          <div class="profile-img">
+            <img src="/static/img/logo.png" alt="logo" />
+          </div>
+          <p>CookGPT</p>
         </div>
 
-    </div>
+        <div class="quick-tips">
+          <h3>Tôi có thể</h3>
+          <ul class="tips-list">
+            <li class="menu-item" data-mode="ingredient">
+              <i class="fas fa-check-circle"></i>
+              <span>Gợi ý món ăn từ nguyên liệu</span>
+            </li>
+            <li class="menu-item" data-mode="guide">
+              <i class="fas fa-sliders-h"></i>
+              <span>Hướng dẫn nấu ăn</span>
+            </li>
+            <li class="menu-item" data-mode="difficulty">
+              <i class="fas fa-exchange-alt"></i>
+              <span>Gợi ý món theo độ khó</span>
+            </li>
+            <li class="menu-item" data-mode="time">
+              <i class="fas fa-stopwatch"></i>
+              <span>Gợi ý theo thời gian nấu</span>
+            </li>
+            <li class="menu-item" data-mode="serving">
+              <i class="fas fa-users"></i>
+              <span>Gợi ý theo khẩu phần ăn</span>
+            </li>
+            <li class="menu-item" data-mode="category">
+              <i class="fas fa-list-alt"></i>
+              <span>Gợi ý theo thể loại món ăn</span>
+            </li>
+            <li class="menu-item" data-mode="mix-choice">
+              <i class="fas fa-magic"></i>
+              <span>Gợi ý kết hợp</span>
+            </li>
+          </ul>
+        </div>
+      </div>
 
-    <!-- Chat Area -->
-    <div class="chat-area">
+      <!-- Chat Area -->
+      <div class="chat-area">
         <div class="chat-header">
-            <h1>Let's Cook</h1>
-            <div class="online-status">
-                <div class="online-dot"></div>
-                <span>Online</span>
-            </div>
+          <h1>Let's Cook</h1>
+          <div class="online-status">
+            <div class="online-dot"></div>
+            <span>Online</span>
+          </div>
         </div>
 
         <div class="chat-messages" id="chatMessages">
-            <div class="message ai">
-                <div class="message-bubble">
-                    Xin chào! Hãy chọn chế độ bên trái để bắt đầu.
-                </div>
-            </div>
+          <div class="message ai">
+            <div class="message-bubble">Xin chào! Hôm nay bạn muốn nấu gì?</div>
+          </div>
         </div>
 
         <div class="chat-input-container">
-            <div class="chat-input-wrapper">
-                <input type="text" id="chatInput" class="chat-input" placeholder="Chọn chế độ bên trái để bắt đầu...">
-                <button id="sendButton" class="send-button"><i class="fas fa-paper-plane"></i></button>
-            </div>
+          <div class="chat-input-wrapper">
+            <input
+              type="text"
+              id="chatInput"
+              class="chat-input"
+              placeholder="Hỏi nhanh..."
+            />
+            <button id="sendButton" class="send-button">
+              <i class="fas fa-paper-plane"></i>
+            </button>
+          </div>
+          <div class="privacy-notice">
+            💬 Tin nhắn của bạn sẽ được xử lý bởi AI
+          </div>
         </div>
+      </div>
     </div>
-</div>
 
-<script src="/static/script.js"></script>
-</body>
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay">
+      <div class="modal-box">
+        <div class="modal-header">
+          <div class="modal-icon" id="modalIcon"></div>
+          <div class="modal-title" id="modalTitle"></div>
+        </div>
+        <div class="modal-content" id="modalContent"></div>
+        <div class="modal-example" id="modalExample"></div>
+        <button class="modal-close-btn" id="modalCloseBtn">Đã hiểu</button>
+      </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+  </body>
 </html>
