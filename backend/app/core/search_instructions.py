@@ -53,18 +53,10 @@ embedding_model = load_embedding_model(EMBED_MODEL_NAME)
 # HELPER FUNCTION
 # ============================
 def search_dish(user_input: str, top_k: int = 1, score_threshold: float = 0.7):
-    """
-    Search for best matching dish name using embedding + FAISS.
-
-    Returns:
-        List[dict]: [{"dish_name": ..., "score": ..., "metadata": {...}}, ...]
-    """
-    # 1️⃣ Encode user input
     query_vec = embed_texts([user_input], embedding_model, batch_size=BATCH_SIZE, text_type="dish")[0]
     query_vec = np.array(query_vec, dtype="float32").reshape(1, -1)
     query_vec /= np.linalg.norm(query_vec)
 
-    # 2️⃣ Search FAISS
     distances, indices = dish_index.search(query_vec, top_k)
     results = []
 
@@ -74,7 +66,9 @@ def search_dish(user_input: str, top_k: int = 1, score_threshold: float = 0.7):
         row = df.iloc[idx]
         metadata = {
             "ingredients": row.get("ingredient_names", []),
-            "instructions": row.get("instructions", [])
+            "instructions": row.get("instructions", []),
+            "tips" : row.get("tips", []),
+            "image_link" : row.get("image_link", "")
         }
         results.append({
             "dish_name": row["dish_name"],
@@ -83,4 +77,3 @@ def search_dish(user_input: str, top_k: int = 1, score_threshold: float = 0.7):
         })
 
     return results
-

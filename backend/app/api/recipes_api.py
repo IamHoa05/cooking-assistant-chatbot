@@ -49,52 +49,72 @@ def process_text(query: TextQuery):
     print(f"Extracted slots: {slots}\n")
 
     if intent == "suggest_dishes":
-        # Thứ tự filter theo extract_all_slots
+    # Thứ tự filter theo extract_all_slots
         slot_order = ["category", "ingredient", "time", "difficulty", "serving"]
-        candidates = None
+        candidates = None  # ban đầu chưa có danh sách
 
         for slot in slot_order:
-            if slot not in slots:
-                continue
+            value = slots.get(slot)
+            if not value:
+                continue  # nếu slot không tồn tại, bỏ qua
 
-            print(f"Processing slot: {slot}, value: {slots[slot]}")
+            print(f"Processing slot: {slot}, value: {value}")
 
             if slot == "category":
-                candidates = search_dishes_by_category(df, slots["category"], max_results=20)
+                # category có thể là None → kiểm tra trước
+                candidates = search_dishes_by_category(df, value, max_results=100)
                 print(f"DEBUG: {len(candidates)} candidates after category")
 
             elif slot == "ingredient":
-                ing_results = search_by_ingredients(slots["ingredient"], df, handler, top_k=20)
+                # ingredient là list
+                ing_results = search_by_ingredients(value, df, handler, top_k=100)
                 print(f"DEBUG: {len(ing_results)} candidates from ingredients search")
+
                 if candidates is None:
                     candidates = ing_results
                 else:
-                    candidates = [d for d in candidates if d["dish_name"] in [r["dish_name"] for r in ing_results]]
+                    # giữ những món nằm trong cả 2 kết quả
+                    candidates = [
+                        d for d in candidates
+                        if d["dish_name"] in [r["dish_name"] for r in ing_results]
+                    ]
                 print(f"DEBUG: {len(candidates)} candidates after ingredient filter")
 
             elif slot == "time":
+                time_val = value[0] if isinstance(value, list) else value
                 if candidates is None:
-                    time_df = search_dishes_by_cook_time(df, slots["time"][0], max_results=20)
+                    time_df = search_dishes_by_cook_time(df, time_val, max_results=100)
                     candidates = [{"dish_name": d} for d in time_df["dish_name"].tolist()]
                 else:
-                    time_df = search_dishes_by_cook_time(df, slots["time"][0], max_results=20)
-                    candidates = [d for d in candidates if d["dish_name"] in time_df["dish_name"].tolist()]
+                    time_df = search_dishes_by_cook_time(df, time_val, max_results=100)
+                    candidates = [
+                        d for d in candidates
+                        if d["dish_name"] in time_df["dish_name"].tolist()
+                    ]
                 print(f"DEBUG: {len(candidates)} candidates after time filter")
 
             elif slot == "difficulty":
-                diff_results = get_dishes_by_difficulty(df, difficulty=slots["difficulty"], top_k=20)
+                diff_val = value
+                diff_results = get_dishes_by_difficulty(df, difficulty=diff_val, top_k=100)
                 if candidates is None:
                     candidates = diff_results
                 else:
-                    candidates = [d for d in candidates if d["dish_name"] in [r["dish_name"] for r in diff_results]]
+                    candidates = [
+                        d for d in candidates
+                        if d["dish_name"] in [r["dish_name"] for r in diff_results]
+                    ]
                 print(f"DEBUG: {len(candidates)} candidates after difficulty filter")
 
             elif slot == "serving":
-                serving_results = search_dishes_by_servings(df, handler, slots["serving"][0], top_k=20)
+                serving_val = value[0] if isinstance(value, list) else value
+                serving_results = search_dishes_by_servings(df, handler, serving_val, top_k=100)
                 if candidates is None:
                     candidates = serving_results
                 else:
-                    candidates = [d for d in candidates if d["dish_name"] in [r["dish_name"] for r in serving_results]]
+                    candidates = [
+                        d for d in candidates
+                        if d["dish_name"] in [r["dish_name"] for r in serving_results]
+                    ]
                 print(f"DEBUG: {len(candidates)} candidates after serving filter")
 
         # Lấy tên món ăn
@@ -138,19 +158,28 @@ def process_text(query: TextQuery):
             instructions = ast.literal_eval(metadata.get("instructions", [])) if isinstance(metadata.get("instructions"), str) else metadata.get("instructions", [])
         except Exception:
             instructions = []
-
+        try:
+            tips = ast.literal_eval(metadata.get("tips", [])) if isinstance(metadata.get("tips"), str) else metadata.get("tips", [])
+        except Exception:
+            tips = []
+        image_link = metadata.get("image_link")
+        if not image_link:
+            image_link = ""
         steps_smooth = smooth_instructions(dish_name, ingredients, instructions)
 
         print(f"DEBUG: ingredients={ingredients}")
         print(f"DEBUG: instructions={instructions}")
         print(f"DEBUG: steps_smooth={steps_smooth}")
-
+        print(f"DEBUG: image_link={image_link}")
+        
         return {
             "intent": intent,
             "dish_name": dish_name,
             "ingredients": ingredients,
             "instructions": instructions,
-            "steps_smooth": steps_smooth
+            "steps_smooth": steps_smooth,
+            "tips": tips  ,
+            "image_link": image_link
         }
 
     else:

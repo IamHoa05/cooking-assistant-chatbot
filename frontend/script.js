@@ -60,6 +60,7 @@ const tipsData = {
   }
 };
 
+
 // ===========================
 // Modal Functions
 // ===========================
@@ -95,6 +96,18 @@ function initModal() {
   });
 }
 
+function openImageModal(url) {
+  const modal = document.createElement("div");
+  modal.className = "image-modal";
+
+  modal.innerHTML = `
+    <div class="image-modal-bg" onclick="this.parentElement.remove()"></div>
+    <img src="${url}" class="image-modal-content">
+  `;
+
+  document.body.appendChild(modal);
+}
+
 // ===========================
 // Chat Functions
 // ===========================
@@ -114,7 +127,7 @@ function initChat() {
   function addLoading() {
     const msg = document.createElement("div");
     msg.className = "message ai loading";
-    msg.innerHTML = `<div class="message-bubble">Đang xử lý...</div>`;
+    msg.innerHTML = `<div class="message-bubble">Mình đang tìm món ăn, bạn đợi mình chút nhé!!!</div>`;
     chatMessages.appendChild(msg);
     chatMessages.scrollTop = chatMessages.scrollHeight;
   }
@@ -147,10 +160,10 @@ function initChat() {
         return;
       }
 
-      // Suggest dishes
+      // === Suggest Dishes ===
       if (data.intent === "suggest_dishes") {
         if (!data.top_dishes || data.top_dishes.length === 0) {
-          addMessage("Không tìm thấy món ăn phù hợp.");
+          addMessage("Mình không tìm thấy món ăn phù hợp với yêu cầu của bạn.");
           return;
         }
         let html = `<b>🎯 Gợi ý món ăn phù hợp:</b><br>`;
@@ -158,28 +171,59 @@ function initChat() {
         html += `<br><br><b>📘 Mô tả:</b><br>${data.description}`;
         addMessage(html);
       }
-      // Cooking guide
+
+      // === Cooking Guide ===
       else if (data.intent === "cooking_guide") {
         if (data.error) {
           addMessage(data.error);
           return;
         }
-        let html = `<b>🍽 Hướng dẫn nấu món: ${data.dish_name}</b><br><br>`;
-        html += `<b>🧂 Nguyên liệu:</b><br>`;
-        if (Array.isArray(data.ingredients)) html += data.ingredients.map(i => `• ${i}`).join("<br>");
-        else html += "Không có dữ liệu nguyên liệu.";
 
-        html += `<br><br><b>👨‍🍳 Các bước thực hiện:</b><br>`;
+        let html = `<b>🍽 Hướng dẫn nấu món: ${data.dish_name}</b><br><br>`;
+
+        // Nguyên liệu
+        html += `<b>🧂 Nguyên liệu:</b><br>`;
+        if (Array.isArray(data.ingredients) && data.ingredients.length > 0) {
+                  html += data.ingredients.map(i => `• ${i}`).join("<br>");
+        } else html += "Không có dữ liệu nguyên liệu.";
+
+        // Các bước
+        html += `<br><br><b>👨‍🍳 Các bước thực hiện:</b><br><ul style="padding-left:18px;">`;
+
         let steps = [];
         if (Array.isArray(data.steps_smooth)) steps = data.steps_smooth;
-        else if (typeof data.steps_smooth === "string") steps = data.steps_smooth.split("\n");
-        else { html += "Không có hướng dẫn."; addMessage(html); return; }
+        else if (typeof data.steps_smooth === "string")
+          steps = data.steps_smooth.split("\n");
 
-        html += steps.filter(s => s.trim().length > 0)
-                     .map((step, idx) => `${idx+1}. ${step.trim()}`).join("<br>");
-        addMessage(html);
-      }
-      else addMessage(data.error || "Xin lỗi, tôi chưa hiểu yêu cầu của bạn.");
+        html += steps
+          .filter(s => s.trim().length > 0)
+          .map(step => `<li>${step.trim()}</li>`)
+          .join("");
+
+        html += `</ul>`;
+
+        // ⭐ MẸO NẤU ĂN
+        if (data.tips && data.tips.length > 0) {
+          html += `<br><b>💡 Mẹo nấu ăn:</b><ul style="padding-left:18px;">`;
+          html += data.tips
+            .map(tip => `<li>${tip}</li>`)
+            .join("");
+          html += `</ul>`;
+        }
+
+        // Link ảnh
+       if (data.image_link && data.image_link.trim() !== "") {
+          html += `
+            <img src="${data.image_link}" 
+                alt="${data.dish_name || 'image'}"
+                onclick="openImageModal('${data.image_link}')"
+                style="width:150px; border-radius:8px; margin-top:10px; cursor:pointer;">
+          `;
+        }
+        html += `<br><br><i>Chúc bạn nấu món này thật ngon miệng nheeee!!!!</i>`;
+          addMessage(html);
+      }else addMessage(data.error || "Xin lỗi, tôi chưa hiểu yêu cầu của bạn.");
+
     } catch (err) {
       removeLoading();
       console.error(err);
@@ -192,6 +236,7 @@ function initChat() {
     if (e.key === "Enter") sendMessage();
   });
 }
+
 
 // ===========================
 // Initialize App

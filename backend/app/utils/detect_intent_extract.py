@@ -6,9 +6,10 @@ import numpy as np
 import re
 import string
 import json
-
+import pickle
+import torch
 # -------------------------
-# Load dữ liệu
+# Load dictionaries
 # -------------------------
 with open("app/utils/data/ingredient_dict.json", encoding="utf-8") as f:
     ingredients_list = json.load(f)
@@ -20,55 +21,22 @@ with open("app/utils/data/dish_dict.json", encoding="utf-8") as f:
 ingredients_set = set([i.lower().replace(" ", "_") for i in ingredients_list])
 dishes_set = [d.lower().replace(" ", "_") for d in dishes_list]
 
-STOPWORDS = {"còn","miếng","cái","từ","trước","làm","món","gì","vừa","ngon","dễ","thế","nào","nhé","ạ","tôi","muốn","nấu"}
+STOPWORDS = {
+    "còn","miếng","cái","từ","trước","làm","món","gì","vừa","ngon",
+    "dễ","thế","nào","nhé","ạ","tôi","muốn","nấu","cho","bị","thấy",
+    "có","để","ăn","lại","thêm","nữa","nha","ôi","ơi","à","ra"
+}
 DIFFICULTY_KEYWORDS = ["dễ","trung bình","khó"]
 
 # -------------------------
 # Load embedding model
 # -------------------------
-model = SentenceTransformer("BAAI/bge-base-en-v1.5")
+MODEL_NAME = "BAAI/bge-m3"
+model = SentenceTransformer(MODEL_NAME)
 
-# -------------------------
-# Intent samples
-# -------------------------
-intent_samples = {
-    "suggest_dishes": [
-        "Tôi có thịt gà, khoai tây, cà rốt, làm món gì ngon?",
-        "Nhà còn tôm, bông cải xanh, giúp tôi gợi ý món ăn",
-        "Còn cá hồi, khoai lang, bông cải, tối nay nấu gì?",
-        "Giúp mình với, còn thịt heo khoai môn bắp non, tối nay nấu gì?",
-        "Tối nay tôi chỉ có thịt gà, sả, ớt, một ít thịt bò, nên nấu gì?",
-        "Bạn gợi ý món nào nấu từ thịt gà, sả, ớt, thịt bò?",
-        "Tôi muốn nấu món từ thịt gà, sả, ớt, thịt bò?",
-        "Tôi muốn nấu món salad với cà chua bi, dưa leo, 4 phần ăn.",
-        "giúp tôi làm món từ tôm , thịt bò, rau muống cho 3 người",
-        "Tôi có thịt heo, cà rốt, khoai tây, làm món gì nhanh cho 2 người?",
-        "tìm món đơn giản cho người mới bắt đầu",
-        "tìm món nấu nhanh trong 30p",
-    ],
-    "cooking_guide": [
-        "Hướng dẫn nấu món canh chua",
-        "Công thức làm bánh mì chiên",
-        "Làm sao để nấu món cà ri gà ngon?",
-        "Bạn chỉ mình cách nấu canh mướp với tôm",
-        "Mình muốn học nấu mì Ý bò bằm",
-        "Hướng dẫn cách làm gà kho tộ",
-        "Bạn có công thức nấu phở gà không?",
-        "Làm món tráng miệng socola, hướng dẫn nhé",
-        "Mình muốn học nấu canh rau củ nhanh",
-        "Công thức nấu bánh pizza tại nhà",
-        "Bạn hướng dẫn cách làm món xào thịt bò",
-        "Mình muốn học nấu cháo hải sản",
-        "Cách nấu món cà tím nhồi thịt",
-        "Hướng dẫn làm món tôm rang muối",
-        "Công thức nấu canh bí đỏ cho trẻ",
-        "Làm món salad trộn, hướng dẫn chi tiết",
-        "Bạn chỉ cách nấu gà sốt tiêu đen",
-        "vậy nấu món Súp đậu non trứng rong biển như nào"
-    ]
-}
-
-intent_embeddings = {k: model.encode(v, convert_to_tensor=True) for k,v in intent_samples.items()}
+# Load prebuilt embeddings
+with open("app/utils/data/intent_embeddings.pkl", "rb") as f:
+    intent_embeddings = pickle.load(f)
 
 # -------------------------
 # Intent detection
@@ -76,26 +44,66 @@ intent_embeddings = {k: model.encode(v, convert_to_tensor=True) for k,v in inten
 def get_rule_weight(text):
     t = text.lower()
     weights = {}
-    if re.search(r"(dạy tôi làm|hướng dẫn|cách làm|bước|chia sẻ|công thức|giới thiệu|cách nấu)", t):
+
+    # keywords cho cooking_guide
+    cooking_keywords = [
+        r"dạy", r"hướng dẫn", r"cách làm", r"công thức", r"bước", r"làm sao", r"cách nấu",
+        r"học nấu", r"chỉ mình", r"bài học", r"chia sẻ cách", r"cách chế biến",
+        r"thực hiện món", r"hướng dẫn chi tiết", r"làm món", r"hướng dẫn làm"
+    ]
+    if any(re.search(k, t) for k in cooking_keywords):
         weights["cooking_guide"] = 0.05
-    if re.search(r"(nấu món|có .* nấu gì|làm món|gợi ý món|thịt|cá|rau|trứng|tôm|cà rốt)", t):
+
+    # keywords cho suggest_dishes
+    suggest_keywords = [
+        r"nấu món", r"có .* nấu gì", r"gợi ý món", r"món gì", r"thịt", r"tôm",
+        r"rau", r"cá", r"trứng", r"có nguyên liệu", r"tối nay nấu", r"nấu cho",
+        r"nấu nhanh", r"món ngon", r"công thức món", r"nấu với", r"làm món gì",
+        r"làm món nhanh", r"tìm món", r"món phù hợp", r"cần tìm"
+    ]
+    if any(re.search(k, t) for k in suggest_keywords):
         weights["suggest_dishes"] = 0.05
+
     return weights
 
-def detect_intent(text):
-    user_emb = model.encode([text], convert_to_tensor=True)[0]
-    all_scores = {}
-    for intent_name, embeddings in intent_embeddings.items():
-        sim_scores = cosine_similarity(user_emb.reshape(1,-1), embeddings.cpu().numpy())[0]
-        all_scores[intent_name] = float(np.max(sim_scores))
-    for k,w in get_rule_weight(text).items():
-        all_scores[k] += w
-    final_intent = max(all_scores, key=all_scores.get)
-    final_score = all_scores[final_intent]
-    return final_intent, final_score, all_scores
+def detect_intent(text: str):
+    # Encode đoạn text → numpy
+    text_emb = model.encode([text])[0]
+
+    # Convert sang tensor để tính cosine
+    text_emb = torch.tensor(text_emb, dtype=torch.float32)
+
+    scores = {}
+    best_intent = None
+    best_score = -1
+
+    for intent, emb_list in intent_embeddings.items():  # <-- sửa tên biến
+
+        # emb_list có thể là numpy → convert
+        if not torch.is_tensor(emb_list):
+            emb_list = torch.tensor(emb_list, dtype=torch.float32)
+
+        # cosine similarity giữa text_emb và list embeddings của intent đó
+        sim = torch.nn.functional.cosine_similarity(
+            text_emb.unsqueeze(0),  # [1, 384]
+            emb_list,               # [N, 384]
+            dim=1
+        ).max().item()
+
+        scores[intent] = sim
+
+        if sim > best_score:
+            best_score = sim
+            best_intent = intent
+
+    # Trả ra:
+    #   - intent tốt nhất
+    #   - score tương ứng của intent đó
+    #   - toàn bộ bảng scores
+    return best_intent, scores[best_intent], scores
 
 # -------------------------
-# Slot extraction
+# Slot extraction (GIỮ NGUYÊN TOÀN BỘ)
 # -------------------------
 def tokenize(text):
     tokens = ViTokenizer.tokenize(text).split()
@@ -103,7 +111,7 @@ def tokenize(text):
 
 def generate_ngrams(tokens, max_n=6):
     ngrams = []
-    for n in range(max_n,0,-1):
+    for n in range(max_n, 0, -1):
         for i in range(len(tokens)-n+1):
             ngrams.append((tokens[i:i+n], i, i+n))
     return ngrams
@@ -112,12 +120,14 @@ def extract_ingredients(text):
     tokens = tokenize(text)
     ngrams = generate_ngrams(tokens)
     detected = set()
-    used_indices = set()
-    for ng, start, end in ngrams:
-        joined = "_".join(ng)
-        if joined in ingredients_set and not any(i in used_indices for i in range(start,end)):
-            detected.add(joined.replace("_"," "))
-            used_indices.update(range(start,end))
+    used_idx = set()
+
+    for ng, s, e in ngrams:
+        key = "_".join(ng)
+        if key in ingredients_set and not any(i in used_idx for i in range(s, e)):
+            detected.add(key.replace("_", " "))
+            used_idx.update(range(s, e))
+
     return list(detected)
 
 def extract_time(text):
@@ -125,11 +135,13 @@ def extract_time(text):
     match_hour_min = re.search(r'(\d+)\s*(giờ|h|tiếng)\s*(\d+)?\s*(phút|p)?', text)
     if match_hour_min:
         hours = int(match_hour_min.group(1))
-        minutes = int(match_hour_min.group(3)) if match_hour_min.group(3) else 0
-        return [hours*60+minutes]
+        mins = int(match_hour_min.group(3)) if match_hour_min.group(3) else 0
+        return [hours*60 + mins]
+
     match_only_min = re.findall(r'(\d+)\s*(phút|p)', text)
     if match_only_min:
         return [sum(int(m[0]) for m in match_only_min)]
+
     return None
 
 def extract_serving(text):
@@ -143,42 +155,31 @@ def extract_difficulty(text):
     return None
 
 def extract_category(text):
-    text_lower = " ".join(text.lower().split())
-    sorted_keywords = sorted(category_list, key=lambda x:-len(x))
-    for cat in sorted_keywords:
-        if f"món {cat}" in text_lower or cat in text_lower:
+    t = " ".join(text.lower().split())
+    sorted_cats = sorted(category_list, key=lambda x: -len(x))
+    for cat in sorted_cats:
+        if f"món {cat}" in t or cat in t:
             return cat
     return None
 
-
-def extract_dish_name(text, category=None, threshold=60, dishes_set=None):
-    """
-    Extract tên món từ text bằng fuzzy match.
-    - threshold: chỉ nhận match score >= threshold
-    - ưu tiên match tên món dài nhất
-    """
-    if dishes_set is None:
-        raise ValueError("Bạn phải truyền dishes_set vào")
-
-    text_lower = text.lower().strip()
+def extract_dish_name(text, dishes_set=dishes_set, threshold=60):
+    text_lower = text.lower()
     tokens = tokenize(text_lower)
-    ngrams = generate_ngrams(tokens)  # từ dài → ngắn
+    ngrams = generate_ngrams(tokens)
 
-    best_match = None
+    best = None
     best_score = 0
 
-    for ng, start, end in ngrams:
+    for ng, s, e in ngrams:
         joined = "_".join(ng)
         for dish in dishes_set:
-            score = fuzz.ratio(joined, dish)  # dùng ratio thay partial_ratio
-            if score > best_score and score >= threshold:
+            score = fuzz.ratio(joined, dish)
+            if score >= threshold and score > best_score:
+                best = dish
                 best_score = score
-                best_match = dish
 
-    if best_match:
-        return best_match.replace("_", " ")
+    return best.replace("_", " ") if best else None
 
-    return None
 def extract_all_slots(text, intent=None):
     """
     Extract slots from text based on intent.
@@ -260,24 +261,10 @@ def format_output_by_intent(intent, slots):
             "servings": slots.get("serving"),
             "category": slots.get("category")
         }
-    elif intent == "cooking_guide":
+
+    if intent == "cooking_guide":
         return {
             "dish_name": slots.get("dish_name")
         }
-    else:
-        return slots
-    
-# # -------------------------
-# # Demo interactive
-# # -------------------------
-# if __name__ == "__main__":
-#     print("Nhập câu để detect intent + extract slots (gõ 'exit' để thoát):")
-#     while True:
-#         text = input("Bạn: ")
-#         if text.lower() in ["exit","thoát"]:
-#             break
-#         intent, score, _ = detect_intent(text)
-#         slots = extract_all_slots(text)
-#         output = format_output_by_intent(intent, slots)
-#         print(f"Intent: {intent}, Score: {score:.3f}")
-#         print("Output JSON:", json.dumps(output, ensure_ascii=False, indent=2))
+
+    return slots
