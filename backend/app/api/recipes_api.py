@@ -19,7 +19,7 @@ router = APIRouter()
 # -------------------------
 # Khởi tạo search engine
 # -------------------------
-df, handler = initialize_search_engine()
+df, faiss_handler, bm25_handler = initialize_search_engine()
 
 # Embedding model
 EMBED_MODEL_NAME = "BAAI/bge-m3"
@@ -60,11 +60,11 @@ def process_text(query: TextQuery):
             print(f"Processing slot: {slot}, value: {slots[slot]}")
 
             if slot == "category":
-                candidates = search_dishes_by_category(df, slots["category"], max_results=20)
+                candidates = search_dishes_by_category(df, slots["category"], max_results=100)
                 print(f"DEBUG: {len(candidates)} candidates after category")
 
             elif slot == "ingredient":
-                ing_results = search_by_ingredients(slots["ingredient"], df, handler, top_k=20)
+                ing_results = search_by_ingredients(slots["ingredient"], df, faiss_handler, bm25_handler, top_k=100)
                 print(f"DEBUG: {len(ing_results)} candidates from ingredients search")
                 if candidates is None:
                     candidates = ing_results
@@ -74,15 +74,15 @@ def process_text(query: TextQuery):
 
             elif slot == "time":
                 if candidates is None:
-                    time_df = search_dishes_by_cook_time(df, slots["time"][0], max_results=20)
+                    time_df = search_dishes_by_cook_time(df, slots["time"][0], max_results=100)
                     candidates = [{"dish_name": d} for d in time_df["dish_name"].tolist()]
                 else:
-                    time_df = search_dishes_by_cook_time(df, slots["time"][0], max_results=20)
+                    time_df = search_dishes_by_cook_time(df, slots["time"][0], max_results=100)
                     candidates = [d for d in candidates if d["dish_name"] in time_df["dish_name"].tolist()]
                 print(f"DEBUG: {len(candidates)} candidates after time filter")
 
             elif slot == "difficulty":
-                diff_results = get_dishes_by_difficulty(df, difficulty=slots["difficulty"], top_k=20)
+                diff_results = get_dishes_by_difficulty(df, difficulty=slots["difficulty"], top_k=100)
                 if candidates is None:
                     candidates = diff_results
                 else:
@@ -90,7 +90,7 @@ def process_text(query: TextQuery):
                 print(f"DEBUG: {len(candidates)} candidates after difficulty filter")
 
             elif slot == "serving":
-                serving_results = search_dishes_by_servings(df, handler, slots["serving"][0], top_k=20)
+                serving_results = search_dishes_by_servings(df, handler, slots["serving"][0], top_k=100)
                 if candidates is None:
                     candidates = serving_results
                 else:

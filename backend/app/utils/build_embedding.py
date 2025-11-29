@@ -1,3 +1,4 @@
+# build_embedding.py
 import pandas as pd
 from embedder import load_embedding_model, embed_texts
 import numpy as np
