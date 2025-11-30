@@ -1,7 +1,7 @@
 # app/core/search_servings.py
 import numpy as np
 
-def search_dishes_by_servings(df, faiss_handler, target_servings: int, top_k: int = 5):
+def search_dishes_by_servings(df, faiss_handler, bm25_handler, target_servings: int, top_k: int = 5):
     """
     Tìm món ăn gần nhất với số khẩu phần target_servings.
     Dựa trên cột 'servings' trong DataFrame.

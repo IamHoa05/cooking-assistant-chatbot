@@ -146,16 +146,22 @@ def compute_scores(recipe_ing, query_ing):
 
 def search_dishes(df, bm25_handler, faiss_handler, input_ingredients, top_k=5, top_faiss=100):
     # 1. Chuan hoa input
-    tokens = [clean_ingredient(x) for x in input_ingredients]
+    tokens = [ing for ing in input_ingredients]
     
     # 2. Lay candidate set tu BM25
     bm25_results = bm25_handler.search(tokens, top_k=top_faiss)
-    candidate_indices = []
-    for res in bm25_results:
-        # tim index trong df bang text match
-        match_idx = df.index[df['dish_name'] == res['text']]
-        if len(match_idx) > 0:
-            candidate_indices.append(match_idx[0])
+    candidate_indices = [res['doc_id'] for res in bm25_results]
+    bm25_score_map = {res['doc_id']: res['score'] for res in bm25_results}
+
+    # DEBUG BM25
+    print(f"📊 DEBUG - BM25 found {len(bm25_results)} candidates")
+    if bm25_results:
+        bm25_scores = [res['score'] for res in bm25_results]
+        print(f"📊 BM25 scores - Min: {min(bm25_scores):.2f}, Max: {max(bm25_scores):.2f}, Avg: {np.mean(bm25_scores):.2f}")
+        for i, res in enumerate(bm25_results[:5]):
+            doc_id = res['doc_id']
+            actual_ingredients = df.iloc[doc_id]['ingredient_names']
+            print(f"  {i+1}. Doc {doc_id}: {actual_ingredients} | BM25 Score: {res['score']:.2f}")
 
     if not candidate_indices:
         candidate_indices = list(df.index)
@@ -163,7 +169,7 @@ def search_dishes(df, bm25_handler, faiss_handler, input_ingredients, top_k=5, t
 
     # 3. Encode input va search FAISS trong candidate set
     model = load_embedding_model(EMBED_MODEL_NAME)
-    query_vecs = embed_texts(input_ingredients, model, batch_size=EMBED_BATCH_SIZE)
+    query_vecs = embed_texts(tokens, model, batch_size=EMBED_BATCH_SIZE)
 
     # FAISS search voi candidate_df
     results = faiss_handler.search(query_vecs=query_vecs, column_key="names", top_k=top_faiss)
@@ -172,14 +178,25 @@ def search_dishes(df, bm25_handler, faiss_handler, input_ingredients, top_k=5, t
     # 4. Tinh score ket hop
     final_results = []
     for r in results:
+        row_id = r["_rowid"]
+        bm25_score = bm25_score_map.get(row_id, 0)
+
         exact, jaccard = compute_scores(r["ingredient_names"], tokens)
         fuzzy = fuzzy_match(r["ingredient_names"], tokens)
+        
+        if bm25_results:
+            max_bm25 = max([res['score'] for res in bm25_results])
+            normalized_bm25 = bm25_score / max_bm25 if max_bm25 > 0 else 0
+        else:
+            normalized_bm25 = 0
+
         r["exact_match"] = exact
         r["jaccard"] = jaccard
         r["fuzzy_match"] = fuzzy
 
         r["final_score"] = (
-            r["_distance"] * 0.7 + # khoang cach lon hon -> diem cao hon
+            r["_distance"] * 0.4 +   # khoang cach lon hon -> diem cao hon
+            normalized_bm25 * 0.3 +
             exact * 0.15 +
             jaccard * 0.1 +
             fuzzy * 0.05
@@ -187,9 +204,20 @@ def search_dishes(df, bm25_handler, faiss_handler, input_ingredients, top_k=5, t
 
         matched_count = sum(1 for ing in tokens if ing in r["ingredient_names"])
         if matched_count >= 1:
-            bonus = 0.05 * min(matched_count, 4)
+            bonus = 0.1 * (matched_count - 1)
             r["final_score"] *= (1 + bonus)
 
+        # Penalty cho match it nguyen lieu
+        if matched_count < 2:
+            r["final_score"] *= 0.8
+
+        r.update({
+            "exact_match": exact,
+            "jaccard": jaccard,
+            "fuzzy_match": fuzzy,
+            "bm25_score": round(bm25_score, 4),
+            "normalized_bm25": round(normalized_bm25, 4)
+        })
         final_results.append(r)
     
     # 5. Sort de tim top_k
@@ -200,16 +228,20 @@ def search_dishes(df, bm25_handler, faiss_handler, input_ingredients, top_k=5, t
     formatted_results = []
     for r in final_results:
         matched_count = sum(1 for ing in tokens if ing in r["ingredient_names"])
+        matched_ingredients = [ing for ing in tokens if ing in r["ingredient_names"]]
         formatted_results.append({
             "dish_name": r["dish_name"],
             "ingredients": r["ingredient_names"],
             "final_score": round(r["final_score"], 4),
             "score_breakdown": {
                 "cosine": round(r["_distance"], 4),
+                "bm25": r["bm25_score"],
+                "normalized_bm25": r["normalized_bm25"],
                 "exact_match": round(r["exact_match"], 4),
                 "jaccard": round(r["jaccard"], 4),
                 "fuzzy": round(r["fuzzy_match"], 4),
-                "matched_count": matched_count
+                "matched_count": matched_count,
+                "matched_ingredients": matched_ingredients
             }
         })
 
@@ -227,7 +259,12 @@ def initialize_search_engine(
     df["ingredient_names"] = canonicalize_ingredient_list(df["ingredient_names"])
 
     corpus_tokens = df["ingredient_names"].tolist()
-    raw_corpus = df.index.tolist()
+    # SỬA: Dùng dish name + ingredients cho raw_corpus
+    raw_corpus = []
+    for i, ingredients in enumerate(corpus_tokens):
+        # Kết hợp dish name và ingredients để BM25 có context
+        dish_name = df.iloc[i]['dish_name']
+        raw_corpus.append(f"{dish_name} | {', '.join(ingredients)}")
     bm25_handler = BM25Handler(corpus_tokens, raw_corpus=raw_corpus)
 
     faiss_handler = FAISSHandler(df, index_dir=index_dir)
@@ -244,16 +281,21 @@ def search_by_ingredients(input_ingredients, df, faiss_handler, bm25_handler, to
 # -----------------------------
 if __name__ == "__main__":
     df, faiss_handler, bm25_handler = initialize_search_engine()
-    user_input = "ức gà, bắp cải"
-    results = search_by_ingredients(user_input, df, faiss_handler, bm25_handler, top_k=5)
+    user_input = "trứng gà, cà rốt, hành tây, thịt ba chỉ"
+    results = search_by_ingredients(user_input, df, faiss_handler, bm25_handler, top_k=10)
 
     print(f"🔍 Kết quả tìm kiếm cho: {user_input}")
-    print("="*60)
+    print("="*80)
     for i, r in enumerate(results, 1):
         print(f"{i}. {r['dish_name']} | Score: {r['final_score']:.4f}")
         print(f"   Nguyên liệu: {', '.join(r['ingredients'])}")
-        print(f"   Chi tiết: Cosine={r['score_breakdown']['cosine']:.3f}, "
-              f"Exact={r['score_breakdown']['exact_match']:.3f}, "
-              f"Jaccard={r['score_breakdown']['jaccard']:.3f}, "
-              f"Fuzzy={r['score_breakdown']['fuzzy']:.3f}")
+        print(f"   Chi tiết:")
+        print(f"     - Cosine: {r['score_breakdown']['cosine']:.3f}")
+        print(f"     - BM25: {r['score_breakdown']['bm25']:.3f}")
+        print(f"     - Exact match: {r['score_breakdown']['exact_match']:.3f}")
+        print(f"     - Jaccard: {r['score_breakdown']['jaccard']:.3f}")
+        print(f"     - Fuzzy: {r['score_breakdown']['fuzzy']:.3f}")
+        print(f"     - Matched: {r['score_breakdown']['matched_count']}/4 nguyên liệu")
+        if 'matched_ingredients' in r['score_breakdown']:
+            print(f"     - Ingredients matched: {', '.join(r['score_breakdown']['matched_ingredients'])}")
         print()

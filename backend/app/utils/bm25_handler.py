@@ -31,6 +31,7 @@ class BM25Handler:
             if min_score is not None and score < min_score:
                 continue
             results.append({
+                "doc_id": i,
                 "text": self.raw_corpus[i],
                 "score": score
             })

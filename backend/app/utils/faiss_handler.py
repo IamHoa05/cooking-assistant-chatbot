@@ -37,16 +37,14 @@ class FAISSHandler:
             raise ValueError(f"Invalid column key: {column_key}")
 
         index = self.indexes[column_key]
-        q = np.array(query_vecs, dtype="float32")
-        if q.ndim == 1:
-            q = q.reshape(1, -1)
-        distances, indices = index.search(q, top_k)
+        query_arr = np.array(query_vecs, dtype="float32")
+        
+        distances, indices = index.search(query_arr, top_k)
         
         # ingredient names → group by row_id, flat dict
         if column_key == "names":
             result_dict = {}
-            for q_idx in range(q.shape[0]):
-
+            for q_idx in range(len(query_vecs)):
                 for dist, idx in zip(distances[q_idx], indices[q_idx]):
                     if idx < 0:
                         continue
@@ -60,8 +58,8 @@ class FAISSHandler:
                     else:
                         # tăng số nguyên liệu match
                         result_dict[row_id]["_match_count"] += 1
-                        # giữ distance tốt nhất
-                        if dist < result_dict[row_id]["_distance"]:
+                        # giữ distance CAO nhất (tương đồng tốt nhất) - ĐÃ SỬA
+                        if dist > result_dict[row_id]["_distance"]:
                             result_dict[row_id]["_distance"] = float(dist)
 
             # convert dict → list, sort theo match_count + distance
@@ -69,27 +67,15 @@ class FAISSHandler:
             results.sort(key=lambda x: (-x["_match_count"], -x["_distance"]))
             return results
 
-        # dish / qty → regular search
-        merged = {}
-        for q_idx in range(q.shape[0]):
-
-            for dist, idx in zip(distances[q_idx], indices[q_idx]):
-                if idx < 0:
-                    continue
-                row_id = int(idx)
-                row = self.df.iloc[row_id].to_dict()
-                
-                if row_id not in merged:
-                    merged[row_id] = row
-                    merged[row_id]["_distance"] = float(dist)
-                    merged[row_id]["_rowid"] = row_id
-                    merged[row_id]["_hit_count"] = 1
-                else:
-                    merged[row_id]["_hit_count"] += 1
-                    if dist > merged[row_id]["_distance"]:
-                        merged[row_id]["_distance"] = float(dist)
-
-        results = list(merged.values())
-        results.sort(key=lambda x: (-x["_hit_count"], -x["_distance"]))
-
+        # dish → regular search
+        results = []
+        for dist, idx in zip(distances[0], indices[0]):
+            if idx < 0:
+                continue
+            row = self.df.iloc[idx].to_dict()
+            row["_distance"] = float(dist)
+            row["_rowid"] = int(idx)
+            results.append(row)
+        
+        results.sort(key=lambda x: -x["_distance"])
         return results

@@ -90,7 +90,7 @@ def process_text(query: TextQuery):
                 print(f"DEBUG: {len(candidates)} candidates after difficulty filter")
 
             elif slot == "serving":
-                serving_results = search_dishes_by_servings(df, handler, slots["serving"][0], top_k=100)
+                serving_results = search_dishes_by_servings(df, faiss_handler, bm25_handler, slots["serving"][0], top_k=100)
                 if candidates is None:
                     candidates = serving_results
                 else:
