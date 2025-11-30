@@ -27,14 +27,10 @@
 ### Chương 1: Giới thiệu
 **📝 Tóm tắt dự án**
    - ✨ Dự án Cooking Assistant Chatbot được xây dựng nhằm phát triển một trợ lý ảo thông minh trong lĩnh vực nấu ăn. Chatbot hỗ trợ người dùng:
-
-Tìm kiếm món ăn dựa trên nguyên liệu có sẵn.
-
-Cung cấp hướng dẫn chế biến chi tiết, dễ hiểu.
-
-Gợi ý mẹo nấu ăn, lưu ý dinh dưỡng và thời gian nấu.
-
-Hệ thống được thiết kế để hiểu ngôn ngữ tự nhiên, xử lý dữ liệu món ăn theo cấu trúc chuẩn hóa và đưa ra đề xuất phù hợp với khẩu vị, sở thích và điều kiện thực tế của người dùng.
+     - Tìm kiếm món ăn dựa trên nguyên liệu có sẵn.
+     - Cung cấp hướng dẫn chế biến chi tiết, dễ hiểu.
+     - Gợi ý mẹo nấu ăn, lưu ý dinh dưỡng và thời gian nấu.
+     - Hệ thống được thiết kế để hiểu ngôn ngữ tự nhiên, xử lý dữ liệu món ăn theo cấu trúc chuẩn hóa và đưa ra đề xuất phù hợp với khẩu vị, sở thích và điều kiện thực tế của người dùng.
 
 **❓ Bài toán đặt ra**
    - 📌 Trong bối cảnh nhu cầu nấu ăn tại nhà ngày càng tăng, đặc biệt sau những biến động xã hội gần đây, nhiều người muốn tự nấu ăn để tiết kiệm chi phí, đảm bảo sức khỏe và nâng cao kỹ năng nấu nướng. Tuy nhiên, việc tìm kiếm công thức phù hợp với nguyên liệu sẵn có hoặc thời gian hạn chế vẫn là thách thức.
