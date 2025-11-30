@@ -29,7 +29,13 @@ VD: GROQ_API_KEY=abshgsksfkslgjsl
 cd backend
 pip install -r requirements.txt
 ```
- 5.  Sau đó điều hướng đến thư mục backend và chạy lệnh:
+5. Sau đó điều hướng đến backend/app/utils và chạy các lệnh sau:
+```bash
+python build_embedding.py
+python build_faiss_index.py
+python build_intent_embedding.py
+```
+6.  Sau đó điều hướng đến thư mục backend và chạy lệnh:
  ```bash
 uvicorn main:app --reload
  ```

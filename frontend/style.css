@@ -1,4 +1,6 @@
-/* ===== GENERAL ===== */
+/* ============================
+   GLOBAL / RESET
+============================ */
 * {
   margin: 0;
   padding: 0;
@@ -15,19 +17,23 @@ body {
   color: #8a4c76;
 }
 
-/* ===== CHAT CONTAINER ===== */
+/* ============================
+   CHAT CONTAINER
+============================ */
 .chat-container {
   width: 95%;
   max-width: 1200px;
   height: 95vh;
   background: white;
   border-radius: 20px;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
   display: flex;
   overflow: hidden;
 }
 
-/* ===== SIDEBAR ===== */
+/* ============================
+   SIDEBAR
+============================ */
 .sidebar {
   width: 350px;
   background: linear-gradient(to bottom, #d4306a, #ff7ba9);
@@ -67,7 +73,7 @@ body {
 }
 
 .quick-tips {
-  background: rgba(255,255,255,0.2);
+  background: rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   padding: 15px;
   width: 100%;
@@ -91,16 +97,20 @@ body {
   cursor: pointer;
   border-radius: 12px;
   transition: all 0.2s;
-  border-bottom: 1px solid rgba(255,255,255,0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .tips-list li:hover {
-  background-color: rgba(255,255,255,0.35);
+  background-color: rgba(255, 255, 255, 0.35);
 }
 
-.tips-list li i { color: #ffd1dc; }
+.tips-list li i {
+  color: #ffd1dc;
+}
 
-/* ===== CHAT AREA ===== */
+/* ============================
+   CHAT AREA
+============================ */
 .chat-area {
   flex: 1;
   display: flex;
@@ -116,7 +126,10 @@ body {
   background: white;
 }
 
-.chat-header h1 { font-size: 24px; color: #ff7ba9; }
+.chat-header h1 {
+  font-size: 24px;
+  color: #ff7ba9;
+}
 
 .online-status {
   display: flex;
@@ -137,7 +150,10 @@ body {
   animation: pulse 2s infinite;
 }
 
-@keyframes pulse { 0%,100%{opacity:1}50%{opacity:0.5} }
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
 
 .chat-messages {
   flex: 1;
@@ -162,15 +178,20 @@ body {
   border-radius: 10px;
 }
 
-.message.ai { align-self: flex-start; }
-.message.user { align-self: flex-end; }
+.message.ai {
+  align-self: flex-start;
+}
+
+.message.user {
+  align-self: flex-end;
+}
 
 .message-bubble {
   padding: 15px 20px;
   border-radius: 18px;
   font-size: 15px;
   line-height: 1.5;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
 }
 
 .message.ai .message-bubble {
@@ -186,14 +207,20 @@ body {
   border-bottom-right-radius: 5px;
 }
 
-/* ===== CHAT INPUT ===== */
+/* ============================
+   CHAT INPUT
+============================ */
 .chat-input-container {
   padding: 20px 30px;
   background: white;
   border-top: 1px solid #f5e1e8;
 }
 
-.chat-input-wrapper { display: flex; gap: 12px; align-items: center; }
+.chat-input-wrapper {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
 
 .chat-input {
   flex: 1;
@@ -205,21 +232,44 @@ body {
   background: #fffafc;
 }
 
-.chat-input:focus { border-color: #ff9ec0; background:white; }
-
-.send-button {
-  background: linear-gradient(135deg,#ad315c,#ad315c);
-  color:white; border:none; width:50px; height:50px;
-  border-radius:50%; display:flex; justify-content:center; align-items:center;
-  cursor:pointer; font-size:18px; transition: all 0.3s;
+.chat-input:focus {
+  border-color: #ff9ec0;
+  background: white;
 }
 
-.send-button:hover { transform: scale(1.05); }
-.send-button:active { transform: scale(0.95); }
+.send-button {
+  background: linear-gradient(135deg, #ad315c, #ad315c);
+  color: white;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  font-size: 18px;
+  transition: all 0.3s;
+}
 
-.privacy-notice { text-align:center; font-size:12px; color:#b8a2b1; margin-top:10px; }
+.send-button:hover {
+  transform: scale(1.05);
+}
 
-/* ===== MODAL ===== */
+.send-button:active {
+  transform: scale(0.95);
+}
+
+.privacy-notice {
+  text-align: center;
+  font-size: 12px;
+  color: #b8a2b1;
+  margin-top: 10px;
+}
+
+/* ============================
+   MODAL
+============================ */
 .modal-overlay {
   position: fixed !important;
   top: 0;
@@ -229,11 +279,13 @@ body {
   display: none;
   justify-content: center;
   align-items: center;
-  background: rgba(0,0,0,0.45);
+  background: rgba(0, 0, 0, 0.45);
   z-index: 999999;
 }
 
-.modal-overlay.active { display:flex; }
+.modal-overlay.active {
+  display: flex;
+}
 
 .modal-box {
   background: #fff;
@@ -241,21 +293,66 @@ body {
   max-width: 90%;
   padding: 22px;
   border-radius: 14px;
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
 }
 
-.modal-header { display:flex; align-items:center; gap:15px; margin-bottom:20px; }
-.modal-icon { width:50px; height:50px; background:linear-gradient(135deg,#d4306a,#ff7ba9); border-radius:50%; display:flex; align-items:center; justify-content:center; color:white; font-size:24px; }
-.modal-title { font-size:20px; font-weight:600; color:#d4306a; }
+.modal-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 20px;
+}
 
-.modal-content { color:#8a4c76; margin-bottom:15px; font-size:14px; line-height:1.6; }
-.modal-example { background:#fffafc; padding:12px; border-radius:8px; border-left:4px solid #ff7ba9; font-size:13px; color:#8a4c76; margin-top:10px; }
-.modal-close-btn { background:linear-gradient(135deg,#d4306a,#ff7ba9); color:white; border:none; padding:10px 20px; border-radius:8px; cursor:pointer; font-size:14px; width:100%; margin-top:15px; }
+.modal-icon {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #d4306a, #ff7ba9);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
+}
 
-/* ============================ */
-/* Dishes container & card */
-/* ============================ */
-/* Dishes container */
+.modal-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #d4306a;
+}
+
+.modal-content {
+  color: #8a4c76;
+  margin-bottom: 15px;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.modal-example {
+  background: #fffafc;
+  padding: 12px;
+  border-radius: 8px;
+  border-left: 4px solid #ff7ba9;
+  font-size: 13px;
+  color: #8a4c76;
+  margin-top: 10px;
+}
+
+.modal-close-btn {
+  background: linear-gradient(135deg, #d4306a, #ff7ba9);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 100%;
+  margin-top: 15px;
+}
+
+/* ============================
+   DISHES GRID + CARDS
+============================ */
 .dishes-container {
   display: flex;
   flex-wrap: wrap;
@@ -271,7 +368,7 @@ body {
   width: 150px;
   text-align: center;
   padding: 10px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .dish-card img {
@@ -286,20 +383,36 @@ body {
   font-weight: bold;
 }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width:768px){
-  .sidebar { width:80px; padding:20px 10px; }
-  .profile-img { width:50px; height:50px; }
-  .quick-tips h3, .tips-list li span { display:none; }
+/* ============================
+   RESPONSIVE
+============================ */
+@media (max-width: 768px) {
+  .sidebar {
+    width: 80px;
+    padding: 20px 10px;
+  }
+
+  .profile-img {
+    width: 50px;
+    height: 50px;
+  }
+
+  .quick-tips h3,
+  .tips-list li span {
+    display: none;
+  }
 }
 
+/* ============================
+   IMAGE MODAL
+============================ */
 .image-modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0,0,0,0.7);
+  background: rgba(0, 0, 0, 0.7);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -317,16 +430,26 @@ body {
   max-width: 85%;
   max-height: 85%;
   border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.4);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
   animation: zoomIn 0.25s ease;
 }
 
 @keyframes zoomIn {
-  from { transform: scale(0.7); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+  from {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
