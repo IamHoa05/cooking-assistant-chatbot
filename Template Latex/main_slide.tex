@@ -1,0 +1,204 @@
+\documentclass[a4paper,12pt]{report}
+\usepackage[utf8]{vietnam}
+\usepackage[T5]{fontenc}
+\usepackage[a4paper,top=2cm,bottom=2cm,left=2.5cm,right=2.5cm]{geometry}
+\usepackage{setspace}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage{multirow}
+\usepackage{float}
+\usepackage{tikz}
+\usetikzlibrary{calc}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{amsmath}
+\usepackage[hidelinks]{hyperref}
+\usepackage{makecell}
+\usepackage{etoolbox}
+\robustify\makecell
+\setstretch{1.3}
+\setlength{\parindent}{1.2cm}
+\usepackage{fancyhdr}
+\pagestyle{fancy}  
+\fancyhf{} % xóa tất cả header/footer mặc định
+\fancyhead[L]{\nouppercase{\leftmark}}  
+\fancyhead[R]{Cooking Assistant Chatbot}  
+% Footer: số trang ở giữa
+\fancyfoot[C]{\thepage}               
+% Khi bắt đầu chương, cập nhật \leftmark
+\renewcommand{\chaptermark}[1]{\markboth{#1}{}}
+
+\hypersetup{
+    colorlinks=black,    
+    linkcolor=black,
+    urlcolor=black,
+    citecolor=black,
+    filecolor=black
+}
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\definecolor{lightgray}{gray}{0.95}
+
+\begin{document}
+
+\begin{titlepage}
+\begin{tikzpicture}[remember picture, overlay]
+    % Viền đen dày xung quanh trang
+    \draw[line width=3pt, color=black]
+        ($(current page.north west)+(2cm,-2cm)$) rectangle 
+        ($(current page.south east)+(-1.5cm,1.5cm)$);
+\end{tikzpicture}
+
+\begin{center}
+    \large\textbf{ĐẠI HỌC QUỐC GIA HÀ NỘI}\\
+    \textbf{TRƯỜNG ĐẠI HỌC KHOA HỌC TỰ NHIÊN}\\
+    \textbf{KHOA TOÁN - CƠ - TIN HỌC}\\[1.5cm]
+
+    \includegraphics[width=4cm]{imgs/logo_hus.jpg}\\[1.5cm] 
+
+    \LARGE\textbf{COOKING ASSISTANT CHATBOT}\\[1.5cm]
+
+    \normalsize
+    \begin{tabular}{l c r}
+        Nhóm sinh viên thực hiện:\\[0.3cm]
+        Nguyễn Thị Hòa & : & 23001521\\
+        Đào Thị Ngọc Bích & : & 23001501\\
+        Đinh Thị Kiều Na & : & 23001537\\
+        Dương Diễm Quỳnh & : & 23001555\\
+        Lưu Thị Thủy Tiên & : & 23001563\\
+    \end{tabular}\\[1.5cm]
+
+    Mã học phần: MAT3508\\
+    Học kỳ I, Năm học 2025–2026\\
+\end{center}
+
+\end{titlepage}
+
+\newpage
+
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture, overlay]
+    % Viền đen dày xung quanh trang
+    \draw[line width=3pt, color=black]
+        ($(current page.north west)+(2cm,-2cm)$) rectangle 
+        ($(current page.south east)+(-2cm,2cm)$);
+\end{tikzpicture}
+
+% \vspace*{3cm} % cách viền trên
+
+\begin{center}
+    {\LARGE \textbf{Thông tin Dự án}} \\[2em]
+    \begin{tabular}{r p{10cm}}
+        \textbf{Học phần:} & MAT3508 -- Nhập môn Trí tuệ Nhân tạo \\
+        \textbf{Học kỳ:} & Học kỳ 1, Năm học 2025-2026 \\
+        \textbf{Trường:} & VNU-HUS (Đại học Quốc gia Hà Nội, Trường Đại học Khoa học Tự nhiên) \\
+        \textbf{Tên dự án:} & Cooking Assistant Chatbot \\
+        \textbf{Ngày nộp:} & 30/11/2025\\
+        \textbf{Báo cáo PDF:} & \href{[PDF Link]}{Liên kết tới báo cáo PDF trong kho GitHub} \\
+        \textbf{Slide thuyết trình:} & \href{[Slides Link]}{Liên kết tới slide thuyết trình trong kho GitHub} \\
+        \textbf{Kho GitHub:} & \url{https://github.com/IamHoa05/cooking-assistant-chatbot}
+    \end{tabular}
+    \\[2em]
+    {\Large \textbf{Thành viên nhóm}}\\[1em]
+    \begin{tabular}{|l|l|l|l|}
+        \hline
+        \textbf{Họ tên} & \textbf{Mã sinh viên} & \textbf{Tên GitHub} & \textbf{Đóng góp} \\
+        \hline
+        Nguyễn Thị Hòa & 23001521 & IamHoa05 & \makecell{Trưởng nhóm \\ Backend \\ Xây dựng NLP} \\
+        \hline
+        Đào Thị Ngọc Bích & 23001501 & daobich14 & \makecell{Frontend \\ Tiền xử lý dữ liệu}\\
+        \hline
+        Đinh Thị Kiều Na & 23001537 & kieuna2005 & \makecell{Frontend \\ Xây dựng Embedding}\\
+        \hline
+        Dương Diễm Quỳnh & 23001555 & ddquynh & \makecell{Backend \\ Xây dựng LLM}\\
+        \hline
+        Lưu Thị Thủy Tiên & 23001563 & ttien2312 & \makecell{Backend \\ Xây dựng NLP}\\
+        \hline
+    \end{tabular}
+\end{center}
+
+\pagenumbering{gobble}
+\newpage 
+\listoffigures % Remove if not needed
+\listoftables % Remove if not needed
+
+\newpage
+\tableofcontents
+\clearpage
+\newpage
+\setlength{\parindent}{1cm}
+\include{Chapters/Chapter0}
+\pagenumbering{arabic}
+\include{Chapters/Chapter1}
+
+\chapter{ Phương pháp \& Triển khai}
+
+\input{Chapters/2.1}
+\input{Chapters/2.2}
+\input{Chapters/2.3.1}
+\input{Chapters/2.3.2}
+\input{Chapters/2.4}
+
+\chapter{Kết quả \& Phân tích}
+\input{Chapters/3.1}
+\input{Chapters/3.2}
+\input{Chapters/3.3}
+\input{Chapters/3.4}
+
+\include{Chapters/Chapter4}
+
+
+\newpage
+\begingroup
+\raggedright
+
+
+% --- Trang tài liệu tham khảo ---
+\newpage
+\vspace{0.5cm}
+\begin{thebibliography}{9}
+
+\bibitem{faiss_official}
+"FAISS: Facebook AI Similarity Search," Meta AI. Accessed: Nov. 30, 2025. [Online]. 
+Available: \url{https://faiss.ai/}
+
+\bibitem{datacamp_faiss}
+"FAISS: Facebook AI Similarity Search Tutorial," DataCamp. Accessed: Nov. 30, 2025. [Online]. 
+Available: \url{https://www.datacamp.com/blog/faiss-facebook-ai-similarity-search}
+
+\bibitem{huggingface_faiss}
+"HuggingFace Course – FAISS," HuggingFace. Accessed: Nov. 30, 2025. [Online]. 
+Available: \url{https://huggingface.co/learn/llm-course/vi/chapter5/6}
+
+\bibitem{llm-selectmodel}
+"ChatGroq – LangChain Documentation," LangChain. Accessed: Nov. 30, 2025. [Online]. 
+Available: \url{https://docs.langchain.com/oss/python/integrations/chat/groq}
+
+\bibitem{llm-message}
+"ChatGroq – LangChain Messages", LangChain. Accessed: Nov.30, 2025. [Online]. Available: \url{https://docs.langchain.com/oss/python/langchain/messages}
+
+\bibitem{transformer}
+"Cơ chế hoạt động của Transformer?" Hugging Face — LLM Course. Accessed: Nov. 30, 2025. [Online]. Available: \url{https://huggingface.co/learn/llm-course/vi/chapter1/4}
+
+\bibitem{embeddinggg}
+"Tất tần tật về WordEmbedding – Word Embedding là gì?" Luu.name. Accessed: Nov. 30, 2025. [Online]. Available: \url{https://luu.name.vn/tat-tan-tat-ve-wordembedding-word-embedding-la-gi/}
+
+\bibitem{transformer-to-llm}
+"Từ Transformer Model tới Large Language Model" — Lưu.name. Accessed: Nov. 30, 2025. [Online]. Available: \url{https://luu.name.vn/tu-transformer-model-toi-large-language-model/}
+
+\bibitem{embedding-bge-m3}
+"bge-m3" — BAAI. Hugging Face. Accessed: Nov. 30, 2025. [Online]. Available: \url{https://huggingface.co/BAAI/bge-m3}
+
+\bibitem[n-gram]N-Gram Language Modelling with NLTK{https://www.geeksforgeeks.org/nlp/n-gram-language-modelling-with-nltk/}
+
+\bibitem[Vitokenizer]Vitokenizer{https://viblo.asia/p/phan-loai-van-ban-tu-dong-bang-machine-learning-nhu-the-nao-4P856Pa1ZY3}
+
+
+
+\end{thebibliography}
+
+
+
+\end{document}

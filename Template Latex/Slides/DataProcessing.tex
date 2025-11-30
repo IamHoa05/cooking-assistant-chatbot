@@ -1,0 +1,134 @@
+% \begin{frame}
+%     \title{Thu thập dữ liệu}
+%     \subtitle{Tóm tắt nội dung báo cáo}
+%     \author{}
+%     \date{}
+% \end{frame}
+
+\begin{frame}{Thu thập dữ liệu}
+    \begin{itemize}
+        \item Thu thập >2000 công thức từ trang web monngonmoingay.com sử dụng công cụ Selenium WebDriver để Crawl dữ liệu.
+        \item Dữ liệu thu thập được sẽ được sử dụng để làm dữ liệu phục vụ việc xây dựng mô hình.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Lý do sử dụng Selenium WebDriver}
+    \begin{itemize}
+        \item Trang web dùng JavaScript → HTML tĩnh không đủ dữ liệu
+        \item Các công cụ truyền thống như Requests hay BeautifulSoup chỉ đọc HTML tĩnh, nên sẽ bị mất thông tin, trong khi đó selenium webdriver cho phép các tướng tác sau
+        \item Các tương tác phổ biến:
+        \begin{itemize}
+            \item Đóng pop-up cookie
+            \item Cuộn trang để tải thêm dữ liệu (Lazy Loading)
+        \end{itemize} 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Các bước thu thập dữ liệu}
+    \begin{enumerate}
+        \item Khởi tạo trình duyệt
+        
+        - driver = webdriver.Chrome() chính là lệnh khởi tạo Selenium WebDriver.
+
+        - Sau bước khởi tạo này bạn có thể dùng driver để:
+
+        driver.get(url) → mở trang web
+
+        driver.find\_element(...) → tìm nút, ảnh, nội dung
+
+        driver.click() → bấm nút
+
+        driver.quit() → đóng trình duyệt 
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Các bước thu thập dữ liệu}
+    \begin{enumerate}
+        \item Crawl URL và hình ảnh
+        
+        Bước 1: Duyệt qua từng trang 
+
+        Bước 2: Xử lý popup (chỉ ở trang đầu tiên)
+
+        Bước 3: Tìm kiếm các thẻ chứa món ăn
+ 
+        Bước 4: Trích xuất thông tin từ mỗi thẻ
+        
+        Bước 5: Lưu trữ tạm thời
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Các bước thu thập dữ liệu}
+    \begin{enumerate}
+        \item Crawl chi tiết món ăn
+        
+        Duyệt qua URL đã thu thập và mở trang bằng driver.get(recipe["url"])
+        
+        Thu thập các thông tin như: tên món ăn, nguyên liệu, các bước nấu, thời gian, độ khó, tip...
+    \end{enumerate}
+\end{frame}
+
+\begin{frame}{Tiền xử lý dữ liệu}
+    \begin{itemize}
+        \item Chuẩn hoá đơn vị khối lượng
+        \item Chuẩn hoá thời gian nấu
+        \item Chuẩn hoá tên nguyên liệu
+        \item Sửa lỗi chính tả nguyên liệu
+        \item Phân loại món ăn theo tên
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Chuẩn hoá đơn vị (normalize\_unit)}
+    \begin{itemize}
+        \item Xử lý list bằng đệ quy
+        \item Dùng regex thay thế đơn vị ngay sau số:
+        \begin{itemize}
+            \item g → gam
+            \item M → muỗng
+            \item tr → trái
+            \item c → củ
+        \end{itemize} 
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Chuẩn hoá thời gian nấu}
+    \begin{itemize} 
+        \item Trích số giờ và phút bằng regex
+        \item Quy đổi toàn bộ về phút:
+        \[
+            \text{tổng phút} = 60 \times \text{giờ} + \text{phút}
+        \]
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Chuẩn hoá tên nguyên liệu}
+    \begin{itemize}
+        \item Loại bỏ icon, đưa về chữ thường
+        \item Xoá ký tự đặc biệt
+        \item Loại bỏ từ mô tả trạng thái: “cắt”, “băm”, “tươi”, …
+        \item Loại bỏ tên thương hiệu: Ajingon, Ajinomoto, …
+        \item Gom nhóm nhiều biến thể về cùng một tên chuẩn
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Sửa lỗi chính tả nguyên liệu}
+    \begin{itemize}
+        \item Dùng bảng từ điển \texttt{INGREDIENT\_CORRECTIONS}
+        \item Tách tên thành từng từ
+        \item Thay thế từng từ nếu tồn tại trong từ điển
+        \item Giữ nguyên nếu không có ánh xạ
+        \item Giảm trùng lặp do lỗi gõ, viết tắt, sai chính tả
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Phân loại món ăn tự động}
+    \begin{itemize}
+        \item So sánh tên món với tập từ khoá
+        \item Ví dụ:
+        \begin{itemize}
+            \item “bún”, “phở” → Món nước
+            \item “chiên”, “rán” → Chiên
+        \end{itemize}
+        \item Trả về tên thể loại viết hoa chữ cái đầu
+    \end{itemize}
+\end{frame}

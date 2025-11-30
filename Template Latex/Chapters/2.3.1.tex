@@ -1,0 +1,283 @@
+\section{Xây dựng NLP}
+\subsection{Xác định intent và trích xuất thông tin (Slot Extraction)}
+\subsubsection{\underline{\textit{Xác định intent}}}
+\textbf{\textit{ a. Mục tiêu}}
+
+Bước xác định intent nhằm phân loại chính xác ý định của người dùng khi tương tác với hệ thống. Cụ thể, hệ thống cần nhận biết liệu người dùng hướng tới việc tìm kiếm món ăn hay nhận hướng dẫn nấu ăn . Việc nhận diện intent chính xác tạo nền tảng để các bước tiếp theo - như trích xuất thông tin và gợi ý món ăn - hoạt động hiệu quả, từ đó nâng cao trải nghiệm người dùng và đảm bảo tính nhất quán trong phản hồi.
+
+\begin{figure}[h]       % h: đặt ảnh gần vị trí trong văn bản
+    \centering           % căn giữa ảnh
+    \includegraphics[width= 15cm, height = 3cm]{imgs/pipeline_intent.png}  % width: 85% chiều rộng trang
+    \caption{Pipeline xác định intent}  % chú thích ảnh
+    \label{fig:example1}   % nhãn để tham chiếu
+\end{figure}
+
+\vspace{0.25cm}
+\textbf{\textit{{b. Thu thập và xây dựng tập dữ liệu Intent}}}
+
+Để phục vụ bài toán phân loại ý định người dùng, hai nhóm intent chính được xác định gồm:
+\texttt{suggest\_dishes} (gợi ý món ăn) và \texttt{cooking\_guide} (hướng dẫn nấu ăn).
+Bộ dữ liệu được xây dựng theo quy trình bán tự động dựa trên mô hình ngôn ngữ và kiểm duyệt thủ công, bao gồm các bước:
+
+\begin{enumerate}
+    \item \textbf{Xây dựng mô tả intent ban đầu}.  
+    Mỗi intent được mô tả rõ ràng về mục đích, phạm vi và cách diễn đạt đặc trưng.
+
+    \item \textbf{Sinh câu mẫu bằng mô hình ngôn ngữ}.  
+    ChatGPT được sử dụng để sinh các câu hỏi tự nhiên, đa dạng cấu trúc với promp yêu cầu:
+    \begin{itemize}
+        \item Câu ngắn, câu dài;
+        \item Câu có bối cảnh thực tế;
+        \item Câu paraphrase không trùng lặp cấu trúc;
+        \item Câu dễ gây nhầm lẫn giữa hai intent nhằm tăng độ bao phủ.
+    \end{itemize}
+
+    \item \textbf{Kiểm duyệt thủ công}.  
+    Các câu sinh ra được kiểm tra và loại bỏ:
+    \begin{itemize}
+        \item Lỗi ngữ pháp, lỗi diễn đạt,
+        \item Câu không thuộc intent tương ứng,
+        \item Câu trùng lặp hoặc nhiễu.
+    \end{itemize}
+
+    \item \textbf{Mở rộng dữ liệu trong quá trình kiểm thử}.  
+
+Trong quá trình chạy thử hệ thống, những câu gây nhầm lẫn hoặc nhập bởi người dùng thực tế được bổ sung vào dataset. Điều này giúp mô hình thích nghi dần với dữ liệu thực và cải thiện độ chính xác.
+
+\end{enumerate}
+
+Kết quả cuối cùng thu được bộ dữ liệu gồm khoảng 1.000 mẫu intent với mức độ đa dạng cao, đảm bảo đủ để xây dựng embedding mẫu đại diện cho từng nhóm ý định.
+
+\vspace{0.25cm}
+\textbf{\textit{c. Phương pháp}}
+
+Hệ thống sử dụng phương pháp \textbf{lai (hybrid)} giữa mô hình embedding ngữ nghĩa và luật dựa trên từ khóa. 
+Mục tiêu là tận dụng khả năng hiểu ngữ nghĩa sâu của mô hình embedding, đồng thời bổ sung tính chắc chắn khi câu truy vấn chứa các từ khóa đặc trưng.
+
+\begin{enumerate}
+    \item \textbf{Biểu diễn ngữ nghĩa bằng embedding}
+
+    Câu nhập của người dùng được mã hoá thành vector bằng mô hình \texttt{BGE-M3}.  
+    Mỗi intent có một tập embedding mẫu được tạo trước từ bộ dữ liệu đã xây dựng.
+
+    Độ tương đồng giữa câu nhập và các mẫu intent được đo bằng \textbf{cosine similarity}.  
+    Để giảm nhiễu, hệ thống sử dụng chiến lược \textit{top-k mean}:
+
+    \[
+    s_{\text{embed}} = \text{mean}(\text{top-k cosine})
+    \]
+
+    Phương pháp này giúp đại diện tốt hơn cho toàn bộ intent thay vì phụ thuộc vào một câu mẫu duy nhất.
+
+    \item \textbf{Thành phần rule-based từ từ khóa}
+
+    Bên cạnh embedding, mỗi intent được gán một tập từ khóa mô tả hành vi ngôn ngữ phổ biến.  
+    Ví dụ:
+
+    \begin{itemize}
+        \item \textbf{cooking\_guide}: ``hướng dẫn'', ``cách làm'', ``công thức'', ``học nấu'',``dạy', ``chia sẻ''  \ldots
+        \item \textbf{suggest\_dishes}: ``nấu món gì'', ``gợi ý món'', ``có nguyên liệu'', ``món phù hợp'', ``tìm món'', ``đề xuất'' \ldots
+    \end{itemize}
+
+    Nếu câu người dùng chứa các mẫu từ khóa này, hệ thống cộng thêm một điểm rule nhỏ:
+
+    \[
+        s_{\text{rule}} \in [0, 0.1]
+        \]
+
+    Điểm rule tuy nhỏ nhưng có tác dụng rõ rệt trong các câu ngắn hoặc câu chứa cấu trúc đặc trưng, nơi embedding có thể chưa phân biệt tốt.
+
+    \item \textbf{Công thức kết hợp điểm}
+
+    Điểm cuối cùng cho mỗi intent được tính bằng:
+
+    \[
+    S = s_{\text{embed}} + \alpha \cdot s_{\text{rule}}
+    \]
+
+    Trong đó $\alpha=0.1$ là hệ số điều chỉnh mức ảnh hưởng của rule.  
+    Intent có điểm số cao nhất được chọn làm kết quả phân loại.
+\end{enumerate}
+
+
+\textbf{\textit{d. Triển khai}}
+
+Quá trình triển khai được thực hiện trong backend theo các bước sau:
+
+\begin{enumerate}
+    \item \textbf{Tiếp nhận câu truy vấn}.  
+    Câu người dùng được đưa vào pipeline mà không cần tiền xử lý phức tạp.
+
+    \item \textbf{Sinh embedding}.  
+    Mô hình \texttt{BGE-M3} sinh ra vector biểu diễn ngữ nghĩa của câu.
+
+    \item \textbf{Tính toán top-k mean cosine}.  
+    Hệ thống so sánh embedding đầu vào với embedding mẫu của từng intent và lấy trung bình top-k.
+
+    \item \textbf{Áp dụng rule-based}.  
+    Tập từ khóa được quét bằng regex; nếu khớp thì cộng trọng số rule.
+
+    \item \textbf{Tổng hợp điểm và chọn intent}.  
+    Intent có điểm $S$ cao nhất được trả về kèm theo bảng điểm chi tiết (phục vụ đánh giá).
+
+\end{enumerate}
+
+Cách triển khai này đảm bảo:
+\begin{itemize}
+    \item Linh hoạt khi mở rộng thêm intent mới,
+    \item Dễ điều chỉnh bằng cách thay đổi mức trọng số hoặc danh sách từ khóa,
+    \item Độ chính xác cao khi áp dụng vào câu truy vấn tiếng Việt tự nhiên.
+\end{itemize}
+
+\subsubsection{\underline{\textit{Trích xuất thông tin (Slot Extraction})}}
+\textbf{\textit{a. Mục tiêu}}
+
+\begin{itemize}
+    \item Trích xuất các thông tin quan trọng từ câu nhập của người dùng, phục vụ cho việc gợi ý món ăn và hướng dẫn nấu ăn.
+    \item Các slot chính gồm:
+    \begin{itemize}
+        \item \textbf{ingredient}: Nguyên liệu (ví dụ: gà, khoai tây, cà rốt)
+        \item \textbf{category}: Danh mục món ăn (ví dụ: kho, xào, luộc)
+        \item \textbf{dish\_name}: Tên món ăn cụ thể (ví dụ: bánh mì chiên bơ tỏi)
+        \item \textbf{time}: Thời gian nấu (ví dụ: 45 phút, 2 giờ)
+        \item \textbf{difficulty}: Độ khó (dễ, trung bình, khó)
+        \item \textbf{serving}: Số khẩu phần (ví dụ: 4 người, 2 phần)
+    \end{itemize}
+    \item Mục tiêu là nhận diện chính xác các slot, tránh nhầm lẫn substring, và xử lý câu nhập tự nhiên, dài, hoặc nhiều biến thể ngôn ngữ.
+\end{itemize}
+
+\textbf{\textit{b. Phương pháp}}
+
+\begin{itemize}
+    \item \textbf{Tokenization:} là quá trình chia nhỏ văn bản thành các đơn vị nhỏ hơn gọi là token. Token có thể là:
+    \begin{itemize}
+        \item Word-level: chia theo từ, ví dụ: ``Tôi muốn ăn cơm'' $\rightarrow$ [Tôi, muốn, ăn, cơm]
+        \item Character-level: chia theo ký tự, ví dụ: ``cơm'' $\rightarrow$ [c, ơ, m]
+        \item Subword / BPE: ví dụ ``cooking'' $\rightarrow$ [cook, ing]
+        \item Sentence-level: chia câu, ví dụ ``Tôi thích NLP. Nó rất thú vị.'' $\rightarrow$ [Tôi thích NLP., Nó rất thú vị.]
+    \end{itemize}
+
+    Mục đích: chuẩn hóa dữ liệu, tách từ, loại bỏ dấu câu, token hóa cho embeddings hoặc mô hình NLP.
+
+    Thư viện phổ biến: 
+    Bảng dưới đây liệt kê các thư viện tokenization phổ biến:
+
+% Table phải tách ra ngoài enumerate
+\begin{table}[h!]
+\centering
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Thư viện} & \textbf{Ngôn ngữ} & \textbf{Cách hoạt động} \\
+\hline
+spaCy & Python & NLP pipeline, nhận diện từ, số, tên riêng, chuẩn hóa văn bản \\
+ViTokenizer & Python & Tokenize tiếng Việt theo từ, dictionary + rule-based, xử lý từ ghép chuẩn \\
+BERT / HuggingFace & Python & Subword tokenization (BPE / WordPiece), tạo token ID cho embeddings \\
+\hline
+\end{tabularx}
+\caption{Các thư viện tokenization phổ biến trong dự án}
+\end{table}
+
+\textbf{Giải thích và lý do chọn ViTokenizer:}
+
+\begin{itemize}
+    \item \textbf{spaCy:} mạnh mẽ cho NLP đa ngôn ngữ, nhận diện từ, số, tên riêng, nhưng không tối ưu cho tiếng Việt.
+    \item \textbf{ViTokenizer:} chuyên biệt cho tiếng Việt, xử lý từ ghép, âm tiết nhiều dấu chuẩn, phù hợp với hệ thống nhận diện slot (nguyên liệu, tên món, category). Đây là lựa chọn chính trong dự án.
+    \item \textbf{BERT / HuggingFace Tokenizers:} hỗ trợ subword tokenization, chuẩn cho embeddings và mô hình Transformer, dùng kết hợp sau khi tokenize để tính vector đại diện.
+\end{itemize}
+
+
+   \item \textbf{N-grams:} là các tập con liên tiếp của token trong văn bản, từ 1 đến N token. 
+        \begin{itemize}
+            \item Giúp nhận diện các cụm từ dài và cố định trong ngôn ngữ, ví dụ: ``khoai tây'', ``bánh mì chiên bơ tỏi''.
+            \item Ưu tiên các n-grams dài hơn để tránh nhầm lẫn với các từ đơn lẻ.
+            \item Trong hệ thống NLP, N-grams kết hợp với danh sách từ điển giúp phát hiện chính xác các slot (nguyên liệu, tên món) ngay cả khi token đơn lẻ không đủ thông tin.
+        \end{itemize}
+
+    \item \textbf{Fuzzy Matching (So khớp gần đúng):}là phương pháp so khớp token hoặc n-grams với từ điển mà không yêu cầu trùng tuyệt đối.  
+        \begin{itemize}
+        \item Xử lý biến thể ngôn ngữ, lỗi chính tả hoặc cách viết khác nhau.
+        \item Dựa trên \textit{similarity ratio} giữa token/n-gram và từ điển; chỉ những kết quả đạt ngưỡng similarity mới được coi là match.
+        \item Ví dụ: ``khoai tay'' vẫn có thể được nhận diện là ``khoai tây''.
+    \end{itemize}
+    
+    \item \textbf{Rule-based Extraction (Trích xuất theo quy tắc):} dùng các quy tắc, biểu thức chính quy (regex) hoặc từ khóa đặc trưng để trích xuất thông tin.  
+\begin{itemize}
+        \item Phù hợp với các slot có cấu trúc chuẩn: thời gian nấu, số khẩu phần, độ khó.
+        \item Ví dụ:
+        \begin{itemize}
+            \item ``2 giờ 30 phút'' $\rightarrow$ thời gian nấu 150 phút.
+            \item ``4 người'' $\rightarrow$ số khẩu phần 4.
+        \end{itemize}
+        \item Kết hợp với tokenization và n-grams giúp nhận diện các slot chính xác hơn.
+    
+\end{itemize}
+
+\textbf{\textit{c. Triển khai}}
+
+\begin{itemize}
+    \item \textbf{Tokenization:} 
+    \begin{itemize}
+        \item Sử dụng \textbf{ViTokenizer} để tokenize câu nhập tiếng Việt:
+        \begin{verbatim}
+        tokens = ViTokenizer.tokenize(text).split()
+                \end{verbatim}
+        \item Loại bỏ stopwords và ký tự đặc biệt trước khi xử lý tiếp.
+    \end{itemize}
+
+    \item \textbf{N-gram generation:} 
+    \begin{itemize}
+        \item Tạo các n-grams từ 1 đến 6 token để nhận diện các cụm từ dài (multi-word slot).
+        \item Sắp xếp giảm dần theo độ dài để ưu tiên match các cụm từ dài trước.
+    \end{itemize}
+
+    \item \textbf{Nguyên liệu (Ingredients):} 
+    \begin{itemize}
+        \item So khớp các n-grams với danh sách nguyên liệu.
+        \item Dùng fuzzy matching để nhận diện biến thể và lỗi chính tả.
+        \item Loại bỏ trùng lặp sau khi match.
+    \end{itemize}
+
+    \item \textbf{Category:} 
+    \begin{itemize}
+        \item Sử dụng regex với ranh giới từ để nhận diện category chính xác, tránh substring nhầm:
+`
+        \item Ưu tiên match cụm từ dài trước, tránh nhầm lẫn như "kho" trong "khoai".
+    \end{itemize}
+
+    \item \textbf{Tên món:} 
+    \begin{itemize}
+        \item Dùng n-grams kết hợp fuzzy matching với threshold để nhận diện tên món gần đúng.
+        \item Giúp hệ thống nhận diện tên món ngay cả khi người dùng viết sai chính tả.
+    \end{itemize}
+
+    \item \textbf{Thời gian, khẩu phần, độ khó:} 
+    \begin{itemize}
+        \item Regex nhận diện các slot đặc thù:
+        \begin{itemize}
+            \item Thời gian: ``2 giờ 30 phút'' → 150 phút.
+            \item Khẩu phần: ``4 người'' → 4.
+            \item Độ khó: mapping từ khóa ``dễ, trung bình, khó''.
+        \end{itemize}
+    \end{itemize}
+
+    \item \textbf{Gom slot theo intent:} 
+    \begin{itemize}
+        \item \texttt{suggest\_dishes}: category, ingredient, time, difficulty, serving.
+        \item \texttt{cooking\_guide}: dish\_name.
+    \end{itemize}
+
+    \item \textbf{Ưu điểm:} 
+    \begin{itemize}
+        \item Trích xuất chính xác các slot quan trọng.
+        \item Kết hợp token-level + regex giảm nhầm lẫn substring.
+        \item Fuzzy matching giúp nhận diện tên món gần đúng.
+    \end{itemize}
+
+    \item \textbf{Nhược điểm và cải tiến:} 
+    \begin{itemize}
+        \item Category và nguyên liệu hiện tại dựa vào từ điển → không nhận diện từ mới.
+        \item Có thể kết hợp embedding + cosine similarity để xử lý câu nhập tự nhiên hơn.
+        \item Áp dụng rule ranking hoặc confidence score để ưu tiên slot đáng tin cậy nhất.
+    \end{itemize}
+\end{itemize}
+\end{itemize}

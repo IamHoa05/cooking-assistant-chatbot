@@ -1,0 +1,21 @@
+\section{Hiệu suất và độ chính xác của LLM}
+\subsection{Hiệu suất}
+Mô hình LLaMA 3.1 8B Instant cho tốc độ phản hồi rất nhanh và ổn định nhờ chạy trên hạ tầng Groq, nơi sử dụng bộ tăng tốc ngôn ngữ (LPU) tối ưu cho xử lý các tác vụ sinh văn bản. 
+
+Do toàn bộ quá trình suy luận được thực hiện qua Groq API, hệ thống không phụ thuộc vào GPU cục bộ nên độ trễ không bị ảnh hưởng bởi cấu hình phần cứng của máy chạy backend. 
+
+Trong quá trình thử nghiệm, khi gọi hàm describe\_dishes() với danh sách chứa 3 món ăn trở lên và truy vấn liên tiếp 5 lần, thời gian phản hồi trung bình chỉ khoảng 4–6s mỗi yêu cầu, không xuất hiện độ trễ tăng dần theo số lượng truy vấn. 
+
+Bên cạnh đó, toàn bộ các lời gọi API đều được bao bọc trong khối try–except, giúp hệ thống giữ trạng thái ổn định khi xảy ra lỗi mạng và tự động chuyển sang chế độ trả về nội dung dự phòng, đảm bảo trải nghiệm mượt mà cho người dùng.
+
+
+\subsection{Độ chính xác}
+Mô hình được kiểm soát thông qua hệ thống luật trong SystemMessage, giúp giảm thiểu việc sinh nội dung không liên quan hoặc bịa đặt do hiện tượng ảo giác AI. 
+
+Ví dụ, khi NLP trả về danh sách món gồm: “Disum hải sản”, “Sụn heo xáo nghệ”, “Chả tôm thịt mắc khén”, mô hình chỉ được phép mô tả hoặc hỏi lại trong phạm vi ba món này. 
+
+Trong thử nghiệm, khi người dùng nhập yêu cầu "Tôi muốn nấu các món có thịt heo, nấu trong 30 phút”, mô hình trả về mô tả chính xác: “Bạn có thịt heo đúng không? Tôi nghĩ bạn sẽ thích Sụn heo xáo nghệ. Nguồn hương vị truyền thống của món này rất đặc trưng. Sụn được nấu mềm tỏng hỗn hợp nghệ, muối và các nguyên liệu khác, tạo nên một hương vị độc đáo, khó cưỡng.”
+
+Mô hình không tạo ra món mới như “Canh chua tôm” hoặc “Canh kimchi”, thể hiện việc tuân thủ đúng luật và bám sát dữ liệu có thật. Ở hàm smooth\_instructions(), mô hình cũng thể hiện độ chính xác tốt khi viết lại hướng dẫn nấu theo đúng giới hạn số lượng chữ và không đánh số thứ tự, kể cả khi dữ liệu gốc chứa nhiều ký tự thừa hoặc có đánh số.
+
+Nhờ sự kết hợp giữa kiểm soát chặt chẽ của SystemMessage, dữ liệu NLP đầu vào chính xác và khả năng suy luận nhanh của hạ tầng Groq, mô hình duy trì được cả hiệu suất cao và độ chính xác ổn định, đáp ứng yêu cầu của một hệ thống gợi ý ẩm thực thân thiện và mang tính ứng dụng cao.

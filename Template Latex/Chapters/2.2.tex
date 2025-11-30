@@ -1,0 +1,140 @@
+\section{Xây dựng Embedding}
+
+\subsection{Giới thiệu chung về embedding}
+
+\subsubsection{\textit{\underline{Embedding là gì?}}}
+
+Embedding là một kỹ thuật trong lĩnh vực trí tuệ nhân tạo, đặc biệt trong học máy và xử lý ngôn ngữ tự nhiên (NLP), dùng để biểu diễn dữ liệu dạng vector trong không gian nhiều chiều. Thông qua embedding, các dữ liệu phức tạp như văn bản, hình ảnh hay âm thanh được chuyển đổi thành dạng số để máy tính có thể xử lý hiệu quả.
+
+Embedding giúp tương quan giữa các dữ liệu được thể hiện dưới dạng khoảng cách hoặc góc trong không gian vector, từ đó hỗ trợ máy tính nhận diện, phân loại, tìm kiếm thông tin hoặc dự đoán kết quả. Ví dụ trong NLP, embedding giúp máy tính hiểu được nghĩa và mối quan hệ giữa các từ, thay vì chỉ nhìn vào ký tự hoặc chuỗi văn bản.
+
+Trong phạm vi dự án này, embedding đóng vai trò trung tâm. Tất cả tên món ăn, nguyên liệu đều cần được chuyển đổi thành vector để hệ thống có thể tính toán độ tương đồng và đưa ra gợi ý chính xác.
+
+\subsubsection{\textit{\underline{Nguyên lý hoạt động của embedding}}}
+
+Embedding hoạt động dựa trên việc chuyển dữ liệu phân tán thành các vector số trong một không gian liên tục. Quá trình này diễn ra thông qua một mô hình học sâu được huấn luyện để nhận biết và mã hoá các đặc trưng quan trọng của dữ liệu. Khi học, mô hình điều chỉnh trọng số sao cho những đối tượng có tính chất hoặc ngữ nghĩa gần nhau được đặt gần nhau trong không gian véc-tơ, còn những đối tượng khác biệt sẽ xa nhau.
+
+\begin{figure}[h]       % h: đặt ảnh gần vị trí trong văn bản
+    \centering           % căn giữa ảnh
+    \includegraphics[width=0.7\textwidth]{imgs/embedding.png}  % width: 70% chiều rộng trang
+    \caption{Nguyên lý hoạt động của Embedding}  % chú thích ảnh
+    \label{fig:embedding}   % nhãn để tham chiếu
+\end{figure}
+
+\subsubsection{\textit{\underline{Các loại embedding phổ biến}}}
+\indent Trong lĩnh vực trí tuệ nhân tạo, embedding không phải chỉ có một dạng duy nhất mà tồn tại dưới nhiều loại, mỗi loại phù hợp với loại dữ liệu và mục tiêu xử lý khác nhau.
+
+\begin{itemize}
+    \item \textbf{Word embedding} là loại phổ biến nhất trong NLP, giúp biểu diễn các từ thành vector số để máy tính hiểu được mối quan hệ giữa các từ. Chẳng hạn như Word2Vec hay GloVe, những mô hình này giúp nhận diện từ đồng nghĩa, phân loại từ theo ngữ cảnh, và cải thiện hiệu quả các tác vụ ngôn ngữ như phân tích cảm xúc hay dịch máy.
+    
+    \item \textbf{Sentence embedding} và \textbf{document embedding} được dùng để biểu diễn câu hoặc cả tài liệu thành vector. Điều này cho phép các mô hình hiểu nghĩa của cả câu, đoạn văn hoặc tài liệu dài thay vì chỉ từng từ riêng lẻ. Ví dụ các mô hình như: Sentence-BERT, BGE-M3.
+    
+    \item \textbf{Image embedding} giúp chuyển đổi hình ảnh thành vector số. Vector này giữ các đặc trưng quan trọng của hình ảnh, cho phép máy tính nhận diện hình ảnh, tìm kiếm hình ảnh tương tự hoặc phân loại hình ảnh theo nội dung.
+    
+    \item \textbf{Audio embedding} được sử dụng để biểu diễn âm thanh, giọng nói hoặc nhạc thành vector số, hỗ trợ các ứng dụng nhận diện giọng nói, phân loại nhạc, hay phát hiện sự kiện âm thanh.
+\end{itemize}
+
+\indent Mỗi loại embedding đều có ưu điểm riêng, nhưng điểm chung là chúng giúp máy tính hiểu và so sánh dữ liệu một cách thông minh hơn, từ đó nâng cao hiệu quả của các mô hình AI. Trong dự án này, nhóm sử dụng loại sentence embedding để encode tên món ăn và nguyên liệu.
+
+\subsection{Lựa chọn mô hình embedding}
+
+\indent Bài toán của dự án yêu cầu một mô hình embedding với các tiêu chí sau:
+
+\begin{itemize}
+    \item Hỗ trợ tiếng Việt tốt.
+    \item Cho kết quả tương đồng ngữ nghĩa chính xác.
+    \item Áp dụng được cho các câu ngắn như tên món ăn và nguyên liệu.
+\end{itemize}
+
+\indent Sau khi tham khảo các mô hình hiện có, nhóm đã lựa chọn mô hình embedding BGE-M3 (BAAI General Embedding – Multi-Functionality, Multi-Linguality, Multi-Granularity).
+
+\subsubsection{\textit{\underline{Mô hình embedding BGE-M3}}}
+
+\indent BGE-M3 là mô hình sentence embedding đa chức năng được xây dựng trên kiến trúc Transformer. Mô hình nổi bật với các đặc điểm sau:
+
+\begin{itemize}
+    \item \textbf{Đa ngôn ngữ:} Hỗ trợ hơn 100 ngôn ngữ, đạt kết quả state-of-the-art trong các nhiệm vụ truy xuất đa ngôn ngữ và xuyên ngôn ngữ.
+    
+    \item \textbf{Đa chức năng:} Có thể thực hiện đồng thời ba loại truy xuất phổ biến: 
+    \begin{itemize}
+        \item Dense retrieval (tìm kiếm vector dày đặc)
+        \item Sparse retrieval (tìm kiếm vector thưa)
+        \item Multi-vector retrieval (tìm kiếm đa vector)
+    \end{itemize}
+    
+    \item \textbf{Độ dài văn bản:} Xử lý đầu vào với độ dài khác nhau, từ câu ngắn đến tài liệu dài lên đến 8192 token.
+    
+    \item \textbf{Kỹ thuật huấn luyện:} Sử dụng phương pháp self-knowledge distillation, trong đó các điểm số mức độ liên quan từ các chức năng truy xuất khác nhau được tích hợp làm tín hiệu giáo viên (teacher signal), nâng cao chất lượng embedding.
+\end{itemize}
+
+\subsubsection{\textit{\underline{Kiến trúc Transformer trong BGE-M3}}}
+
+\indent Để xử lý văn bản, mô hình BGE-M3 sử dụng kiến trúc Transformer, cho phép biểu diễn câu và đoạn văn dưới dạng vector ngữ cảnh. Cụ thể, Transformer thực hiện các bước sau:
+
+\begin{itemize}
+    \item \textbf{Tokenization:} chia văn bản thành các token và mã hóa thành vector.
+    \item \textbf{Embedding từng token:} mỗi token được biểu diễn dưới dạng vector số.
+    \item \textbf{Self-Attention:} dựa vào tọa độ của vector trong không gian, mô hình học máy sẽ xem xét mối quan hệ giữa các token trong câu.
+    \item \textbf{Encoder:} bộ mã hóa Transformer biến đổi các vector nhúng của tất cả các token thành một vector ngữ cảnh biểu diễn toàn câu.
+\end{itemize}
+
+\begin{figure}[h]       % h: đặt ảnh gần vị trí trong văn bản
+    \centering           % căn giữa ảnh
+    \includegraphics[width=0.9\textwidth]{imgs/transformer.png}  
+    \caption{Quy trình xử lý văn bản của kiến trúc Transformer}  % chú thích ảnh
+    \label{fig:transformer}   % nhãn để tham chiếu
+\end{figure}
+
+\subsection{Triển khai embedding cho dữ liệu}
+
+\indent Quy trình xây dựng embedding cho hệ thống chatbot gợi ý món ăn được triển khai như sau:
+
+\begin{itemize}
+    \item Mô hình sử dụng dữ liệu đã được tiền xử lý từ file \texttt{recipes\_cleaned.csv}, hai trường quan trọng cần embedding là \texttt{dish\_name} và \texttt{ingredient\_names}. Mục tiêu là chuyển hai cột này thành vector để phục vụ tìm kiếm theo độ tương đồng ngữ nghĩa.
+    
+    \item Mô hình BGE-M3 sẽ được tải bằng thư viện \texttt{SentenceTransformer} thông qua việc đọc thông số từ \texttt{config.yml}.
+    
+    \item Mỗi món ăn sẽ được encode thành một vector duy nhất, các nguyên liệu của mỗi món sẽ được encode riêng lẻ và lưu thành một mảng nhiều vector. Mỗi công thức được biểu diễn dưới dạng vector 1024 chiều.
+    
+    \item Dữ liệu sau khi embedding sẽ được lưu vào DataFrame với file \texttt{recipes\_embeddings.pkl}.
+\end{itemize}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Thông số} & \textbf{Giá trị} & \textbf{Mô tả} \\ \hline
+Model & BAAI/bge-m3 & Multilingual embedding model \\ \hline
+Embedding Dimension & 1024 & Số chiều của mỗi vector \\ \hline
+Batch Size & 32 & Số samples xử lý mỗi lần \\ \hline
+Normalization & L2 norm & Chuẩn hóa độ dài vector \\ \hline
+Data Type & float32 & Kiểu dữ liệu vector \\ \hline
+Device & Auto-detect & CUDA/CPU \\ \hline
+\end{tabular}
+\caption{Thông số kỹ thuật trong triển khai mô hình BGE-M3}
+\end{table}
+
+
+\subsection{So sánh BGE-M3 với PhoBERT}
+
+\indent BGE-M3 là mô hình embedding đa ngôn ngữ từ Beijing Academy of AI (BAAI), phát hành năm 2024, hỗ trợ hơn 100 ngôn ngữ với kiến trúc Sentence Transformer dựa trên BERT, tối ưu cho tìm kiếm và truy xuất thông tin dựa trên độ tương đồng ngữ nghĩa. PhoBERT là mô hình BERT được huấn luyện sẵn dành riêng cho tiếng Việt từ VinAI Research, phát hành năm 2020, với phiên bản base có khoảng 135 triệu tham số. BGE-M3 nhắm đến embedding đa chức năng (dense, sparse, multi-vector), trong khi PhoBERT tập trung vào các nhiệm vụ NLP tiếng Việt như POS (gán nhãn loại từ trong câu) tagging và NER(nhận diện thực thể trong văn bản).
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Thông số} & \textbf{BGE-M3} & \textbf{PhoBERT} \\ \hline
+Số tham số & $\sim$567M & $\sim$135M (base) \\ \hline
+Embedding dimension & 1024 & 768 \\ \hline
+Max sequence length & 8192 tokens & 256 tokens \\ \hline
+Ngôn ngữ hỗ trợ & 100+ & Tiếng Việt \\ \hline
+Tokenizer & SentencePiece & Syllable-based \\ \hline
+\end{tabular}
+\caption{So sánh thông số kỹ thuật giữa BGE-M3 và PhoBERT}
+\end{table}
+
+\indent Về kích thước mô hình: BGE-M3 có khoảng 567 triệu tham số, lớn hơn nhiều so với PhoBERT (~135 triệu tham số). Điều này cho phép BGE-M3 học và lưu trữ nhiều thông tin phong phú hơn, đặc biệt hữu ích cho semantic search (tìm kiếm ngữ nghĩa) và các tác vụ đa ngôn ngữ.
+
+\indent Về chiều vector embedding: Vector lớn hơn (1024 chiều của BGE-M3 so với 768 chiều của PhoBERT) giúp mô hình biểu diễn thông tin chi tiết và ngữ cảnh tốt hơn. Nhờ đó, độ chính xác khi tính tương đồng ngữ nghĩa được cải thiện, tuy nhiên chi phí bộ nhớ và tính toán cũng cao hơn.
+
+\indent Về hiệu suất và use case: BGE-M3 vượt trội trong retrieval đa ngôn ngữ và semantic search. Trong khi đó PhoBERT mạnh về hiểu morphology tiếng Việt, nhưng để dùng cho retrieval hoặc semantic search, cần fine-tuning và không hỗ trợ cross-lingual.

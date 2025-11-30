@@ -1,0 +1,57 @@
+\section{Hiệu suất xác định Intent \& Slot Extraction}
+\subsection{Xác định intent}
+Trong dự án, hệ thống chỉ cần nhận diện hai intent chính:
+\begin{itemize}
+    \item \textbf{Hướng dẫn nấu ăn}: Người dùng hỏi cách chế biến một món cụ thể.
+    \item \textbf{Gợi ý món ăn}: Người dùng đưa nguyên liệu sẵn có và thời gian nấu, khẩu phần ăn, độ khó hay thể loại và muốn hệ thống gợi ý món phù hợp.
+\end{itemize}
+
+Khi kiểm thử trên tập dữ liệu gồm 100 câu hỏi mẫu, kết quả phân loại intent như sau:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Intent} & \textbf{Số câu đúng / Tổng số} & \textbf{Tỷ lệ chính xác} \\
+\hline
+Hướng dẫn nấu ăn & 64 / 66 & 97\% \\
+\hline
+Gợi ý món ăn     & 35 / 39 & 90\% \\
+\hline
+\textbf{Trung bình} & 99 / 105 & \textbf{94\%} \\
+\hline
+\end{tabular}
+\caption{Kết quả phân loại intent}
+\end{table}
+
+\subsection{Slot Extraction}
+
+Đối với mỗi intent, hệ thống cần trích xuất các slot quan trọng:
+\begin{itemize}
+    \item Với intent \textbf{Hướng dẫn nấu ăn}: tên món ăn.
+    \item Với intent \textbf{Gợi ý món ăn}: danh sách nguyên liệu.
+\end{itemize}
+
+Kết quả kiểm thử:
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Slot} & \textbf{Số câu đúng / Tổng số} & \textbf{Tỷ lệ chính xác} \\
+\hline
+Tên món ăn    & 100 / 105 & 91\% \\
+\hline
+Nguyên liệu   & 99 / 105 & 90\% \\
+\hline
+\textbf{Trung bình} & 99 / 105 & \textbf{90\%} \\
+\hline
+\end{tabular}
+\caption{Kết quả trích xuất slot}
+\end{table}
+
+\subsection{Phân tích}
+
+Hệ thống hoạt động tốt với intent \textbf{Hướng dẫn nấu ăn} vì dữ liệu huấn luyện rõ ràng.  
+
+\textbf{Kết luận:} Với chỉ hai intent, hệ thống NLP đạt độ chính xác trung bình trên 90\%, đủ để chatbot hiểu đúng nhu cầu người dùng trong hầu hết trường hợp.

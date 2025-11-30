@@ -56,7 +56,7 @@ class FAISSHandler:
                     # tăng số nguyên liệu match
                     result_dict[row_id]["_match_count"] += 1
                     # giữ distance tốt nhất
-                    if dist < result_dict[row_id]["_distance"]:
+                    if dist > result_dict[row_id]["_distance"]:
                         result_dict[row_id]["_distance"] = float(dist)
 
             # convert dict → list, sort theo match_count + distance

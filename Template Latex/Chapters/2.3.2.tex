@@ -1,0 +1,132 @@
+\subsection{Xây dựng hệ thống tìm kiếm với FAISS}
+
+\subsubsection{\underline{\textit{Tổng quan về FAISS}}}
+
+FAISS (Facebook AI Similarity Search) là thư viện mã nguồn mở hỗ trợ tìm kiếm tương đồng và phân cụm trên các vector dense một cách hiệu quả. Thư viện cung cấp các thuật toán tìm kiếm trên tập vector lớn, kể cả khi vượt quá bộ nhớ RAM, đồng thời cung cấp công cụ đánh giá và tinh chỉnh tham số \cite{faiss_official}.
+
+FAISS được phát triển bằng C++ với wrapper Python đầy đủ, nhiều thuật toán được tối ưu hóa cho GPU để tăng tốc xử lý dataset lớn. Thư viện được phát triển chủ yếu bởi nhóm FAIR (Facebook AI Research) của Meta.
+
+\subsubsection{\underline{\textit{Nhu cầu sử dụng FAISS trong hệ thống tìm kiếm}}}
+
+Trong các hệ thống retrieval-based, tìm kiếm dựa trên từ khóa truyền thống (BM25, TF-IDF) gặp hạn chế do không hiểu ngữ nghĩa của truy vấn. Vector embedding từ các mô hình NLP/ML (như BERT, BGE, CLIP) biểu diễn dữ liệu và query trong không gian vector, giúp giải quyết vấn đề này.
+
+FAISS cung cấp:
+\begin{itemize}
+    \item Tìm kiếm nhanh các vector tương đồng (Exact/Approximate Nearest Neighbor).
+    \item Giảm bộ nhớ nhờ kỹ thuật nén và index phân lớp (IVF, PQ).
+    \item Hỗ trợ GPU tăng tốc với dataset lớn.
+\end{itemize}
+
+Nhờ đó, FAISS phù hợp cho semantic search, recommendation system, và retrieval-augmented generation (RAG) trong chatbot \cite{datacamp_faiss, huggingface_faiss}.
+
+\subsubsection{\underline{\textit{Kiến trúc và thành phần chính của FAISS}}}
+
+Các thành phần chính:
+\begin{itemize}
+    \item \textbf{Index}: Lưu trữ và truy xuất vector; xác định chiến lược exact hay approximate.
+    \item \textbf{Metric}: Đo khoảng cách/similarity, phổ biến:
+    \begin{itemize}
+        \item \textbf{L2 Distance (Euclidean)}: $d(\mathbf{x},\mathbf{y}) = \sqrt{\sum_i (x_i - y_i)^2}$
+        \item \textbf{Inner Product (Dot Product)}: $\text{similarity}(\mathbf{x},\mathbf{y}) = \mathbf{x} \cdot \mathbf{y}$
+    \end{itemize}
+    \item \textbf{Quantizer}: Lượng tử hóa vector trong approximate search (PQ).
+    \item \textbf{Inverted File (IVF)}: Chia không gian vector thành cell để tìm kiếm nhanh.
+    \item \textbf{GPU module}: Tăng tốc xử lý dataset lớn.
+\end{itemize}
+
+\subsubsection{\underline{\textit{Các loại Index trong FAISS}}}
+
+\paragraph{Exact Search}
+\begin{itemize}
+    \item \textbf{IndexFlatIP}: Inner product.
+    \item \textbf{IndexFlatL2}: L2 distance.
+    \item \textbf{Ưu điểm}: Độ chính xác 100\%.
+    \item \textbf{Nhược điểm}: Tốn tính toán dataset lớn.
+\end{itemize}
+
+\paragraph{Approximate Search}
+\begin{itemize}
+    \item \textbf{IndexIVFFlat}: Chia cluster bằng K-means, cần training.
+    \item \textbf{IndexIVFPQ}: IVF + Product Quantization, tiết kiệm bộ nhớ.
+    \item \textbf{HNSW}: Đồ thị phân cấp, không cần training, hiệu suất cao CPU/GPU.
+\end{itemize}
+
+\paragraph{GPU Indexes}
+\begin{itemize}
+    \item \textbf{GPUFlat}, \textbf{GPUIVF}: Chạy trên GPU, tăng tốc truy vấn.
+\end{itemize}
+
+
+\subsubsection{\underline{\textit{Cơ chế hoạt động}}}
+
+\begin{enumerate}
+    \item \textbf{Embedding}: Chuyển ingredients và dish names thành các vector dense.
+    \item \textbf{Xây dựng Index}: Thêm vector vào FAISS Index.
+    \item \textbf{Truy vấn}: Mã hóa input của user, tìm top-k vectors gần nhất.
+    \item \textbf{Filtering \& Ranking}: Xếp hạng các món ăn dựa trên similarity score và các tiêu chí bổ sung.
+\end{enumerate}
+
+\subsubsection{\underline{\textit{Triển khai FAISS trong hệ thống}}}
+
+\paragraph{Lựa chọn Index cho hệ thống}
+~
+
+Hệ thống sử dụng \textbf{IndexFlatIP} vì:
+\begin{itemize}
+    \item Dataset vừa phải (ingredients và dish names).
+    \item Độ chính xác cao, inner product tương đương cosine similarity với embedding chuẩn hóa.
+    \item Triển khai đơn giản, không cần training.
+\end{itemize}
+
+\[
+\text{top\_k} = \underset{i \in [1,N]}{\mathrm{arg\,max}} \; (\mathbf{q} \cdot \mathbf{v}_i)
+\]
+
+
+\paragraph{Xây dựng FAISS Index}
+\begin{enumerate}
+    \item Mã hóa ingredients và dish names thành embedding vectors.
+    \item Thêm embedding vào IndexFlatIP.
+    \item Index lưu trữ vectors và trả về ID để mapping với dataset gốc.
+\end{enumerate}
+
+\paragraph{Tìm kiếm thời gian thực}
+\begin{enumerate}
+    \item Mã hóa input (ingredients/dish) thành vector.
+    \item Tìm top-k vectors gần nhất từ FAISS Index.
+    \item Lấy thông tin món ăn từ dataset gốc dựa trên ID.
+\end{enumerate}
+
+\paragraph{Kết quả cuối cùng}
+\begin{itemize}
+    \item Kết hợp similarity score và các điểm số khác để xếp hạng các món ăn.
+    \item Lấy top-k món ăn có similarity score cao nhất.
+\end{itemize}
+
+\subsubsection{\underline{\textit{Ưu điểm và hạn chế}}}
+
+\paragraph{Ưu điểm}
+\begin{itemize}
+    \item Tốc độ cao, hỗ trợ exact/approximate search.
+    \item Hỗ trợ GPU, tăng tốc dataset lớn.
+    \item Đa dạng index, dễ điều chỉnh.
+    \item Dễ tích hợp với embedding từ text/hình ảnh/audio.
+    \item Batch search tối ưu throughput.
+\end{itemize}
+
+\paragraph{Hạn chế}
+\begin{itemize}
+    \item Không tối ưu với dữ liệu sparse.
+    \item Một số approximate index có recall thấp hơn exact.
+    \item Index lớn tốn nhiều RAM nếu không dùng IVF/PQ/GPU.
+\end{itemize}
+
+\subsubsection{\underline{\textit{Ứng dụng thực tế}}}
+\begin{itemize}
+    \item Chatbot / Search Engine: retrieval-based, RAG.
+    \item Recommendation System: gợi ý sản phẩm/dish dựa trên embedding.
+    \item Image Similarity: tìm ảnh tương tự bằng embedding CLIP/CNN.
+    \item Semantic Search NLP: tìm văn bản, đoạn hội thoại gần nghĩa.
+    \item Multimodal Search: tích hợp text, hình ảnh, audio.
+\end{itemize}
+

@@ -1,0 +1,41 @@
+\begin{frame}{Lựa chọn mô hình LLM}
+    \begin{table}[]
+    \centering
+    \begin{tabular}{|l|c|c|}
+    \hline
+    \textbf{Mô hình} & \textbf{Chi phí API} & \textbf{Phần cứng} \\ \hline
+    Llama 3.1 8B Instant & Miễn phí & Không yêu cầu \\ \hline
+    Local Llama & Miễn phí & Cấu hình mạnh \\ \hline
+    GPT-4, GPT-3.5 & Mất phí & Không yêu cầu \\ \hline
+    \end{tabular}
+    \end{table}
+
+    \vspace{0.3cm}
+    \begin{itemize}
+        \item Sử dụng Llama 3.1 8B Instant để sinh phản hồi tự động từ dữ liệu đã xử lý ở bước NLP.
+        \item Triển khai qua LangChain, quản lý pipeline, prompt và tích hợp dữ liệu từ cơ sở vector.
+        \item Gọi mô hình qua Groq API, tận dụng phần cứng tăng tốc để giảm độ trễ và cải thiện tốc độ phản hồi.
+    \end{itemize}
+\end{frame}
+
+
+\begin{frame}{Triển khai mô hình LLM}
+    \begin{itemize}
+        \item Đầu vào: dữ liệu đã xử lý và chuẩn hóa từ bước NLP (nguyên liệu, tên món ăn và yêu cầu liên quan).
+        \item Nếu không có kết quả phù hợp, hệ thống sẽ trả về thông báo hài hước để tăng tính tương tác.
+        \item Nếu có kết quả, hệ thống tạo các thông điệp đầu vào cho LLM.
+    \end{itemize}  
+\end{frame}
+
+\begin{frame}{Triển khai mô hình LLM}
+    \begin{itemize}
+        \item Sử dụng SystemMessage và HumanMessage để chuẩn bị tin nhắn:
+        \begin{itemize}
+            \item SystemMessage: chuyên gia ẩm thực gen Z Việt Nam; giọng điệu dí dỏm, hài hước; nội dung ngắn gọn, rõ ràng và chính xác.
+            \item HumanMessage: sinh phản hồi cho người dùng theo những yêu cầu và quy tắc trong SystemMessage.
+        \end{itemize}
+        \item Khi lỗi API xảy ra, hệ thống trả về dữ liệu NLP mà không sinh phản hồi tự động.
+       \item Các hàm chuyên biệt describe\_dishes() và smooth\_instructions() giúp hệ thống đáp ứng nhiều truy vấn khác nhau.
+        \item Việc giữ nguyên danh sách món ăn và không bịa món mới giúp hạn chế hiện tượng ảo giác AI và tăng độ tin cậy.
+    \end{itemize}
+\end{frame}

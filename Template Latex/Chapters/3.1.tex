@@ -1,0 +1,138 @@
+\section{Đánh giá mô hình Embedding}
+\subsection{Tổng quan}
+
+\indent Trong dự án, mô hình cần embedding 2 trường thông tin chính là tên món ăn và nguyên liệu. Đánh giá được thực hiện trên hai tập dữ liệu chính:
+\begin{itemize}
+    \item Món ăn: 2,405 tên món ăn tiếng Việt
+    \item Nguyên liệu: 2,396 loại nguyên liệu
+\end{itemize}
+
+\indent Mục tiêu là kiểm tra khả năng tìm kiếm ngữ nghĩa (semantic search) của mô hình với các truy vấn tiếng Việt, đặc biệt là khả năng xử lý các cụm từ ngắn, từ đơn lẻ và các biến thể của tên món ăn/nguyên liệu.
+
+
+\subsection{Phương pháp đánh giá}
+
+\subsubsection{\textit{\underline{Quy trình}}}
+
+\begin{itemize}
+    \item \textbf{Tạo embeddings:} Chuyển đổi toàn bộ tên món ăn và nguyên liệu thành vector 1024 chiều.
+    \item \textbf{Tìm kiếm tương đồng:} Sử dụng cosine similarity để tìm các kết quả phù hợp nhất.
+    \item \textbf{Đo lường hiệu suất:} Sử dụng các chỉ số Accuracy@1, Accuracy@5 và MRR.
+\end{itemize}
+
+\subsubsection{\textit{\underline{Các chỉ số đánh giá}}}
+
+\begin{itemize}
+    \item \textbf{Accuracy@1:} Tỷ lệ truy vấn có kết quả đúng ở vị trí đầu tiên.
+    \item \textbf{Accuracy@5:} Tỷ lệ truy vấn có kết quả đúng trong top 5.
+    \item \textbf{MRR (Mean Reciprocal Rank):} Trung bình nghịch đảo của vị trí kết quả đúng đầu tiên.
+\end{itemize}
+
+\subsection{Kết quả đánh giá}
+
+\subsubsection{\textit{\underline{Hiệu suất tổng thể}}}
+
+\indent Khi thực hiện đánh giá cho 10 món ăn và 10 nguyên liệu bất kỳ:
+\begin{itemize}
+    \item \textbf{Món ăn:} thịt gà, cơm gà, phở bò, bún chả, gỏi cuốn, bánh mì, cá hồi, tôm, lẩu, salad.
+    \item \textbf{Nguyên liệu:} trứng, hành tây, cà rốt, khoai tây, nấm, tỏi, gừng, ớt, rau, thịt bò.
+\end{itemize}
+\indent Mô hình BGE-M3 cho ra kết quả như sau:
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Chỉ số} & \textbf{Món ăn} & \textbf{Nguyên liệu} \\
+\hline
+Accuracy@1 & 100\% (10/10) & 100\% (10/10) \\
+\hline
+Accuracy@5 & 100\% (10/10) & 100\% (10/10) \\
+\hline
+MRR & 1.0000 & 1.0000 \\
+\hline
+\end{tabular}
+\end{table}
+
+\subsubsection{\textit{\underline{{Phân tích món ăn}}}}
+
+\textbf{Kết quả tổng quan:}
+\begin{itemize}
+    \item \textbf{Khớp chính xác}: 7/10 truy vấn, mô hình trả về đúng món ăn với \textit{similarity = 1.0} (ví dụ: \textit{cơm gà}, \textit{phở bò}).
+    \item \textbf{Khớp một phần}: 3/10 truy vấn, kết quả top~1 là biến thể mở rộng của món tìm kiếm.
+\end{itemize}
+
+\textbf{Ví dụ minh họa:}
+
+\begin{itemize}
+    \item \textbf{Truy vấn:} ``thịt gà'' \\
+    \textbf{Top 1:} ``thịt gà nướng'' \quad (\textit{similarity = 0.8638}) \\
+    \textit{Nhận xét:} Hợp lý vì đây là món cụ thể chứa nguyên liệu ``thịt gà''.
+
+    \item \textbf{Truy vấn:} ``gỏi cuốn'' \\
+    \textbf{Top 1:} ``gỏi cuốn tôm'' \quad (\textit{similarity = 0.8975}) \\
+    \textit{Nhận xét:} Top~5 đều là các biến thể của gỏi cuốn (tôm, cá hồi, tôm chiên, \ldots).
+
+    \item \textbf{Truy vấn:} ``bún chả'' \\
+    \textbf{Top 1:} ``bún chả cá'' \quad (\textit{similarity = 0.8898}) \\
+    \textit{Nhận xét:} Món ``bún chả'' có thể không tồn tại trong cơ sở dữ liệu, nên mô hình chọn món gần nhất về ngữ nghĩa.
+\end{itemize}
+
+\vspace{0.5cm}
+
+\subsubsection{\textit{\underline{{Phân tích nguyên liệu}}}}
+
+\textbf{Kết quả tổng quan:}
+\begin{itemize}
+    \item \textbf{Hiệu suất tốt}: 10/10 truy vấn đều trả về đúng nguyên liệu với \textit{similarity = 1.0}.
+    \item \textbf{Các truy vấn:} trứng, hành tây, cà rốt, khoai tây, nấm, tỏi, gừng, ớt, rau, thịt bò.
+\end{itemize}
+
+\textbf{Nhận xét:}
+\begin{itemize}
+    \item Mô hình xử lý rất tốt các nguyên liệu phổ biến, đơn lẻ và không có nhiều biến thể trong tiếng Việt.
+    \item Đây là nhóm dữ liệu ít đa dạng hơn so với món ăn, giúp mô hình đạt độ chính xác tối đa.
+\end{itemize}
+
+\subsubsection{\textit{\underline{{Phân tích phân phối similary}}}}
+
+\begin{figure}[H]       % h: đặt ảnh gần vị trí trong văn bản
+    \centering           % căn giữa ảnh
+    \includegraphics[width=0.9\textwidth]{imgs/similarity_distribution_dishes.png}  
+    \caption{Phân phối similary món ăn}  % chú thích ảnh
+    \label{fig:dishes_similarity}   % nhãn để tham chiếu
+\end{figure}
+
+\indent Phân phối tương đối đồng đều với độ lệch chuẩn thấp (0.0678). Giá trị trung bình (~0.45) cho thấy các món ăn có sự khác biệt vừa phải trong không gian embedding. Khoảng cách rõ rệt giữa các món hoàn toàn khác biệt (min: 0.1964) và các biến thể của cùng món (max: 0.9825)
+
+\begin{figure}[H]       % h: đặt ảnh gần vị trí trong văn bản
+    \centering           % căn giữa ảnh
+    \includegraphics[width=0.9\textwidth]{imgs/similarity_distribution_ingredients.png}  
+    \caption{Phân phối similary nguyên liệu}  % chú thích ảnh
+    \label{fig:ingredients_similarity}   % nhãn để tham chiếu
+\end{figure}
+
+\indent Tương tự món ăn, nguyên liệu có phân phối ổn định. Độ tương đồng cao nhất (0.9914) xuất hiện ở các cặp nguyên liệu chỉ khác thứ tự từ.
+
+\subsubsection{\textit{\underline{Phân tích các cặp tương đồng}}}
+\begin{itemize}
+    \item Trong top 10 cặp món ăn giống nhau nhất, các cặp có similarity $> 0.94$ chủ yếu là biến thể ngôn ngữ: thay đổi nhẹ từ ngữ, đảo thứ tự từ hoặc từ đồng nghĩa.
+    \begin{itemize}
+        \item ``cupcake trứng muối chà bông phô mai'' $\leftrightarrow$ ``bánh cupcake trứng muối chà bông phô mai''
+        \item ``gyoza mì trộn'' $\leftrightarrow$ ``mì trộn gyoza''
+    \end{itemize}
+    Mô hình nắm bắt tốt các biến thể tiếng Việt và không phụ thuộc vào thứ tự từ.
+
+    \item Các món ăn hoàn toàn khác nhau có similarity rất thấp, cho thấy mô hình phân biệt rõ ràng giữa các nhóm món ăn không liên quan.
+
+    \item Với nguyên liệu, các cặp giống nhau nhất chủ yếu là đảo thứ tự từ, cho thấy mô hình nhận diện tốt ngay cả khi cấu trúc câu thay đổi nhưng ngữ nghĩa giữ nguyên.
+\end{itemize}
+
+\subsubsection{\textit{\underline{Kết luận}}}
+\indent Qua quá trình đánh giá, mô hình BGE-M3 đã cho thấy hiệu suất tốt trên dữ liệu tiếng Việt về ẩm thực mà nhóm hiện có. Mô hình thể hiện khả năng hiểu ngữ nghĩa tốt và xử lý hiệu quả các biến thể ngôn ngữ trong tiếng Việt.
+
+\indent Mô hình có khả năng nhận diện mối quan hệ ngữ nghĩa giữa các món ăn và nguyên liệu, đồng thời xử lý tốt các cách diễn đạt khác nhau của cùng một khái niệm. Kết quả đánh giá cho thấy BGE-M3 là một lựa chọn phù hợp cho việc áp dụng vào dự án chatbot gợi ý nấu ăn.
+
+
+
+

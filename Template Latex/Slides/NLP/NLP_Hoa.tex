@@ -1,0 +1,195 @@
+\section*{Xác dịnh intent}
+
+% Slide 1: Mục tiêu
+\begin{frame}{Mục tiêu xác dịnh intent}
+\textbf{Xác định intent} nhằm phân loại chính xác ý định của người dùng khi tương tác với hệ thống:
+\begin{itemize}
+    \item Nhận biết người dùng muốn \textbf{tìm kiếm món ăn}.
+    \item Nhận biết người dùng muốn \textbf{hướng dẫn nấu ăn}.
+\end{itemize}
+Việc nhận diện intent chính xác tạo nền tảng cho các bước tiếp theo như trích xuất thông tin và gợi ý món ăn.
+\end{frame}
+
+% Slide 2: Pipeline
+\begin{frame}{Pipeline xác định intent}
+\begin{figure}
+    \centering
+    \includegraphics[width=12.5cm, height=3.2cm]{Slides/imgs/pipeline_intent.png}
+    \caption{Pipeline xác định intent}
+\end{figure}
+\end{frame}
+
+% Slide 3: Thu thập dữ liệu Intent
+\begin{frame}{Thu thập và xây dựng tập dữ liệu Intent}
+Hai nhóm intent chính:
+\begin{itemize}
+    \item \texttt{suggest\_dishes} (gợi ý món ăn)
+    \item \texttt{cooking\_guide} (hướng dẫn nấu ăn)
+\end{itemize}
+
+Quy trình xây dựng dữ liệu:
+\begin{enumerate}
+    \item Mô tả intent ban đầu.
+    \item Sinh câu mẫu bằng mô hình ngôn ngữ (đa dạng, paraphrase, dễ gây nhầm lẫn).
+    \item Kiểm duyệt thủ công (loại bỏ lỗi, trùng lặp, nhiễu).
+    \item Mở rộng dữ liệu trong quá trình kiểm thử.
+\end{enumerate}
+
+Kết quả: khoảng \textbf{1.000 mẫu intent} đa dạng.
+\end{frame}
+
+% Slide 4: Phương pháp Hybrid
+\begin{frame}{Phương pháp Hybrid}
+Hệ thống kết hợp \textbf{embedding ngữ nghĩa} và \textbf{rule-based từ khóa}:
+\begin{enumerate}
+    \item Biểu diễn ngữ nghĩa bằng embedding (BGE-M3).
+    \item Rule-based từ từ khóa đặc trưng cho từng intent.
+    \item Công thức kết hợp điểm:
+    \[
+    S = s_{\text{embed}} + \alpha \cdot s_{\text{rule}}, \quad \alpha = 0.1
+    \]
+\end{enumerate}
+\end{frame}
+
+
+% Slide 6: Triển khai
+\begin{frame}{Cách triển khai}
+Các bước triển khai:
+\begin{enumerate}
+    \item Tiếp nhận câu truy vấn.
+    \item Sinh embedding bằng BGE-M3.
+    \item Tính toán top-k mean cosine.
+    \item Áp dụng rule-based từ khóa.
+    \item Tổng hợp điểm và chọn intent.
+\end{enumerate}
+\end{frame}
+
+% Slide 7: Ưu điểm
+\begin{frame}{Ưu điểm}
+\begin{itemize}
+    \item Linh hoạt khi mở rộng thêm intent mới.
+    \item Dễ điều chỉnh bằng cách thay đổi trọng số hoặc danh sách từ khóa.
+    \item Độ chính xác cao với câu truy vấn tiếng Việt tự nhiên.
+\end{itemize}
+\end{frame}
+
+% Slide 1: Mục tiêu
+\begin{frame}{Mục tiêu Slot Extraction}
+\begin{itemize}
+    \item Trích xuất thông tin quan trọng từ câu nhập của người dùng.
+    \item Các slot chính:
+    \begin{itemize}
+        \item \textbf{ingredient}: nguyên liệu (gà, khoai tây, cà rốt)
+        \item \textbf{category}: danh mục món ăn (kho, xào, luộc)
+        \item \textbf{dish\_name}: tên món cụ thể (bánh mì chiên bơ tỏi)
+        \item \textbf{time}: thời gian nấu (45 phút, 2 giờ)
+        \item \textbf{difficulty}: độ khó (dễ, trung bình, khó)
+        \item \textbf{serving}: số khẩu phần (4 người, 2 phần)
+    \end{itemize}
+    \item Mục tiêu: nhận diện chính xác, tránh nhầm substring, để làm input phục vụ quá trình tìm kiếm sau
+\end{itemize}
+\end{frame}
+
+% Slide 2: Tokenization
+\begin{frame}{Phương pháp: Tokenization}
+\begin{itemize}
+    \item Chia nhỏ văn bản thành token:
+    \begin{itemize}
+        \item Word-level: ``Tôi muốn ăn cơm'' $\rightarrow$ [Tôi, muốn, ăn, cơm]
+        \item Character-level: ``cơm'' $\rightarrow$ [c, ơ, m]
+        \item Subword/BPE: ``cooking'' $\rightarrow$ [cook, ing]
+        \item Sentence-level: ``Tôi thích NLP. Nó thú vị.'' $\rightarrow$ [Tôi thích NLP., Nó thú vị.]
+    \end{itemize}
+    \item Mục đích: chuẩn hóa dữ liệu, phục vụ embeddings/NLP.
+\end{itemize}
+\end{frame}
+
+% Slide 3: Thư viện Tokenization
+\begin{frame}{Thư viện Tokenization}
+\centering
+\begin{tabularx}{\textwidth}{|l|l|X|}
+\hline
+\textbf{Thư viện} & \textbf{Ngôn ngữ} & \textbf{Cách hoạt động} \\
+\hline
+spaCy & Python & NLP pipeline, nhận diện từ, số, tên riêng, chuẩn hóa văn bản \\
+ViTokenizer & Python & Tokenize tiếng Việt theo từ, dictionary + rule-based \\
+BERT/HuggingFace & Python & Subword tokenization (BPE/WordPiece), tạo token ID cho embeddings \\
+\hline
+\end{tabularx}
+\end{frame}
+
+% Slide 4: Lý do chọn ViTokenizer
+\begin{frame}{Lý do chọn ViTokenizer}
+\begin{itemize}
+    \item \textbf{spaCy}: mạnh mẽ đa ngôn ngữ nhưng không tối ưu cho tiếng Việt.
+    \item \textbf{ViTokenizer}: chuyên biệt cho tiếng Việt, xử lý từ ghép, phù hợp nhận diện slot.
+    \item \textbf{BERT Tokenizers}: chuẩn cho embeddings, dùng kết hợp sau khi tokenize.
+\end{itemize}
+\end{frame}
+
+% Slide 5: N-grams
+\begin{frame}{Phương pháp: N-grams}
+\begin{itemize}
+    \item Tạo ra tập con liên tiếp của token (1 đến N).
+    \item Ưu tiên n-grams dài để tránh nhầm lẫn.
+    \item Kết hợp từ điển để phát hiện slot chính xác.
+\end{itemize}
+\end{frame}
+
+% Slide 6: Fuzzy Matching
+\begin{frame}{Phương pháp: Fuzzy Matching}
+\begin{itemize}
+    \item Là phương pháp so khớp gần đúng với từ điển, không yêu cầu trùng tuyệt đối.
+    \item Xử lý biến thể ngôn ngữ, lỗi chính tả.
+    \item Ví dụ: ``khoai tay'' $\rightarrow$ ``khoai tây''.
+    \item Dựa trên similarity ratio, chỉ match khi vượt ngưỡng.
+\end{itemize}
+\end{frame}
+
+% Slide 7: Rule-based Extraction
+\begin{frame}{Phương pháp: Rule-based Extraction}
+\begin{itemize}
+    \item Dùng regex/từ khóa đặc trưng cho slot có cấu trúc chuẩn.
+    \item Ví dụ:
+    \begin{itemize}
+        \item ``2 giờ 30 phút'' $\rightarrow$ 150 phút.
+        \item ``4 người'' $\rightarrow$ số khẩu phần 4.
+    \end{itemize}
+    \item Kết hợp tokenization + n-grams để tăng độ chính xác.
+\end{itemize}
+\end{frame}
+
+% Slide 8: Triển khai
+\begin{frame}{Cách triển khai}
+\begin{itemize}
+    \item Tokenization bằng ViTokenizer.
+    \item Sinh n-grams (1–6 token).
+    \item So khớp nguyên liệu với từ điển + fuzzy matching.
+    \item Regex cho category, thời gian, khẩu phần, độ khó.
+    \item Gom slot theo intent:
+    \begin{itemize}
+        \item \texttt{suggest\_dishes}: category, ingredient, time, difficulty, serving.
+        \item \texttt{cooking\_guide}: dish\_name.
+    \end{itemize}
+\end{itemize}
+\end{frame}
+
+% Slide 9: Ưu điểm và Nhược điểm
+\begin{frame}{Ưu điểm và Nhược điểm}
+\textbf{Ưu điểm:}
+\begin{itemize}
+    \item Trích xuất chính xác slot quan trọng.
+    \item Kết hợp token-level + regex giảm nhầm substring.
+    \item Fuzzy matching nhận diện tên món gần đúng.
+\end{itemize}
+
+\textbf{Nhược điểm:}
+\begin{itemize}
+    \item Category/nguyên liệu dựa vào từ điển → không nhận diện từ mới.
+    \item Cần kết hợp embedding + cosine similarity để xử lý tự nhiên hơn.
+    \item Cần rule ranking hoặc confidence score để ưu tiên slot đáng tin cậy.
+\end{itemize}
+\end{frame}
+
+
+

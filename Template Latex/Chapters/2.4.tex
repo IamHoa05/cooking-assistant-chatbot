@@ -1,0 +1,66 @@
+\section{Xây dựng LLM}
+\subsection{Lựa chọn mô hình}
+
+\textit{So sánh mô hình LLaMA 3.1 8B instant, mô hình local LLaMA và mô hình GPT-4/GPT-3.5:} 
+
+\begin{table}[H]
+\centering
+\renewcommand{\arraystretch}{1.3} % tăng khoảng cách dòng cho dễ đọc
+\begin{tabularx}{\textwidth}{|l|X|X|X|}
+\hline
+\textbf{Tiêu chí} & \textbf{LLaMA 3.1 8B Instant} & \textbf{local LLaMA} & \textbf{GPT-4 / GPT-3.5} \\
+\hline
+Ngôn ngữ & Chủ yếu tiếng Anh, tiếng Việt cần prompt kỹ lưỡng & Tùy mô hình: nếu pretrain/fine-tune có thể hỗ trợ tiếng Việt & Hỗ trợ đa ngôn ngữ tốt, bao gồm tiếng Việt \\
+\hline
+Hiệu năng & Rất nhanh nhờ AI accelerator của Groq & Phụ thuộc GPU/ CPU; chậm nếu phần cứng yếu & Nhanh nhưng phụ thuộc API và giới hạn request \\
+\hline
+Triển khai & Dễ dàng qua LangChain + API & Khó, cần GPU mạnh và setup phức tạp & Dễ triển khai qua API, không cần hạ tầng phức tạp \\
+\hline
+Tùy chỉnh & Hạn chế, chủ yếu điều khiển qua prompt & Cao, có thể fine-tune, retrain hoặc thêm dữ liệu riêng & Hạn chế; chủ yếu dùng prompt hoặc “system message” \\
+\hline
+Chi phí & Trả phí API & Chi phí phần cứng (GPU/CPU mạnh) & Trả phí API theo gói sử dụng \\
+\hline
+Multi-turn & Hỗ trợ tốt qua LangChain & Khó hơn, cần quản lý context thủ công & Hỗ trợ tốt, duy trì context qua nhiều lượt chat \\
+\hline
+Phụ thuộc internet & Có & Không & Có \\
+\hline
+Độ tin cậy & Cao nếu dữ liệu vector chuẩn & Tùy chất lượng fine-tune & Cao, nhưng vẫn có khả năng hallucination nếu prompt mập mờ \\
+\hline
+\end{tabularx}
+\caption{So sánh các mô hình LLaMA 3.1 8B instant, LLaMA Local và GPT-4, GPT-3.5}
+\label{tab:llm_model_comparison}
+\end{table}
+
+Từ bảng so sánh trên, thông qua phân tích các ưu – nhược điểm về chi phí và yêu cầu cấu hình phần cứng, mô hình phù hợp nhất là mô hình có khả năng cung cấp API miễn phí, không giới hạn và không đòi hỏi hệ thống phần cứng mạnh để triển khai. Dựa trên các tiêu chí này, mô hình ngôn ngữ lớn LLaMA 3.1 8B Instant được ưu tiên lựa chọn nhằm thực hiện nhiệm vụ sinh phản hồi tự động. Các phản hồi được tạo ra dựa trên dữ liệu đầu vào do người dùng cung cấp, sau khi đã được xử lý tại bước NLP.
+
+Việc triển khai được thực hiện thông qua framework LangChain, giúp quản lý toàn bộ pipeline xử lý, xây dựng prompt và tích hợp dữ liệu truy xuất từ hệ cơ sở dữ liệu vector. Mô hình được gọi thông qua Groq API (nền tảng ChatGroq), tận dụng khả năng tăng tốc xử lý vượt trội của phần cứng chuyên dụng, giúp giảm độ trễ và cải thiện tốc độ phản hồi.\cite{llm-selectmodel}
+
+\subsection{Thực hiện mô hình}
+Mô hình nhận đầu vào là dữ liệu đã được xử lý và chuẩn hóa từ bước NLP, bao gồm danh sách nguyên liệu, tên món ăn hoặc các yêu cầu liên quan đến món ăn mà người dùng cung cấp. Nếu bước truy xuất dữ liệu không tìm thấy kết quả phù hợp (kết quả rỗng), hệ thống sẽ phản hồi bằng một thông báo hài hước nhằm tăng tính tương tác với người dùng. Trong trường hợp có ít nhất một kết quả phù hợp, hệ thống sẽ xây dựng các thông điệp đầu vào (messages) cho LLM.
+
+Hai loại thông điệp được sử dụng bao gồm:
+
+\begin{itemize}
+    \item SystemMessage: LLM được vào vai một chuyên gia ẩm thực gen Z Việt Nam. Các kết quả trả về của LLM phải có giọng điệu dí dỏm, hài hước, đồng thời nội dung câu trả lời phải đảm bảo tính ngắn gọn, rõ ràng và độ chính xác cao. Việc quy định những điều trên giúp mô hình gần gũi hơn với các bạn trẻ, phần nào giúp các bạn tăng thêm hứng thú hoặc trở nên hứng thú với việc nấu ăn, tạo thói quen chăm sóc bản thân bằng nguồn dinh dưỡng đảm bảo sạch sẽ và vệ sinh hơn.
+    \item HumanMessage: LLM nhận đầu vào là dữ liệu đã được xử lý từ NLP, sau đó LLM sử dụng những thông tin này để sinh phản hồi cho người dùng theo những yêu cầu và quy tắc đã quy định trong SystemMessage. 
+\end{itemize}
+
+LLM được gọi bằng phương thức chat.invoke(messages), trả về nội dung phản hồi dưới dạng văn bản. Toàn bộ quy trình được đóng gói trong khối try–except nhằm đảm bảo tính ổn định. Nếu không xảy ra lỗi kết nối API, mô hình sẽ sinh tự động câu trả lời chứa danh sách kết quả phù hợp với yêu cầu từ người dùng. Trong trường hợp xảy ra lỗi kết nối API, mô hình sẽ trả về danh sách dữ liệu đã được xử lý từ NLP, không trả về bất cứ phản hồi được sinh tự động nào. 
+
+Nhờ cách thiết kế các hàm xử lý chuyên biệt như 
+\url{describe_dishes} và \url{smooth_instructions} mà
+hệ thống có khả năng đáp ứng đa dạng nhu cầu truy vấn của người dùng. 
+Đồng thời, mỗi phản hồi đều mang phong cách trẻ trung, hài hước và gần gũi, tạo sự thân thiện và tăng trải nghiệm tương tác:
+\begin{itemize}
+    \item \url{describe_dishes}: Sinh phản hồi về mô tả món ăn.
+    \item \url{smooth_instructions}: Sinh phản hồi về hướng dẫn nấu món ăn.
+\end{itemize}
+
+Đặc biệt, việc giữ nguyên danh sách món ăn được cung cấp từ bước NLP và yêu cầu mô hình “không được tự bịa món mới” giúp đảm bảo tính chính xác và nhất quán giữa dữ liệu NLP và phản hồi từ LLM. Điều này hạn chế hiện tượng hallucination (ảo giác AI) và nâng cao độ tin cậy của kết quả.
+
+Tổng thể, phần triển khai LLM đóng vai trò trung tâm trong hệ thống, kết nối giữa dữ liệu đã được xử lý và giao diện hội thoại với người dùng, đồng thời mang lại trải nghiệm tự nhiên, vui tươi và hiện đại đúng với định hướng của trợ lý ảo thông minh. \\[0.25cm] \cite{llm-message}
+
+
+
+
+ 

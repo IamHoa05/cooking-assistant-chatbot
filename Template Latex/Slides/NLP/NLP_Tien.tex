@@ -1,0 +1,170 @@
+\subsection*{Xây dựng hệ thống tìm kiếm với FAISS}
+
+% Slide 1: Tổng quan FAISS
+\begin{frame}{FAISS – Facebook AI Similarity Search}
+\begin{itemize}
+    \item Thư viện mã nguồn mở cho \textbf{vector similarity search}.
+    \item Hỗ trợ \textbf{Exact / Approximate Nearest Neighbor}, GPU acceleration.
+    \item Ứng dụng: \textbf{Semantic Search}, \textbf{Recommendation}, \textbf{RAG chatbot}.
+\end{itemize}
+\end{frame}
+
+% Slide 2: Nhu cầu sử dụng
+\begin{frame}{Nhu cầu sử dụng FAISS}
+\begin{itemize}
+\item \textbf{Vấn đề với từ khóa truyền thống:}
+\begin{itemize}
+    \item BM25, TF-IDF không hiểu \textbf{ngữ nghĩa}.
+    \item Khó tìm món ăn tương tự khi query khác từ.
+\end{itemize}
+
+\vspace{0.5cm} % khoảng cách giữa 2 phần
+
+\item \textbf{Giải pháp: Embedding + FAISS}
+\begin{itemize}
+    \item Chuyển text sang vector dense.
+    \item Tìm nearest neighbors nhanh.
+\end{itemize}
+
+\end{itemize}
+\end{frame}
+
+
+% Slide 3: Kiến trúc FAISS
+\begin{frame}{Kiến trúc FAISS}
+\begin{itemize}
+    \item \textbf{Index}: lưu trữ và truy xuất vector
+    \item \textbf{Metric}: L2 distance / Inner Product
+    \item \textbf{Quantizer}: cho approximate search
+    \item \textbf{IVF}: chia không gian vector
+    \item \textbf{GPU module}: tăng tốc dataset lớn
+\end{itemize}
+\end{frame}
+
+% Slide 4: Các loại Index
+\begin{frame}{Các loại Index trong FAISS}
+\centering
+
+\begin{block}{Exact Search}
+\begin{itemize}
+    \item IndexFlatIP, IndexFlatL2
+    \item Ưu điểm: Độ chính xác 100\%
+    \item Nhược điểm: Tốn CPU, dataset lớn
+\end{itemize}
+\end{block}
+
+\begin{block}{Approximate Search}
+\begin{itemize}
+    \item IndexIVFFlat, IndexIVFPQ, HNSW
+    \item Ưu điểm: Nhanh, tiết kiệm bộ nhớ
+    \item Nhược điểm: Recall thấp hơn exact
+\end{itemize}
+\end{block}
+
+\begin{block}{GPU Index}
+\begin{itemize}
+    \item GPUFlat, GPUIVF
+    \item Ưu điểm: Tăng tốc truy vấn >< Nhược điểm: Cần GPU
+\end{itemize}
+\end{block}
+
+\end{frame}
+
+% Slide 5: Cơ chế hoạt động
+\begin{frame}{Cơ chế hoạt động}
+\centering
+\begin{tikzpicture}[node distance=0.8cm, scale=0.8, every node/.style={scale=0.8}]
+    \node[draw, rounded corners, fill=rosePink!20, text width=4cm, align=center] (input) {Input};
+    \node[draw, rounded corners, fill=rosePink!20, below=of input, text width=4cm, align=center] (embed) {Embedding};
+    \node[draw, rounded corners, fill=rosePink!20, below=of embed, text width=4cm, align=center] (index) {FAISS Index};
+    \node[draw, rounded corners, fill=rosePink!20, below=of index, text width=4cm, align=center] (topk) {Top-k};
+    \node[draw, rounded corners, fill=rosePink!20, below=of topk, text width=4cm, align=center] (rank) {Ranking};
+    \node[draw, rounded corners, fill=rosePink!20, below=of rank, text width=4cm, align=center] (output) {Output};
+    
+    \draw[->, thick] (input) -- (embed);
+    \draw[->, thick] (embed) -- (index);
+    \draw[->, thick] (index) -- (topk);
+    \draw[->, thick] (topk) -- (rank);
+    \draw[->, thick] (rank) -- (output);
+\end{tikzpicture}
+\end{frame}
+
+
+
+
+% Slide 6: Triển khai hệ thống
+\begin{frame}{Triển khai FAISS trong hệ thống}
+\begin{itemize}
+    \item Chọn \textbf{IndexFlatIP} cho dataset vừa phải.
+    \item Thêm vector embedding của ingredients và dish names.
+    \item Top-k retrieval: \(\text{top\_k} = \underset{i \in [1,N]}{\mathrm{arg\,max}} (\mathbf{q} \cdot \mathbf{v}_i)\)
+    \item Mapping top-k ID → dataset gốc.
+\end{itemize}
+\end{frame}
+
+% Slide 7: Ưu điểm & Hạn chế
+\begin{frame}{Ưu điểm \& Hạn chế của FAISS}
+\begin{columns}[t] % căn trên để tiêu đề cùng hàng
+    \column{0.48\textwidth}
+    \centering
+    \textbf{Ưu điểm}
+    
+    \vspace{0.3cm}
+    \begin{itemize}
+        \item Tốc độ cao, hỗ trợ Exact/Approx
+        \item Hỗ trợ GPU
+        \item Dễ tích hợp với text/hình ảnh/audio
+        \item Batch search tối ưu throughput
+    \end{itemize}
+
+    \column{0.48\textwidth}
+    \centering
+    \textbf{Hạn chế}
+    
+    \vspace{0.3cm}
+    \begin{itemize}
+        \item Không tối ưu với dữ liệu sparse
+        \item Approximate index recall thấp hơn exact
+        \item Index lớn tốn RAM nếu không dùng IVF/PQ/GPU
+    \end{itemize}
+\end{columns}
+\end{frame}
+
+
+% Slide 8: Ứng dụng
+\begin{frame}{Ứng dụng thực tế của FAISS}
+\begin{itemize}
+    \item Chatbot / Search Engine (RAG)
+    \item Recommendation System
+    \item Image Similarity (CLIP/CNN)
+    \item Semantic Search NLP
+    \item Multimodal Search (text, hình ảnh, audio)
+\end{itemize}
+\end{frame}
+
+% Slide: Hiệu suất tìm kiếm với FAISS
+\begin{frame}{Hiệu suất tìm kiếm với FAISS}
+\begin{itemize}
+    \item \textbf{Index dish:} 2420 vectors, 1024 chiều
+    \begin{itemize}
+        \item Độ trễ trung bình: 1.10 ms/query
+        \item Truy vấn mỗi giây(QPS): 910
+        \item Precision@5 / Recall@5: 100\%
+    \end{itemize}
+    
+    \item \textbf{Index ingredient names:} 15752 vectors, 1024 chiều
+    \begin{itemize}
+        \item Độ trễ trung bình: 3.85 ms/query
+        \item Truy vấn mỗi giây(QPS): 260
+        \item Precision@5 / Recall@5: 24\%
+    \end{itemize}
+\end{itemize}
+
+\vspace{0.3cm}
+\textbf{Nhận xét:}
+\begin{itemize}
+    \item Index dish rất nhanh và chính xác → phù hợp với truy vấn món ăn.
+    \item Index ingredient names chậm hơn, độ chính xác thấp hơn → cần tối ưu hoặc kết hợp với các bộ lọc khác.
+\end{itemize}
+\end{frame}
+

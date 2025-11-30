@@ -1,0 +1,60 @@
+\begin{frame}{Giới thiệu chung về embedding}
+    \begin{itemize}
+    \item Embedding là một kỹ thuật trong AI, học máy và xử lý ngôn ngữ tự nhiên dùng để biểu diễn dữ liệu dạng vector trong không gian nhiều chiều. 
+    \item Embedding thể hiện mối quan hệ và mức độ tương đồng giữa các đối tượng thông qua khoảng cách hoặc góc trong không gian vector.
+    \item Hỗ trợ máy tính nhận diện, phân loại, tìm kiếm thông tin hoặc dự đoán hiệu quả.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Nguyên lý hoạt động của embedding}
+    \begin{itemize}
+    \item Thông qua một mô hình học sâu được huấn luyện, dữ liệu được chuyển thành vector số trong một không gian liên tục.
+    \end{itemize}
+    \begin{center}
+        \includegraphics[width=0.9\textwidth]{Slides/imgs/embedding.png}
+        \\[4pt]
+    \end{center}
+\end{frame}
+
+\begin{frame}{Các loại embedding phổ biến}
+    \begin{itemize}
+    \item \textbf{Word embedding}: biểu diễn các từ thành vector số: Word2Vec, GloVe. Nhận diện từ đồng nghĩa, phân loại từ theo ngữ cảnh. 
+    \item \textbf{Sentence embedding} và \textbf{document embedding}: biểu diễn câu, tài liệu thành vector. Cho phép các mô hình hiểu nghĩa của cả câu, đoạn văn hoặc tài liệu dài: Sentence-BERT, BGE-M3.
+    \item \textbf{Image embedding}: chuyển đổi hình ảnh thành vector số. Giúp máy tính nhận diện hình ảnh, tìm kiếm hình ảnh tương tự, phân loại hình ảnh theo nội dung.
+    \item \textbf{Audio embedding}: biểu diễn âm thanh, giọng nói, nhạc thành vector số, hỗ trợ các ứng dụng nhận diện giọng nói, phân loại nhạc, phát hiện sự kiện âm thanh.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Mô hình embedding BGE-M3}
+    \begin{itemize}
+    \item Là mô hình sentence embedding đa chức năng được xây dựng trên kiến trúc Transformer, đặc điểm: 
+    \begin{itemize}
+        \item Đa ngôn ngữ: Hỗ trợ hơn 100 ngôn ngữ và ross-lingual.
+        \item Đa chức năng: thực hiện đồng thời 3 loại truy xuất: tìm kiếm vector dày đặc, tìm kiếm vector thưa, tìm kiếm đa vector.
+        \item Xử lý văn bản có độ dài khác nhau lên đến 8192 token.
+        \item Huấn luyện dựa trên phương pháp self-knowledge distillation. 
+         \end{itemize}
+    \end{itemize}
+    => Đáp ứng các yêu cầu của project: hỗ trợ tiếng Việt , cho kết quả tương đồng ngữ nghĩa chính xác, embedding các câu ngắn: tên món ăn, tên nguyên liệu.
+\end{frame}
+
+\begin{frame}{Quy trình xử lý văn bản trong BGE-M3}
+    BGE-M3 sử dụng kiến trúc Transformer. Cụ thể thực hiện các bước:
+    \begin{itemize}
+        \item \textbf{Tokenization:} chia văn bản thành các token và mã hóa thành vector.
+        \item \textbf{Token Embedding:} mỗi token được biểu diễn dưới dạng vector số.
+        \item \textbf{Self-Attention:} xem xét mối quan hệ và mức độ phụ thuộc giữa các token trong câu.
+        \item \textbf{Transformer Encoder:} biến đổi các vector nhúng thành biểu diễn ngữ cảnh của toàn câu.
+    \end{itemize}
+\end{frame}
+
+\begin{frame}{Triển }
+\begin{itemize}
+    \item Đọc dữ liệu từ \texttt{recipes\_cleaned.csv}: \texttt{dish\_name}, \texttt{ingredient\_names}
+          
+    \item Load mô hình BGE-M3 từ \texttt{config.yml}
+    \item Encode tên món ăn thành một vector 1024 chiều
+    \item Encode nguyên liệu từng item riêng biệt thành mảng vector 1024 chiều
+    \item Lưu kết quả vào file \texttt{recipes\_embeddings.pkl}
+\end{itemize}
+\end{frame}

@@ -1,0 +1,103 @@
+\documentclass[12pt]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T5]{fontenc}
+\usepackage[vietnamese]{babel}
+\usepackage{graphicx,amsmath,amssymb}
+\usetheme{Madrid}
+\usepackage{tikz}            % chính cho vẽ
+\usetikzlibrary{arrows.meta} % mũi tên đẹp
+\usetikzlibrary{positioning} % dễ định vị các node
+\usetikzlibrary{shapes, shapes.geometric} % các dạng shape như rectangle, ellipse
+\usepackage{tabularx}
+
+% --- MÀU HỒNG ĐẸP ---
+\definecolor{rosePink}{RGB}{231, 84, 128}   % Hồng rose đẹp
+\definecolor{softPink}{RGB}{255, 210, 223}  % Hồng pastel
+\definecolor{hotPink}{RGB}{219, 48, 105}    % Hồng đậm (accent)
+
+% Theme dùng màu rosePink
+\usecolortheme[named=rosePink]{structure}
+
+% --- Tiêu đề & ngày ---
+\title[Cooking Assistant Chatbot]{Cooking Assistant Chatbot}
+\date{01/12/2025}
+
+% --- Khung tiêu đề slide bìa ---
+\setbeamercolor{titlebox}{bg=rosePink, fg=white}
+
+% --- Thanh trên ---
+\setbeamercolor{headline}{bg=hotPink, fg=white}
+\setbeamertemplate{headline}{
+  \leavevmode
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.7ex,dp=1.3ex]{headline}
+    \hspace*{0.5cm}\insertshorttitle
+  \end{beamercolorbox}
+}
+
+% --- Thanh dưới ---
+\setbeamercolor{footline}{bg=softPink, fg=hotPink}
+\setbeamertemplate{footline}{
+  \leavevmode
+  \begin{beamercolorbox}[wd=\paperwidth,ht=2.7ex,dp=1.3ex]{footline}
+    \hspace*{0.5cm} \insertdate
+    \hfill
+    \textbf{\insertframenumber{}/\inserttotalframenumber}
+    \hspace*{0.5cm}
+  \end{beamercolorbox}
+}
+
+% --- Mục lục ---
+\setbeamertemplate{section in toc}[circle]
+\setbeamercolor{section in toc}{fg=black}
+
+% --- Bắt đầu tài liệu ---
+\begin{document}
+
+% --- Slide bìa ---
+\begin{frame}
+    \begin{center}
+        \small
+        Trường Đại học Khoa học Tự nhiên, ĐHQGHN \\
+        Khoa Toán – Cơ – Tin học 
+    \end{center}
+
+    \vspace{1.5cm}
+
+    \begin{center}
+        \begin{beamercolorbox}[sep=12pt, center, shadow=true, rounded=true]{titlebox}
+            \Large \inserttitle
+        \end{beamercolorbox} 
+    \end{center}
+
+    \vspace{0.5cm}
+
+    \begin{center}
+        \begin{tabular}{l c r}
+            Nguyễn Thị Hòa & : & 23001521\\
+            Đào Thị Ngọc Bích & : & 23001501\\
+            Đinh Thị Kiều Na & : & 23001537\\
+            Dương Diễm Quỳnh & : & 23001555\\
+            Lưu Thị Thủy Tiên & : & 23001563
+        \end{tabular}
+    \end{center}
+
+\end{frame}
+
+% --- Slide nội dung chính ---
+\begin{frame}{Nội dung chính}
+    \tableofcontents
+\end{frame}
+\section{Tổng quan}
+\input{Slides/Intro}
+\section{Xử lý dữ liệu}
+\input{Slides/DataProcessing}
+\section{Xây dựng Embedding}
+\input{Slides/Embedding}
+\section{Xử lý ngôn ngữ tự nhiên}
+\input{Slides/NLP/NLP_Hoa}
+\input{Slides/NLP/NLP_Tien}
+\section{Mô hình ngôn ngữ lớn}
+\input{Slides/LLM}
+
+\end{document}

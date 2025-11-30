@@ -1,0 +1,57 @@
+\section{Hiệu suất tìm kiếm với FAISS}
+
+\subsection{Thông tin Index}
+Hệ thống sử dụng hai index chính cho việc tìm kiếm:
+\begin{itemize}
+    \item \textbf{Dish index}: 2,420 vectors, dimension = 1,024.
+    \item \textbf{Ingredient names index}: 15,752 vectors, dimension = 1,024.
+\end{itemize}
+
+Nhận xét: Dataset dish nhỏ nên index đơn giản, truy vấn nhanh; dataset names lớn hơn nên cần cân nhắc tối ưu thêm.
+
+\subsection{Hiệu suất truy vấn}
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|c|c|}
+\hline
+\textbf{Index} & \textbf{Avg time/query (ms)} & \textbf{QPS} \\
+\hline
+Dish & 1.10 & 910 \\
+Names & 3.85 & 260 \\
+\hline
+\end{tabular}
+\caption{Hiệu suất truy vấn của các FAISS Index}
+\end{table}
+
+\noindent Nhận xét:
+\begin{itemize}
+    \item Dish index cho phép truy vấn gần như real-time với throughput cao.
+    \item Names index truy vấn chậm hơn do số lượng vector lớn hơn, cần tối ưu nếu mở rộng dataset.
+\end{itemize}
+
+\subsection{Độ chính xác}
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|c|c|c|}
+\hline
+\textbf{Index} & \textbf{Precision@5} & \textbf{Recall@5} & \textbf{Test cases} \\
+\hline
+Dish & 100\% & 100\% & 100 \\
+Names & 24\% & 24\% & 100 \\
+\hline
+\end{tabular}
+\caption{Độ chính xác của các FAISS Index}
+\end{table}
+
+\noindent Nhận xét:
+\begin{itemize}
+    \item Dish index đạt độ chính xác tuyệt đối, phù hợp với truy vấn theo tên món ăn.
+    \item Names index có precision và recall thấp, cần cải thiện embedding hoặc kết hợp với re-ranking/approximate index để tăng hiệu quả.
+\end{itemize}
+
+\subsection{Phân tích}
+\begin{itemize}
+    \item Với index nhỏ (dish), Exact search (\texttt{IndexFlatIP}) hoạt động tối ưu về tốc độ và accuracy.
+    \item Với index lớn (names), cần cân nhắc sử dụng Approximate search (IVF, PQ) hoặc hybrid với re-ranking để cải thiện recall.
+    \item Hệ thống hiện tại phù hợp cho retrieval món ăn, nhưng còn hạn chế khi tìm kiếm theo tên nguyên liệu phức tạp.
+\end{itemize}

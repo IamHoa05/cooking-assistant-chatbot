@@ -1,0 +1,114 @@
+\section{Thu thập và làm sạch dữ liệu}
+
+\subsection{Thu thập dữ liệu}
+
+Dữ liệu được nhóm thu thập từ trang web "Món ngon mỗi ngày" (monngonmoingay.com), với mục tiêu xây dựng một kho dữ liệu phong phú gồm hơn 2000 công thức nấu ăn. Dự án này sử dụng phương pháp Web Crawling tiên tiến với công cụ Selenium WebDriver để tự động hóa quá trình truy cập, tương tác và trích xuất thông tin chi tiết từ các trang web động (JavaScript-rendered pages).
+
+Mục đích của việc thu thập dữ liệu này không chỉ dừng lại ở việc tạo ra một tập dữ liệu thô, mà còn nhằm cung cấp nền tảng vững chắc cho các ứng dụng phân tích dữ liệu chuyên sâu như:
+
+\begin{itemize}
+\item \textbf{Phân tích xu hướng ẩm thực}: Xác định các nguyên liệu phổ biến, các loại món ăn được tìm kiếm nhiều nhất, và thời gian chế biến trung bình.
+
+\item \textbf{Xây dựng hệ thống gợi ý (Recommendation System)}: Phát triển mô hình đề xuất món ăn dựa trên khẩu phần, độ khó, hoặc các nguyên liệu sẵn có của người dùng.
+
+\item \textbf{Nghiên cứu ngôn ngữ tự nhiên (NLP)}: Phân tích cấu trúc và nội dung của các bước hướng dẫn nấu ăn để tối ưu hóa quy trình học máy.
+\end{itemize}
+
+Quá trình thu thập được thực hiện theo nguyên tắc ổn định và bảo toàn dữ liệu, cho phép tích hợp và cập nhật dữ liệu liên tục qua nhiều lần chạy mà không làm mất đi kho dữ liệu hiện có.
+
+Trong dự án này, chúng em sử dụng công cụ Selenium WebDriver để thu thập dữ liệu (crawl) dựa trên các lý do sau:
+
+Trang web, "Món ngon mỗi ngày", sử dụng JavaScript để tải và hiển thị nhiều nội dung quan trọng như danh sách công thức, tên món, nguyên liệu, và các bước thực hiện. Các công cụ crawl dữ liệu truyền thống, như thư viện Requests hay Beautiful Soup, chỉ có khả năng đọc mã nguồn HTML tĩnh ban đầu (Source HTML) trước khi JavaScript chạy. Do đó, nếu không có Selenium, chúng em sẽ không thu thập được phần lớn dữ liệu cần thiết. Selenium mô phỏng một trình duyệt hoàn chỉnh (như Chrome), kích hoạt môi trường để JavaScript chạy, đảm bảo mọi nội dung đều được tải đầy đủ trước khi trích xuất.
+
+Dự án yêu cầu khả năng tương tác với giao diện trang web, cụ thể là:
+
+\begin{itemize}
+\item \textbf{Xử lý Pop-up}: Mã nguồn cần đóng pop-up cookie (\texttt{span.cookieDrawer\_\_close}) xuất hiện lần đầu để không bị che khuất nội dung chính. Selenium cho phép định vị và thực hiện hành động nhấp chuột để xử lý tương tác này.
+
+\item \textbf{Cuộn trang (Scroll)}: Trang danh sách sử dụng kỹ thuật tải chậm (Lazy Loading), Selenium là công cụ cần thiết để mô phỏng hành vi cuộn xuống, buộc trang tải thêm các công thức tiếp theo.
+\end{itemize}
+
+Selenium cung cấp cơ chế WebDriverWait và expected\_conditions. Cơ chế này cho phép chúng em chỉ thị cho chương trình chờ đợi một cách thông minh cho đến khi một phần tử cụ thể (ví dụ: nút đóng pop-up) xuất hiện và sẵn sàng để tương tác trong một khoảng thời gian nhất định (ví dụ: 5 giây). Điều này giúp quá trình crawl trở nên bền vững và ít bị lỗi hơn trước sự thay đổi về tốc độ tải trang hoặc thời gian phản hồi của máy chủ, thay vì chỉ dựa vào lệnh dừng cố định (time.sleep) không đáng tin cậy.
+
+Quy trình thực hiện thu thập dữ liệu công thức nấu ăn của nhóm em được tiến hành một cách tuần tự và có kiểm soát, sử dụng Selenium WebDriver để xử lý các trang web động. Quy trình này bao gồm bốn bước chính:
+
+\begin{enumerate}
+\item \textbf{Thiết lập môi trường và khởi tạo phiên làm việc}: Đầu tiên, chúng em khởi tạo một phiên trình duyệt Chrome mới thông qua webdriver.Chrome(). Đồng thời, các tham số quan trọng cho quá trình crawl được xác định, bao gồm URL gốc, phạm vi trang cần duyệt (từ start\_page=5 đến max\_pages=20), và số lượng công thức tối đa mỗi trang (limit\_per\_page=50).
+
+\item \textbf{Thu thập URL và hình ảnh từ trang danh sách (List Crawl)}: Chúng em thực hiện lặp qua từng trang danh sách theo phạm vi đã thiết lập. Khi truy cập trang đầu tiên, chương trình sẽ sử dụng WebDriverWait để phát hiện và đóng cửa sổ pop-up cookie (span.cookieDrawer\_\_close), đảm bảo việc thu thập dữ liệu không bị cản trở. Sau đó, chương trình tìm kiếm các thẻ chứa liên kết công thức (div.relative.rounded-xl a) và trích xuất URL chi tiết (href) cùng với đường dẫn hình ảnh (src). Các link này được lưu vào danh sách all\_recipes để chuẩn bị cho bước tiếp theo.
+
+\item \textbf{Thu thập chi tiết dữ liệu công thức (Detail Crawl)}: Sử dụng danh sách URL đã thu thập, chương trình lần lượt truy cập từng trang chi tiết công thức. Trên mỗi trang, chúng em sử dụng các CSS Selector chuyên biệt để trích xuất các trường thông tin cụ thể: Tên món (span.title), Nguyên liệu (div.block-nguyenlieu li), Các bước nấu (\#section-soche li, \#section-thuchien p), và các thông số Khẩu phần/Thời gian/Độ khó. Toàn bộ quá trình trích xuất được đặt trong khối try...except để gán giá trị mặc định ("NA") nếu một trường dữ liệu bị thiếu, đảm bảo quá trình crawl không bị gián đoạn.
+
+\item \textbf{Hợp nhất và lưu trữ dữ liệu đầu ra}: Sau khi hoàn tất quá trình thu thập chi tiết, chương trình gọi driver.quit() để đóng trình duyệt. Tiếp theo, chúng em kiểm tra sự tồn tại của tệp recipes.json. Nếu tệp đã tồn tại, dữ liệu cũ sẽ được đọc và nối thêm dữ liệu mới thu thập được vào cuối. Cuối cùng, toàn bộ dữ liệu hợp nhất được ghi vào tệp recipes.json với định dạng JSON chuẩn (ensure\_ascii=False, indent=4), đảm bảo dữ liệu tiếng Việt được hiển thị chính xác và dễ đọc, đồng thời duy trì tính bảo toàn dữ liệu qua các lần chạy.
+\end{enumerate}
+\subsection{Tiền xử lý dữ liệu}
+
+Sau khi hoàn tất quá trình thu thập dữ liệu thô bằng Selenium WebDriver và lưu trữ thành công vào tệp JSON, nhóm em tiến hành tiền xử lý dữ liệu (Data Preprocessing).
+
+Tiền xử lý dữ liệu là một bước cực kỳ quan trọng, là giai đoạn bắt buộc sau khi thu thập dữ liệu thô và trước khi đưa dữ liệu vào mô hình. Tầm quan trọng của nó được thể hiện qua câu nói nổi tiếng trong khoa học dữ liệu: "Garbage In, Garbage Out" (Đầu vào rác, Đầu ra rác). Dữ liệu thô hiếm khi sạch sẽ, đầy đủ hoặc nhất quán; nếu không được xử lý, chúng sẽ dẫn đến kết quả phân tích sai lệch, mô hình kém chính xác, và lãng phí thời gian, tài nguyên.
+
+\subsubsection{Chuẩn hóa đơn vị khối lượng}
+
+Dữ liệu nguyên liệu thô được thu thập dưới dạng danh sách các chuỗi văn bản với khối lượng viết tắt nhiều và không đồng nhất (ví dụ: "Thịt heo nạc xay 500g", "Nước tương Maggi 1 M canh"). Chúng em đã xây dựng hàm normalize\_unit để giải quyết vấn đề này:
+
+Hàm normalize\_unit hoạt động theo cơ chế xử lý từng bước như sau:
+
+Đầu tiên, hàm kiểm tra kiểu dữ liệu đầu vào. Nếu tham số text là một danh sách (list), hàm sẽ tự gọi đệ quy để áp dụng xử lý lên từng phần tử trong danh sách đó, đảm bảo mọi mục trong danh sách đều được chuẩn hóa.
+
+Tiếp theo, nếu đầu vào không phải là chuỗi ký tự (string), hàm sẽ trả về nguyên giá trị đó mà không thực hiện bất kỳ thay đổi nào.
+
+Khi đầu vào là chuỗi ký tự, hàm sử dụng một bảng ánh xạ (unit\_map) được định nghĩa sẵn để thay thế các ký hiệu đơn vị viết tắt bằng tên đầy đủ. Cụ thể, bảng này quy định các phép thay thế như: 'g' thành 'gam', 'M' thành 'muỗng', 'tr' thành 'trái', 'c' thành 'củ'. Quá trình thay thế này được thực hiện thông qua biểu thức chính quy (regex), đảm bảo rằng chỉ các ký hiệu đơn vị đứng ngay sau một giá trị số mới được thay thế, nhằm tránh việc thay đổi nhầm các ký tự trùng lặp trong tên nguyên liệu.
+
+\subsubsection{Chuẩn hóa thời gian và số người ăn}
+
+Trong dữ liệu còn tồn tại đơn vị thời gian theo kiểu "1 giờ 20 phút"... Chúng em xây dựng hàm normalize\_cook\_time để chuẩn hóa thời gian sang phút.
+
+Khi nhận đầu vào là một chuỗi mô tả thời gian như "1 giờ 20 phút", hàm sẽ xử lý qua ba bước chính. 
+
+Đầu tiên, hàm chuyển chuỗi về dạng chữ thường và loại bỏ khoảng trắng thừa để đảm bảo tính nhất quán. 
+
+Tiếp theo, hàm sử dụng biểu thức chính quy để trích xuất các thành phần giờ và phút: nó tìm kiếm các cụm từ chứa "giờ" hoặc "h" để lấy số giờ, đồng thời tìm các cụm từ chứa "phút" hoặc "ph" để lấy số phút. 
+
+Sau khi có được các giá trị này, hàm thực hiện quy đổi toàn bộ thời gian về đơn vị phút bằng cách nhân số giờ với 60 và cộng với số phút tương ứng. 
+
+Kết quả trả về là tổng số phút, cho phép so sánh và phân tích các giá trị thời gian một cách thống nhất trong toàn bộ tập dữ liệu.
+
+\subsubsection{Chuẩn hóa tên nguyên liệu}
+
+Hàm normalize\_ingredient\_name được thiết kế để chuẩn hóa tên nguyên liệu bằng cách loại bỏ các thông tin không cần thiết và thống nhất cách gọi tên. Hàm hoạt động qua sáu bước chính. 
+
+Đầu tiên, hàm xóa các biểu tượng icon và chuyển toàn bộ tên nguyên liệu về chữ thường để đảm bảo tính nhất quán. 
+
+Tiếp theo, hàm loại bỏ tất cả các ký tự đặc biệt chỉ giữ lại chữ cái, số và khoảng trắng. 
+
+Bước thứ ba, hàm sử dụng một danh sách các từ mô tả trạng thái, hành động chế biến để loại bỏ các thông tin thừa như "băm", "cắt", "tươi", "khô" - ví dụ, "thịt heo cắt lát" sẽ trở thành "thịt heo". 
+
+Sau đó, hàm tiếp tục loại bỏ các tên thương hiệu cụ thể như "aji-ngon", "ajinomoto" khỏi tên nguyên liệu. 
+
+Bước thứ năm thực hiện việc gom nhóm và thay thế các tên nguyên liệu phức tạp thành tên chuẩn hóa - chẳng hạn, các biến thể của "hạt nêm ajingon" đều được chuyển thành "hạt nêm" thống nhất. 
+
+Cuối cùng, hàm dọn dẹp các khoảng trắng thừa và trả về tên nguyên liệu đã được chuẩn hóa. Quy trình này giúp tạo ra một từ điển nguyên liệu thống nhất, loại bỏ sự trùng lặp do cách gọi tên khác nhau, từ đó hỗ trợ hiệu quả cho việc phân tích dữ liệu và xây dựng hệ thống gợi ý công thức nấu ăn.
+
+\subsubsection{Sửa lỗi chính tả các nguyên liệu trong trường ingredient\_names}
+
+Hàm apply\_corrections được sử dụng để sửa lỗi chính tả và chuẩn hóa từ vựng trong tên nguyên liệu thông qua một bảng từ điển sửa lỗi được định nghĩa sẵn. 
+
+Hàm hoạt động bằng cách tách tên nguyên liệu thành các từ đơn lẻ, sau đó kiểm tra từng từ với bảng INGREDIENT\_CORRECTIONS - đây là một từ điển ánh xạ các từ viết sai chính tả hoặc các biến thể không chuẩn sang dạng chuẩn hóa. Ví dụ, nếu từ điển chứa ánh xạ "hànhla" → "hành lá", thì khi gặp từ "hànhla" trong tên nguyên liệu, hàm sẽ tự động thay thế thành "hành lá". 
+
+Quá trình này đảm bảo rằng các nguyên liệu có cùng bản chất nhưng được viết khác nhau do lỗi đánh máy, viết tắt không thống nhất, hoặc lỗi chính tả sẽ được chuẩn hóa về cùng một tên gọi chuẩn. 
+
+Điều này đặc biệt quan trọng trong việc làm sạch dữ liệu ẩm thực, nơi mà các lỗi chính tả và cách viết không đồng nhất có thể dẫn đến việc cùng một nguyên liệu bị phân loại thành nhiều mục khác nhau, gây khó khăn cho việc phân tích thống kê, đếm tần suất xuất hiện của nguyên liệu, và xây dựng hệ thống gợi ý công thức chính xác. 
+
+Hàm chỉ thực hiện thay thế khi tìm thấy từ trong từ điển sửa lỗi và giữ nguyên từ gốc nếu không tìm thấy hoặc giá trị thay thế là rỗng.
+
+\subsubsection{Phân loại món ăn}
+
+Hàm detect\_category được sử dụng để tự động phân loại các món ăn dựa trên tên gọi của chúng thông qua việc nhận diện các từ khóa đặc trưng. 
+
+Hàm hoạt động bằng cách so sánh tên món ăn (đã được chuyển về chữ thường) với một bảng ánh xạ các từ khóa đến thể loại tương ứng. 
+
+Cụ thể, hàm duyệt qua từng cặp từ khóa - thể loại trong bảng ánh xạ và kiểm tra xem từ khóa đó có xuất hiện trong tên món ăn hay không. Khi tìm thấy sự trùng khớp, hàm sẽ trả về thể loại tương ứng đã được viết hoa chữ cái đầu.
+
+Ví dụ, nếu tên món có chứa từ "bún", "phở", "miến" hoặc "hủ tiếu", món ăn sẽ được phân loại là "Món nước"; nếu chứa từ "chiên" hoặc "rán" sẽ được xếp vào loại "Chiên".  
+
+Phương pháp phân loại này giúp tự động hóa việc gán nhãn thể loại cho hàng ngàn công thức nấu ăn, tạo điều kiện thuận lợi cho việc phân tích xu hướng ẩm thực, tìm kiếm và lọc món ăn theo thể loại, cũng như xây dựng hệ thống gợi ý món ăn dựa trên sở thích của người dùng.
