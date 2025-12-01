@@ -76,12 +76,12 @@ def process_text(query: TextQuery):
 
             # ---------- CATEGORY ----------
             if slot == "category":
-                candidates = search_dishes_by_category(df, value, max_results=100)
+                candidates = search_dishes_by_category(df, value, max_results=200)
                 print(f"DEBUG: {len(candidates)} candidates after category filter")
 
             # ---------- INGREDIENT ----------
             elif slot == "ingredient":
-                ing_results = search_by_ingredients(value, df, handler, top_k=100)
+                ing_results = search_by_ingredients(value, df, handler, top_k=200)
                 print(f"DEBUG: {len(ing_results)} candidates from ingredients search")
 
                 if candidates is None:
@@ -98,7 +98,7 @@ def process_text(query: TextQuery):
             elif slot == "time":
                 time_val = value[0] if isinstance(value, list) else value
                 # Nếu chưa có candidates → search từ df
-                time_df = search_dishes_by_cook_time(df, time_val, max_results=100, tolerance=10)
+                time_df = search_dishes_by_cook_time(df, time_val, max_results=200, tolerance=10)
                 if candidates is None:
                     candidates = [{"dish_name": d["dish_name"]} for d in time_df]
                 else:
@@ -111,7 +111,7 @@ def process_text(query: TextQuery):
             # ---------- DIFFICULTY ----------
             elif slot == "difficulty":
                 diff_val = value
-                diff_results = get_dishes_by_difficulty(df, difficulty=diff_val, top_k=100)
+                diff_results = get_dishes_by_difficulty(df, difficulty=diff_val, top_k=200)
                 if candidates is None:
                     candidates = diff_results
                 else:
@@ -124,7 +124,7 @@ def process_text(query: TextQuery):
             # ---------- SERVING ----------
             elif slot == "serving":
                 serving_val = value[0] if isinstance(value, list) else value
-                serving_results = search_dishes_by_servings(df, handler, serving_val, top_k=100)
+                serving_results = search_dishes_by_servings(df, handler, serving_val, top_k=200)
                 if candidates is None:
                     candidates = serving_results
                 else:
@@ -135,7 +135,7 @@ def process_text(query: TextQuery):
                 print(f"DEBUG: {len(candidates)} candidates after serving filter")
 
         # Lấy tên món ăn cuối cùng
-        top_dishes = [d["dish_name"] for d in candidates] if candidates else []
+        top_dishes = [d["dish_name"] for d in candidates][:10] if candidates else []
 
         if not top_dishes:
             return {

@@ -225,22 +225,31 @@ def extract_category(text):
 
 
 def extract_dish_name(text, threshold=60):
-    """
-    Match dish name bằng fuzzy n-gram.
-    """
     tokens = tokenize(text.lower())
     best_dish = None
     best_score = 0
 
-    for ng, _, _ in generate_ngrams(tokens):
+    for ng, _, _ in generate_ngrams(tokens, max_n=6):
         s = "_".join(ng)
         for dish in dishes_set:
             score = fuzz.ratio(s, dish)
+            # Nếu trùng score, ưu tiên chứa nhiều token trùng với input
             if score > best_score and score >= threshold:
                 best_dish = dish
                 best_score = score
 
-    return best_dish.replace("_", " ") if best_dish else None
+    # Nếu best_dish tồn tại, convert back
+    if best_dish:
+        return best_dish.replace("_", " ")
+
+    # Fallback: kết hợp rule-based đơn giản
+    ingredients = extract_ingredients(text)
+    for dish in dishes_list:
+        dish_lower = dish.lower()
+        if all(ing.lower() in dish_lower for ing in ingredients):
+            return dish
+
+    return None
 
 
 # ============================================
