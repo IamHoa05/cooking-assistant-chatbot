@@ -15,29 +15,21 @@ from app.core.search_category import search_dishes_by_category
 from app.core.search_engine import search_dishes, initialize_search_engine, search_by_ingredients
 from app.utils.detect_intent_extract import detect_intent, extract_all_slots, format_output_by_intent
 
-# -------------------------
 # Router FastAPI
-# -------------------------
 router = APIRouter()
 
-# -------------------------
 # Khởi tạo Search Engine
-# -------------------------
 df, handler = initialize_search_engine()
 
-# Embedding model BGE-M3 (load 1 lần)
+# Embedding model BGE-M3
 EMBED_MODEL_NAME = "BAAI/bge-m3"
 embedding_model = load_embedding_model(EMBED_MODEL_NAME)
 
-# -------------------------
 # Schema request
-# -------------------------
 class TextQuery(BaseModel):
     text: str  # text input từ user
 
-# -------------------------
 # API: Xử lý văn bản, detect intent và trích slot
-# -------------------------
 @router.post("/process_text")
 def process_text(query: TextQuery):
     """
@@ -51,17 +43,15 @@ def process_text(query: TextQuery):
     text = query.text
     print(f"==== DEBUG: Input user ====\n{text}\n")
 
-    # 1️⃣ Detect intent
+    # Detect intent
     intent, score, _ = detect_intent(text)
     print(f"Detected intent: {intent}, score: {score}")
 
-    # 2️⃣ Extract slots dựa vào intent
+    # Extract slots dựa vào intent
     slots = extract_all_slots(text, intent=intent)
     print(f"Extracted slots: {slots}\n")
 
-    # =========================================
     # Xử lý intent 'suggest_dishes'
-    # =========================================
     if intent == "suggest_dishes":
         # Thứ tự filter: category → ingredient → time → difficulty → serving
         slot_order = ["category", "ingredient", "time", "difficulty", "serving"]
@@ -74,12 +64,10 @@ def process_text(query: TextQuery):
 
             print(f"Processing slot: {slot}, value: {value}")
 
-            # ---------- CATEGORY ----------
             if slot == "category":
                 candidates = search_dishes_by_category(df, value, max_results=200)
                 print(f"DEBUG: {len(candidates)} candidates after category filter")
 
-            # ---------- INGREDIENT ----------
             elif slot == "ingredient":
                 ing_results = search_by_ingredients(value, df, handler, top_k=200)
                 print(f"DEBUG: {len(ing_results)} candidates from ingredients search")
@@ -94,7 +82,6 @@ def process_text(query: TextQuery):
                     ]
                 print(f"DEBUG: {len(candidates)} candidates after ingredient filter")
 
-            # ---------- TIME ----------
             elif slot == "time":
                 time_val = value[0] if isinstance(value, list) else value
                 # Nếu chưa có candidates → search từ df
@@ -108,7 +95,6 @@ def process_text(query: TextQuery):
                     ]
                 print(f"DEBUG: {len(candidates)} candidates after time filter")
 
-            # ---------- DIFFICULTY ----------
             elif slot == "difficulty":
                 diff_val = value
                 diff_results = get_dishes_by_difficulty(df, difficulty=diff_val, top_k=200)
@@ -121,7 +107,6 @@ def process_text(query: TextQuery):
                     ]
                 print(f"DEBUG: {len(candidates)} candidates after difficulty filter")
 
-            # ---------- SERVING ----------
             elif slot == "serving":
                 serving_val = value[0] if isinstance(value, list) else value
                 serving_results = search_dishes_by_servings(df, handler, serving_val, top_k=200)
@@ -144,10 +129,10 @@ def process_text(query: TextQuery):
                 "description": "Không tìm thấy món ăn phù hợp."
             }
 
-        # 3️⃣ LLM tạo mô tả món ăn
+        # LLM tạo mô tả món ăn
         description = describe_dishes(top_dishes, text)
 
-        # 4️⃣ Format output theo intent
+        # Format output theo intent
         output = format_output_by_intent(intent, slots)
         output["top_dishes"] = top_dishes
         output["description"] = description
@@ -155,9 +140,7 @@ def process_text(query: TextQuery):
         print(f"==== DEBUG: Final top dishes ====\n{top_dishes}\n")
         return {"intent": intent, **output}
 
-    # =========================================
     # Xử lý intent 'cooking_guide'
-    # =========================================
     elif intent == "cooking_guide":
         dish_name = slots.get("dish_name")
         if not dish_name:
@@ -222,9 +205,7 @@ def process_text(query: TextQuery):
             "image_link": image_link
         }
 
-    # =========================================
     # Fallback: intent không xác định
-    # =========================================
     else:
         return {
             "intent": intent,
