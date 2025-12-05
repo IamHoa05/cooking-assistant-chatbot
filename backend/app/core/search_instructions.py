@@ -8,9 +8,7 @@ import faiss
 
 from app.utils.embedder import load_embedding_model, embed_texts
 
-# ===========================================
 # 1. LOAD CONFIG
-# ===========================================
 CONFIG_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../config.yml"))
 with open(CONFIG_PATH, "r", encoding="utf-8") as f:
     config = yaml.safe_load(f)
@@ -18,9 +16,8 @@ with open(CONFIG_PATH, "r", encoding="utf-8") as f:
 EMBED_MODEL_NAME = config["embedding"]["model_name"]
 BATCH_SIZE = config["embedding"].get("batch_size", 32)
 
-# ===========================================
+
 # 2. LOAD DATAFRAME
-# ===========================================
 DF_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../utils/data/recipes_embeddings.pkl"))
 df = pd.read_pickle(DF_PATH)
 
@@ -32,27 +29,23 @@ if "dish_name_embedding" not in df.columns:
 dish_names = df["dish_name"].astype(str).tolist()
 dish_vectors = np.stack(df["dish_name_embedding"].values).astype("float32")
 
-# ===========================================
+
 # 3. NORMALIZE VECTORS (cosine similarity)
-# ===========================================
 # FAISS IndexFlatIP dùng inner product để approximate cosine similarity
 dish_vectors = dish_vectors / np.linalg.norm(dish_vectors, axis=1, keepdims=True)
 
-# ===========================================
+
 # 4. BUILD FAISS INDEX
-# ===========================================
 dim = dish_vectors.shape[1]
 dish_index = faiss.IndexFlatIP(dim)  # IP ~ cosine similarity
 dish_index.add(dish_vectors)
 
-# ===========================================
+
 # 5. LOAD EMBEDDING MODEL 1 LẦN
-# ===========================================
 embedding_model = load_embedding_model(EMBED_MODEL_NAME)
 
-# ===========================================
+
 # 6. HELPER FUNCTION: SEARCH DISH
-# ===========================================
 def search_dish(user_input: str, top_k: int = 1, score_threshold: float = 0.7):
     """
     Tìm món ăn dựa trên input text, trả về danh sách món ăn phù hợp.
@@ -98,14 +91,13 @@ def search_dish(user_input: str, top_k: int = 1, score_threshold: float = 0.7):
 
     return results
 
-# ===========================================
+
 # 7. EXAMPLE USAGE
-# ===========================================
 if __name__ == "__main__":
     user_input = "gà chiên, khoai tây"
     results = search_dish(user_input, top_k=5, score_threshold=0.65)
 
-    print(f"🔍 Kết quả tìm kiếm cho: {user_input}")
+    print(f"Kết quả tìm kiếm cho: {user_input}")
     print("="*60)
     for i, r in enumerate(results, 1):
         print(f"{i}. {r['dish_name']} | Score: {r['score']:.4f}")
