@@ -17,9 +17,8 @@ import ast
 from ..utils.faiss_handler import FAISSHandler
 from ..utils.embedder import load_embedding_model, embed_texts
 
-# ===========================================
+
 # 1. Load config
-# ===========================================
 CONFIG_PATH = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "../../config.yml")
 )
@@ -29,9 +28,8 @@ with open(CONFIG_PATH, "r", encoding="utf-8") as f:
 EMBED_MODEL_NAME = CONFIG["embedding"]["model_name"]
 EMBED_BATCH_SIZE = CONFIG["embedding"].get("batch_size", 32)
 
-# ===========================================
+
 # 2. Helper functions
-# ===========================================
 def clean_ingredient(text: str) -> str:
     """
     Chuẩn hóa nguyên liệu:
@@ -116,9 +114,7 @@ def compute_scores(recipe_ing, query_ing):
     jaccard = len(recipe_set & query_set) / len(recipe_set | query_set) if recipe_set else 0
     return exact, jaccard
 
-# ===========================================
 # 3. Main search function
-# ===========================================
 def search_dishes(df, handler, input_ingredients, top_faiss=100, top_k=5):
     """
     Tìm món ăn dựa trên embedding + FAISS + fuzzy/exact/Jaccard scoring.
@@ -173,9 +169,8 @@ def search_dishes(df, handler, input_ingredients, top_faiss=100, top_k=5):
 
     return formatted_results
 
-# ===========================================
+
 # 4. Engine initialization
-# ===========================================
 def initialize_search_engine(
     data_path=os.path.abspath(os.path.join(os.path.dirname(__file__), "../utils/data/recipes_embeddings.pkl")),
     index_dir=os.path.abspath(os.path.join(os.path.dirname(__file__), "../utils/faiss_indexes"))
@@ -197,15 +192,14 @@ def search_by_ingredients(input_ingredients, df, handler, top_k=5):
         input_ingredients = [x.strip().lower() for x in input_ingredients.split(",") if x.strip()]
     return search_dishes(df, handler, input_ingredients, top_k=top_k)
 
-# ===========================================
+
 # 5. Example usage
-# ===========================================
 if __name__ == "__main__":
     df, handler = initialize_search_engine()
     user_input = "ức gà, bắp cải, khoai tây, cà rốt, bí đỏ"
     results = search_by_ingredients(user_input, df, handler, top_k=5)
 
-    print(f"🔍 Kết quả tìm kiếm cho: {user_input}")
+    print(f"Kết quả tìm kiếm cho: {user_input}")
     print("="*60)
     for i, r in enumerate(results, 1):
         print(f"{i}. {r['dish_name']} | Score: {r['final_score']:.4f}")
