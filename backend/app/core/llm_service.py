@@ -13,9 +13,7 @@ from langchain_core.messages import SystemMessage, HumanMessage
 import os
 from dotenv import load_dotenv
 
-# =====================================
 # 1. Load environment variables
-# =====================================
 env_path = os.path.join(os.path.dirname(__file__), "../../.env")
 load_dotenv(env_path)
 GROQ_API_KEY = os.getenv("GROQ_API_KEY")
@@ -23,10 +21,7 @@ GROQ_API_KEY = os.getenv("GROQ_API_KEY")
 if not GROQ_API_KEY:
     raise ValueError("GROQ_API_KEY not found in .env")
 
-
-# =====================================
 # 2. Describe dishes
-# =====================================
 def describe_dishes(top_dishes: List[str], user_input: str) -> str:
     """
     Tạo mô tả món ăn dựa trên danh sách món đã được lọc.
@@ -82,13 +77,11 @@ def describe_dishes(top_dishes: List[str], user_input: str) -> str:
         text = response.generations[0][0].text.strip()
         return text
     except Exception as e:
-        print("⚠️ LLM error (describe_dishes):", e)
+        print("LLM error (describe_dishes):", e)
         return "Không thể tạo mô tả món ăn bằng LLM."
 
 
-# =====================================
 # 3. Smooth cooking instructions
-# =====================================
 def smooth_instructions(dish_name: str, ingredients: List[str], instructions: List[str]) -> str:
     """
     Rewrite hướng dẫn nấu ăn ngắn gọn, dễ hiểu, trẻ trung.
@@ -146,5 +139,5 @@ def smooth_instructions(dish_name: str, ingredients: List[str], instructions: Li
 
         return steps
     except Exception as e:
-        print("⚠️ LLM error (smooth_instructions):", e)
+        print("LLM error (smooth_instructions):", e)
         return "Không thể tạo hướng dẫn mượt bằng LLM."
